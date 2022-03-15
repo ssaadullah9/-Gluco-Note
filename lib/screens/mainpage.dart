@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '/const/colors.dart';
 import '/controller/main_controller.dart';
-import 'widgets/navbar.dart';
+import '../widgets/navbar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '/screens/in_tasks_screen.dart';
 
@@ -23,7 +23,8 @@ class main_page extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add,color: Colors.white,),
         onPressed: () {
           Get.to(() => InTasksScreen());
         },
@@ -31,45 +32,67 @@ class main_page extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Obx(() => controller.pages![controller.currentIndex.value]['page']),
       bottomNavigationBar: Obx(
-          ()=>BottomAppBar(
-            color: mainColor,
-            shape: CircularNotchedRectangle(), //shape of notch
-            notchMargin: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                //children inside bottom appbar
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.home,color: controller.currentIndex.value == 0?Colors.white:Colors.black,),
-                    onPressed: () {
-                      controller.onTabIconBottomBar(0);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add_chart_rounded,color: controller.currentIndex.value == 1?Colors.white:Colors.black,),
-                    onPressed: () {
-                      controller.onTabIconBottomBar(1);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add_a_photo,color: controller.currentIndex.value == 2?Colors.white:Colors.black,),
-                    onPressed: () {
-                      controller.onTabIconBottomBar(2);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calculate_outlined,color: controller.currentIndex.value == 3?Colors.white:Colors.black,),
-                    onPressed: () {
-                      controller.onTabIconBottomBar(3);
-                    },
-                  ),
-                ],
+          ()=>Container(
+            height: Get.width * 0.18,
+            child: BottomAppBar(
+              color: Colors.white,
+              shape: CircularNotchedRectangle(), //shape of notch
+              notchMargin: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  //children inside bottom appbar
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _buildIconBottomBar(
+                      icon:Icons.home,
+                      index: 0,
+                      label: 'Home'
+                    ),
+                    _buildIconBottomBar(
+                      icon:Icons.add_chart_rounded,
+                      index: 1,
+                      label: 'LogBook'
+                    ),
+                    _buildIconBottomBar(
+                      icon:Icons.add_a_photo,
+                      index: 2,
+                      label: 'Tests'
+                    ),
+                    _buildIconBottomBar(
+                      icon:Icons.calculate_outlined,
+                      index: 3,
+                      label: 'Reminder'
+                    ),
+                  ],
+                ),
               ),
             ),
           )
       ),
+    );
+  }
+  Widget _buildIconBottomBar({icon,index,label = 'lable'}){
+    return Column(
+      children: [
+        Expanded(
+          child: IconButton(
+            icon:
+            Icon(icon,
+              color: controller.currentIndex.value == index
+                  ?Colors.green
+                  :Colors.black,),
+            onPressed: () {
+              controller.onTabIconBottomBar(index);
+            },
+          ),
+        ),
+        Text(label,style: TextStyle(
+          color: controller.currentIndex.value == index
+              ?Colors.green
+              :Colors.black,
+        ),)
+      ],
     );
   }
 }

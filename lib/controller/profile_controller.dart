@@ -11,19 +11,18 @@ class ProfileController extends GetxController{
   var readOnlyPassword = true.obs;
   var readOnlyPhone = true.obs;
   final formKey = GlobalKey<FormState>();
-
-  PickedFile? imageFile = null;
+  var imageFile = null;
   void openCamera(BuildContext context)  async{
     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera ,);
           imageFile = pickedFile!;
-          update();
           Navigator.pop(context);
+    update();
   }
   void openGallery(BuildContext context) async{
     final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery );
           imageFile = pickedFile!;
-          update();
           Navigator.pop(context);
+    update();
   }
   showChoiceDialog(BuildContext context) {
        Get.bottomSheet( SingleChildScrollView(

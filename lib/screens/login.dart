@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/mainpage.dart';
+import 'mainpage.dart';
 import '/screens/signup.dart';
 
 import '../const/colors.dart';
@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                 icon: Icons.email,
                 size: size,
                 onChanged: (val){
-                  controller.email = val;
+                  controller.email.value = val;
                 },
                 validation: (val){
                   return controller.validationEmail(val);

@@ -51,7 +51,7 @@ class SignUpScreen extends StatelessWidget {
               TextFormFiledWidget(
                 icon: Icons.email,
                 size: size,
-                top: 15,
+                top: 15.0,
                 hintText: 'Email',
                 onChanged: (val){
                   controller.email = val;

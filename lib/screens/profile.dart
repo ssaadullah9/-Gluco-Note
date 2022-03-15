@@ -34,60 +34,56 @@ class ProfileScreen extends StatelessWidget {
             children: [
               GetBuilder<ProfileController>(
                   init: ProfileController(),
-                  builder: (_){return Container(
-                width: Get.width * 0.35,
-                height: Get.width * 0.35,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                          controller.imageFile==null
-                              ?'assets/person.jpg'
-                              :controller.imageFile!.path
-                      )
-                  ),
-                ),
-                child: ClipOval(
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: SizedBox()),
-                      ClipOval(
-                        child: InkWell(
-                          onTap: (){
-                            controller.showChoiceDialog(context);
-                          },
+                  builder: (_){
+                    return Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        ClipOval(
                           child: Container(
-                            height: Get.width * 0.1,
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(150),
-                                  bottomLeft: Radius.circular(150),
-                                )
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('change',style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10
-                                ),),
-                                SizedBox(width: Get.width *0.02,),
-                                Icon(Icons.add_photo_alternate_rounded,
-                                  color: Colors.white,
-                                  size: Get.width * 0.05,
+                              width: Get.width * 0.35,
+                              height: Get.width * 0.35,
+                              child: controller.imageFile==null
+                                  ?Image.asset('assets/person.jpg')
+                                  : Image.file(File('${controller.imageFile.path}'))),
+                        ),
+                        Container(
+                          width: Get.width * 0.35,
+                          child: ClipOval(
+                            child: InkWell(
+                              onTap: (){
+                                controller.showChoiceDialog(context);
+                                controller.update();
+                              },
+                              child: Container(
+                                height: Get.width * 0.1,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(150),
+                                      bottomLeft: Radius.circular(150),
+                                    )
                                 ),
-                              ],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('change',style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10
+                                    ),),
+                                    SizedBox(width: Get.width *0.02,),
+                                    Icon(Icons.add_photo_alternate_rounded,
+                                      color: Colors.white,
+                                      size: Get.width * 0.05,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );}),
+                        )
+
+                      ],
+                    );}),
               SizedBox(height: 10,),
               Expanded(
                 child: Form(

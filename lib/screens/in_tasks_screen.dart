@@ -1,30 +1,54 @@
+import 'dart:math';
+
 import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
-class InTasksScreen extends StatelessWidget {
-  var timep = DateTime.now();
-  late TimeOfDay picked;
-  var selectedf , s2 , selectedff;
+class InTasksScreen extends StatefulWidget {
   static const IconData food_bank_sharp = IconData(0xe9a5, fontFamily: 'MaterialIcons');
   static const IconData medication_liquid = IconData(0xf053a, fontFamily: 'MaterialIcons');
   static const IconData fitness_center_outlined = IconData(0xf07a, fontFamily: 'MaterialIcons');
   static const IconData camera_alt_rounded = IconData(0xf60b, fontFamily: 'MaterialIcons');
+
+  @override
+  State<InTasksScreen> createState() => _InTasksScreenState();
+}
+
+class _InTasksScreenState extends State<InTasksScreen> {
+  var timep;
+
+  var picked;
+
+  var selectedf , s2 , selectedff;
+
   List<dynamic> types =[];
+
   List<dynamic> typesname =[];
+
   List<dynamic> food=[];
+
   List<dynamic> ex=[];
+
   List<dynamic> time=[];
+
   List<dynamic> ex_cal=[];
+
   String ? typesID;
+
   String ? foodID;
+
   String ? exID ;
+
   String ? timeID;
+
   String ? selectedex;
+
   String? selectedValue;
+
   List<String> items = [
     'Every Day',
     'Every Week',
@@ -33,12 +57,11 @@ class InTasksScreen extends StatelessWidget {
     'Every two weeks',
     'Once a month',
   ];
+
   late String dropdownValue;
 
   @override
   void initState(){
-    // for select the types id
-    timep = DateTime.now();
     this.types.add({"id": 1, "label":"Fruits"});
     this.types.add({"id": 2, "label":"Meats "});
     this.types.add({"id": 3, "label":"Eggs  "});
@@ -90,15 +113,17 @@ class InTasksScreen extends StatelessWidget {
       {"ID": 1 , "Name":"60 Minutes", "parentID": 3},
     ];
   }
-  Future<Null> selectTime (BuildContext context)async{
+
+  Future<void> selectTime (BuildContext context)async{
     picked= (await showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: 10, minute: 20)
     ))! ;
     if (picked != null){
-      timep = picked as DateTime;
+      timep = picked;
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,724 +152,598 @@ class InTasksScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
-                child: Column(
-                    children: <Widget>[
-                      FormHelper.dropDownWidgetWithLabel(
-                        context,
-                        "Category:",
-                        "Select Type: ",
-                        this.typesID,
-                        this.types,
-                            (onChangedVal){
-                          this.typesID = onChangedVal;
-                          print("Selected Types : $onChangedVal");
-                          this.food= this.typesname.where(
-                                  (stateItem) => stateItem["parentID"].toString()==onChangedVal.toString()).toList();
-                          this.foodID=null;
-                        },
-                            (onValidateval){
-                          if (onValidateval==null){
-                            return 'please slecet type';
-                          }
-                          return null;
-                        },
-                        // borderColor: Theme.of(context).primaryColor,
-                        borderColor: Colors.black ,
-                        // borderFocusColor: Theme.of(context).primaryColor,
-                        borderFocusColor: Colors.black54 ,
-                        borderRadius: 10,
-                        optionLabel: "label",
-                        optionValue: "id",
+            ListView(
+
+                children: <Widget>[
+                  FormHelper.dropDownWidgetWithLabel(
+                    context,
+                    "Category:",
+                    "Select Type: ",
+                    this.typesID,
+                    this.types,
+                        (onChangedVal){
+                      this.typesID = onChangedVal;
+                      print("Selected Types : $onChangedVal");
+                      this.food= this.typesname.where(
+                              (stateItem) => stateItem["parentID"].toString()==onChangedVal.toString()).toList();
+                      this.foodID=null;
+                    },
+                        (onValidateval){
+                      if (onValidateval==null){
+                        return 'please slecet type';
+                      }
+                      return null;
+                    },
+                    // borderColor: Theme.of(context).primaryColor,
+                    borderColor: Colors.black ,
+                    // borderFocusColor: Theme.of(context).primaryColor,
+                    borderFocusColor: Colors.black54 ,
+                    borderRadius: 10,
+                    optionLabel: "label",
+                    optionValue: "id",
 
 
-                      ),
-                      FormHelper.dropDownWidgetWithLabel(
-                        context,
-                        "Type:" ,
-                        "Select type",
-                        this.foodID,
-                        this.food,
-                            (onChangedVal){
-                          this.foodID=onChangedVal;
-                          print("Selected type: ");
-                        },
-                            (onValidate){
-                          return null;
-                        }
-                        ,
-                        // borderColor: Theme.of(context).primaryColor,
-                        borderColor: Colors.black ,
-                        // borderFocusColor: Theme.of(context).primaryColor,
-                        borderFocusColor: Colors.black54 ,
-                        borderRadius: 10,
-                        optionValue: "ID",
-                        optionLabel: "Name",
+                  ),
+                  FormHelper.dropDownWidgetWithLabel(
+                    context,
+                    "Type:" ,
+                    "Select type",
+                    this.foodID,
+                    this.food,
+                        (onChangedVal){
+                      this.foodID=onChangedVal;
+                      print("Selected type: ");
+                    },
+                        (onValidate){
+                      return null;
+                    }
+                    ,
+                    // borderColor: Theme.of(context).primaryColor,
+                    borderColor: Colors.black ,
+                    // borderFocusColor: Theme.of(context).primaryColor,
+                    borderFocusColor: Colors.black54 ,
+                    borderRadius: 10,
+                    optionValue: "ID",
+                    optionLabel: "Name",
 
-                      ),
-                      Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                          child: Column(
-
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Align(
-                                    alignment: Alignment.center,
-                                    child:Text("Quantity",
-                                        style: new TextStyle(
-                                            fontSize: 16))),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-
-                                  child: Container(
-                                    margin: new EdgeInsets.symmetric(horizontal:40),
-                                    child: NumberInputWithIncrementDecrement(
-                                      controller: TextEditingController(),
-                                      min: 0,
-                                      max: 10,
-                                    ),
-                                  ),
-                                )
-                              ]
-                          )
-                      ),
-                      Container(
-
-                        margin: EdgeInsets.symmetric(horizontal: 30, vertical:30),
-                        child: Row(
-
-                          children: <Widget>[
-                            Container(
-                              width: 100,
-                              height:90,
-                              child: Card(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text("Calories", textAlign: TextAlign.center,
-                                        style: new TextStyle(
-                                            fontSize: 15)),
-                                    Center(
-                                      child: Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(text: '30 ' , style: TextStyle(
-                                                fontSize: 20 , fontWeight: FontWeight.bold
-                                            )),
-                                            TextSpan(text: 'cal' , style: TextStyle(
-                                                color: Colors.grey
-                                            )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 100,
-                              height:90,
-                              child: Card(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text("Fat", textAlign: TextAlign.center,
-                                        style: new TextStyle(
-                                            fontSize: 15)),
-                                    Center(
-                                      child: Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(text: '20 ' , style: TextStyle(
-                                                fontSize: 20 , fontWeight: FontWeight.bold
-                                            )),
-                                            TextSpan(text: 'g' , style: TextStyle(
-                                                color: Colors.grey
-                                            )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 100,
-                              height:90,
-                              child: Card(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text("Protein", textAlign: TextAlign.center,
-                                        style: new TextStyle(
-                                            fontSize: 15)),
-                                    /*Text("30", textAlign: TextAlign.center,
-                                                    style: new TextStyle(
-                                                        fontSize: 25 , fontWeight: FontWeight.bold)),*/
-                                    Center(
-                                      child: Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(text: '30 ' , style: TextStyle(
-                                                fontSize: 20 , fontWeight: FontWeight.bold
-                                            )),
-                                            TextSpan(text: 'g' , style: TextStyle(
-                                                color: Colors.grey
-                                            )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                      ),
-                      Container(
-                        // child:Center(
-                          padding: EdgeInsets.only(top:30, bottom: 50),
-                          child: ElevatedButton.icon(
-                              onPressed: () {
-                                // Respond to button press
-                              },
-                              icon: Icon(Icons.add, size: 30),
-                              label: Text("Calculate"),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379),)
-                          )
-
-                        //  )
-
-                      )
-                    ]),
-              ),
-            ),
-
-
-            Container(
-                margin:EdgeInsets.only(top:37) ,
-
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-
+                  ),
+                  SizedBox(height: Get.width * 0.05,),
+                  Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        Text("Quantity",
+                            style:  TextStyle(
+                                fontSize: 16)),
+                        SizedBox(height: Get.width * 0.05,),
+                        Padding(
+                          padding: EdgeInsets.all(
+                              Get.width * 0.05
+                          ),
+                          child: NumberInputWithIncrementDecrement(
+                            controller: TextEditingController(),
+                            min: 0,
+                            max: 10,
+                            onChanged: (val){
+                              print(val);
+                            },
+                          ),
+                        )
+                      ]
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _buildContainerSolids(
+                          label: 'Calories',
+                          amount: '30',
+                          module: 'cal'
+                      ), _buildContainerSolids(
+                          label: 'Fat',
+                          amount: '20',
+                          module: 'g'
+                      ), _buildContainerSolids(
+                          label: 'Protein',
+                          amount: '30',
+                          module: 'g'
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: Get.width * 0.1
+                    ),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          // Respond to button press
+                        },
+                        icon: Icon(Icons.add, size: 30),
+                        label: Text("Calculate"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    ),
+                  )
+                ]),
 
-                        DropdownButton(
-
-                          alignment: Alignment.bottomCenter,
-                          dropdownColor: Colors.white38,
-                          isExpanded: true,
-                          hint:Container(width:double.infinity, child:Text("Liquid Type", style: TextStyle(fontSize: 20), textAlign:TextAlign.center,)),
-                          items: ["Coffee ","Tea ","Juice", "Soup","Milk"].map((e) => DropdownMenuItem(
-                            child: Container(width:double.infinity,child: Text("$e", style: TextStyle(fontSize: 20), textAlign:TextAlign.center,)) , value: e,)).toList(),
+            ListView(
+              padding: EdgeInsets.all(Get.width * 0.08),
+                children: <Widget>[
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder()
+                    ),
+                      items: ["Coffee ","Tea ","Juice", "Soup","Milk"].map((e) =>
+                          DropdownMenuItem(
+                    child: Text('$e'),
+                            value: e,
+                  )).toList(),
+                      hint: Text('Select Liquids'),
+                      onChanged: (val){}),
+                  SizedBox(height: Get.width * 0.1,),
+                  Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Quantity",
+                            style: new TextStyle(
+                                fontSize: 18)),
+                        SizedBox(height: Get.width * 0.05,),
+                        NumberInputWithIncrementDecrement(
+                          controller: TextEditingController(),
+                          min: 0,
+                          max: 10,
                           onChanged: (val){
-                            selectedf= val ;
+
                           },
-                          value: selectedf ,),
-                        Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                            child: Column(
-
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child:Text("Quantity",
-                                          style: new TextStyle(
-                                              fontSize: 18))),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-
-                                    child: Container(
-                                      margin: new EdgeInsets.symmetric(horizontal:40),
-                                      child: NumberInputWithIncrementDecrement(
-                                        controller: TextEditingController(),
-                                        min: 0,
-                                        max: 10,
-                                      ),
-                                    ),
-                                  )
-                                ]
-                            )
-
-
-
-
-
-
-                        ),
-                        Container(
-
-                          margin: EdgeInsets.symmetric(horizontal: 30, vertical:30),
-                          child: Row(
-
-                            children: <Widget>[
-                              Container(
-                                width: 100,
-                                height:90,
-                                child: Card(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        )
+                      ]
+                  ),
+                  SizedBox(height: Get.width * 0.1,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        height:90,
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Calories", textAlign: TextAlign.center,
+                                  style: new TextStyle(
+                                      fontSize: 15)),
+                              Center(
+                                child: Text.rich(
+                                  TextSpan(
                                     children: [
-                                      Text("Calories", textAlign: TextAlign.center,
-                                          style: new TextStyle(
-                                              fontSize: 15)),
-                                      Center(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(text: '30 ' , style: TextStyle(
-                                                  fontSize: 20 , fontWeight: FontWeight.bold
-                                              )),
-                                              TextSpan(text: 'cal' , style: TextStyle(
-                                                  color: Colors.grey
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 100,
-                                height:90,
-                                child: Card(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text("Fat", textAlign: TextAlign.center,
-                                          style: new TextStyle(
-                                              fontSize: 15)),
-                                      Center(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(text: '20 ' , style: TextStyle(
-                                                  fontSize: 20 , fontWeight: FontWeight.bold
-                                              )),
-                                              TextSpan(text: 'g' , style: TextStyle(
-                                                  color: Colors.grey
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 100,
-                                height:90,
-                                child: Card(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text("Protein", textAlign: TextAlign.center,
-                                          style: new TextStyle(
-                                              fontSize: 15)),
-                                      /*Text("30", textAlign: TextAlign.center,
-                                                    style: new TextStyle(
-                                                        fontSize: 25 , fontWeight: FontWeight.bold)),*/
-                                      Center(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(text: '30 ' , style: TextStyle(
-                                                  fontSize: 20 , fontWeight: FontWeight.bold
-                                              )),
-                                              TextSpan(text: 'g' , style: TextStyle(
-                                                  color: Colors.grey
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                                      TextSpan(text: '30 ' , style: TextStyle(
+                                          fontSize: 20 , fontWeight: FontWeight.bold
+                                      )),
+                                      TextSpan(text: 'cal' , style: TextStyle(
+                                          color: Colors.grey
+                                      )),
                                     ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
-
                         ),
-                        Container(
-                          // child:Center(
-                            padding: EdgeInsets.only(top:50),
-                            child: ElevatedButton.icon(
-                                onPressed: () {
-                                  // Respond to button press
-                                },
-                                icon: Icon(Icons.add, size: 30),
-                                label: Text("Calculate"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFE5A9379),)
-                            )
-
-                          //  )
-
-                        )
-                      ]                                  ),
-                )
-
-            ),
-            Container(
-              //tap No3
-                margin:EdgeInsets.only(top:6) ,
-                child:SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Expanded(
-                                  child:new   Padding(
-                                    padding: EdgeInsets.all(15),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Name',
-
-                                      ),
-                                    ),
-
-                                  ),
-                                ) ,
-                                IconButton(
-                                  onPressed: (){
-
-                                    AlertDialog(
-                                      title: Text('Reset settings?'),
-                                      content: Text('This will reset your device to its default factory settings.'),
-                                      actions: [
-                                        FlatButton(
-                                          textColor: Color(0xFF6200EE),
-                                          onPressed: () {},
-                                          child: Text('CANCEL'),
-                                        ),
-                                        FlatButton(
-                                          textColor: Color(0xFF6200EE),
-                                          onPressed: () {},
-                                          child: Text('ACCEPT'),
-                                        ),
-                                      ],
-                                    ) ;
-                                  } ,
-                                  icon: Icon(Icons.camera_enhance),
-                                )
-                              ]
-                          ),
-
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                      ),
+                      Container(
+                        width: 100,
+                        height:90,
+                        child: Card(
                           child: Column(
-
-                              children: <Widget>[
-                                CustomDropdownButton2(
-                                  // isExpanded:true,
-                                  hint: 'How often',
-                                  dropdownItems: items,
-                                  value: selectedValue,
-                                  // buttonHeight: 40,
-                                  buttonWidth: 260,
-                                  // itemPadding: 240,
-                                  dropdownWidth:260,
-                                  itemHeight: 40,
-                                  onChanged: (value) {
-                                    selectedValue = value;
-                                  },
-                                ),
-                              ]
-                          ),
-
-                        ),
-                        Container(
-
-                          margin: EdgeInsets.symmetric(horizontal: 30, vertical:30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-
-                            children: <Widget>[
-
-                              Expanded(
-
-                                  child:Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Fat", textAlign: TextAlign.center,
+                                  style: new TextStyle(
+                                      fontSize: 15)),
+                              Center(
+                                child: Text.rich(
+                                  TextSpan(
                                     children: [
-                                      Text("Amount",
-                                          style: new TextStyle(
-                                              fontSize: 15)),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-
-                                        child: Container(
-
-                                          margin: new EdgeInsets.symmetric(horizontal:17),
-                                          child: NumberInputWithIncrementDecrement(
-                                            controller: TextEditingController(),
-                                            min: 0,
-                                            max: 4,
-                                          ),
-                                        ),
-                                      ),
+                                      TextSpan(text: '20 ' , style: TextStyle(
+                                          fontSize: 20 , fontWeight: FontWeight.bold
+                                      )),
+                                      TextSpan(text: 'g' , style: TextStyle(
+                                          color: Colors.grey
+                                      )),
                                     ],
-                                  )
-
+                                  ),
+                                ),
                               ),
-                              Spacer(),
-                              Expanded(
-                                child: DropdownButton(
-
-                                  alignment: Alignment.bottomCenter,
-                                  dropdownColor: Colors.white38,
-                                  isExpanded: true,
-                                  hint:Container(width:double.infinity, child:Text(" Type", style: TextStyle(fontSize: 20), textAlign:TextAlign.center,)),
-                                  items: ["Pill", "Injection", "Topical","Liquid"].map((e) => DropdownMenuItem(
-                                    child: Container(width:double.infinity,child: Text("$e", style: TextStyle(fontSize: 20), textAlign:TextAlign.center,)) , value: e,)).toList(),
-                                  onChanged: (val){
-                                    selectedff= val ;
-                                  },
-                                  value: selectedff ,),
-
-                              ),],
+                            ],
                           ),
-
                         ),
-                        Container(
-                          padding: EdgeInsets.only(top:30),
-                          child: Center(
-
-                              child: Column(
-
-                                children: [
-
-                                  IconButton(
-                                    icon: Icon(Icons.alarm),
-                                    iconSize: 40,
-                                    onPressed: (){
-                                      selectTime(context);
-                                      print(timep);
-                                    },
+                      ),
+                      Container(
+                        width: 100,
+                        height:90,
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Protein", textAlign: TextAlign.center,
+                                  style: new TextStyle(
+                                      fontSize: 15)),
+                              /*Text("30", textAlign: TextAlign.center,
+                                            style: new TextStyle(
+                                                fontSize: 25 , fontWeight: FontWeight.bold)),*/
+                              Center(
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(text: '30 ' , style: TextStyle(
+                                          fontSize: 20 , fontWeight: FontWeight.bold
+                                      )),
+                                      TextSpan(text: 'g' , style: TextStyle(
+                                          color: Colors.grey
+                                      )),
+                                    ],
                                   ),
-                                  Text('Time ${timep.hour}:${timep.minute}', style: TextStyle(fontSize: 25))
-                                ],
-                              )
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Container(
-                          // child:Center(
-                            padding: EdgeInsets.only(top:30 , bottom: 50),
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379), ) ,
-                              onPressed: () {
-                                // Respond to button press
-                              },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Get.width * 0.1,),
+                  ElevatedButton.icon(
+                      onPressed: () {
+                        // Respond to button press
+                      },
+                      icon: Icon(Icons.add, size: 30),
+                      label: Text("Calculate"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFE5A9379),)
+                  )
+                ]                                  ),
 
-                              icon: Icon(Icons.add, size: 30),
-                              label: Text("Add reminder"),
-
-                            )
-
-                          //  )
-
-                        )
-                      ]                                  ),
-                )
-            ),
-            Container(
-              //tap No4
-                margin:EdgeInsets.only(top:37) ,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-
-                  child: Column(
-
+            ListView(
+              padding: EdgeInsets.all(
+                Get.width * 0.05
+              ),
+                children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-
-                        FormHelper.dropDownWidgetWithLabel(
-                          context,
-                          "Types:",
-                          "Select Type: ",
-                          this.exID,
-                          this.ex,
-                              (onChangedVal){
-                            this.exID = onChangedVal;
-                            print("Selected Types : $onChangedVal");
-                            this.time= this.ex_cal.where(
-                                    (stateItem) => stateItem["parentID"].toString()==onChangedVal.toString()).toList();
-                            this.timeID=null;
-                          },
-                              (onValidateval){
-                            if (onValidateval==null){
-                              return 'please slecet type';
-                            }
-                            return null;
-                          },
-                          // borderColor: Theme.of(context).primaryColor,
-                          borderColor: Colors.black ,
-                          // borderFocusColor: Theme.of(context).primaryColor,
-                          borderFocusColor: Colors.black54 ,
-                          borderRadius: 10,
-                          optionLabel: "label",
-                          optionValue: "id",
-
-
-                        ),
-
-
-                        FormHelper.dropDownWidgetWithLabel(
-                          context,
-                          "Time:",
-                          "Select type",
-                          this.timeID,
-                          this.time,
-                              (onChangedVal){
-                            this.timeID=onChangedVal;
-                            print("Selected type: ");
-                          },
-                              (onValidate){
-                            return null;
-                          }
-                          ,
-                          // borderColor: Theme.of(context).primaryColor,
-                          borderColor: Colors.black ,
-                          // borderFocusColor: Theme.of(context).primaryColor,
-                          borderFocusColor: Colors.black54 ,
-                          borderRadius: 10,
-                          optionValue: "ID",
-                          optionLabel: "Name",
-
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(90))),
-                          margin: EdgeInsets.only(top: 40 , left: 50 , right: 50),
-                          width: 190,
-                          height:190,
-                          child: Card(
-                              elevation: 4,
-                              color: Color(0xfffafafa),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    child: Text('Calories burnt ' ,style: TextStyle(
-                                        fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
-                                    ), textAlign: TextAlign.center,),
-                                  ),
-
-
-                                  Container(
-                                    child: Expanded(
-                                      child: CircularPercentIndicator(
-                                        radius: 60.0,
-                                        lineWidth: 10.0,
-                                        percent: 0.5,
-                                        animation: true,
-                                        animationDuration: 4000,
-                                        center: new Text('50.0%' , style: TextStyle(
-                                            fontSize: 20
-                                        ),),
-                                        progressColor: Color(0xFFEA9363),
-
-                                      ), ),
-                                  ),
-                                ],
-                              )
-
+                        Expanded(
+                          child:TextFormField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Name',
+                            ),
                           ),
-
                         ) ,
-
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(90))),
-                          margin: EdgeInsets.only(top: 40 , left: 50 , right: 50),
-                          height:100,
-                          child: Card(
-                              elevation: 4,
-                              color: Color(0xfffafafa),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-
-                                  Expanded(
-                                    child: Container(
-                                      child: Text('Exercise Time ' ,style: TextStyle(
-                                          fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
-                                      ), textAlign: TextAlign.center,),
-                                    ),
-                                  ),
-
-                                  Expanded(
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 15),
-
-                                      child:  LinearPercentIndicator(
-                                        width: MediaQuery.of(context).size.width - 150,
-                                        animation: true,
-                                        lineHeight: 25.0,
-                                        animationDuration: 4000,
-                                        percent: 0.3,
-                                        center: Text("30.0%"),
-                                        barRadius: const Radius.circular(16),
-                                        progressColor: Colors.red,
-                                        trailing: Icon(Icons.directions_run),
-                                      ),
-                                    ),
-                                  ),
-
-
-                                ],
-                              )
-
-                          ),
-
-                        ) ,
-
-
-                        Container(
-                          // child:Center(
-                            padding: EdgeInsets.only(top:30, bottom: 50),
-                            child: ElevatedButton.icon(
-                                onPressed: () {
-                                  // Respond to button press
-                                },
-                                icon: Icon(Icons.add, size: 30),
-                                label: Text("Calculate"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFE5A9379),)
-                            )
-
-                          //  )
-
+                        IconButton(
+                          onPressed: (){
+                            Get.defaultDialog(
+                              radius: 5,
+                              contentPadding: EdgeInsets.all(10.0),
+                              titlePadding:  EdgeInsets.all(10.0),
+                              title: 'Reset settings?',
+                              content: Text('This will reset your device to its default factory settings.'),
+                              actions: [
+                               Row(
+                                 mainAxisAlignment: MainAxisAlignment.end,
+                                 children: [
+                                   TextButton(onPressed: (){}, child: Text('Cancle',style: TextStyle(
+                                     color: Color(0xFF6200EE)
+                                   ),)),
+                                   TextButton(onPressed: (){}, child: Text('Accept',style: TextStyle(
+                                       color: Color(0xFF6200EE)
+                                   ),)),
+                                 ],
+                               )
+                              ]
+                            );
+                          } ,
+                          icon: Icon(Icons.camera_enhance),
                         )
                       ]
                   ),
+                  SizedBox(height: Get.width * 0.1,),
+                  CustomDropdownButton2(
+                    // isExpanded:true,
+                    hint: 'How often',
+                    dropdownItems: items,
+                    value: selectedValue,
+                    // buttonHeight: 40,
+                    buttonWidth: Get.width,
+                    // itemPadding: 240,
+                    dropdownWidth:Get.width - Get.width*0.1,
+                    itemHeight: Get.width * 0.12,
+                    onChanged: (value) {
+                      selectedValue = value;
+                    },
+                  ),
+                  SizedBox(height: Get.width * 0.1,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          child:Column(
+                            children: [
+                              Text("Amount",
+                                  style: new TextStyle(
+                                      fontSize: 15)),
+                              SizedBox(height: Get.width * 0.05,),
+                              NumberInputWithIncrementDecrement(
+                                controller: TextEditingController(),
+                                min: 0,
+                                max: 4,
+                                onChanged: (val){
+
+                                },
+                              ),
+                            ],
+                          )
+
+                      ),
+                      SizedBox(width: Get.width * 0.2,),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text("",
+                                style: new TextStyle(
+                                    fontSize: 15)),
+                            SizedBox(height: Get.width * 0.05,),
+                            DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder()
+                              ),
+                              items: ["Pill", "Injection", "Topical","Liquid"].map((e) =>
+                                  DropdownMenuItem(
+                                    child: Text('$e'),
+                                    value: e,
+                                  )).toList(),
+                              onChanged: (val){},
+                              hint: Text('Type'),
+                            ),
+                          ],
+                        )
+
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Get.width * 0.05,),
+                  IconButton(
+                    icon: Icon(Icons.alarm),
+                    iconSize: 40,
+                    onPressed: (){
+                      selectTime(context);
+                      print(timep);
+                    },
+                  ),
+                  Text('Time ${timep.hour}:${timep.minute}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 25)),
+                  SizedBox(height: Get.width * 0.05,),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFE5A9379), ) ,
+                    onPressed: () {
+                      // Respond to button press
+                    },
+
+                    icon: Icon(Icons.add, size: 30),
+                    label: Text("Add reminder"),
+
+                  )
+                ]                                  ),
+
+            ListView(
+
+                children: <Widget>[
+
+                  FormHelper.dropDownWidgetWithLabel(
+                    context,
+                    "Types:",
+                    "Select Type: ",
+                    this.exID,
+                    this.ex,
+                        (onChangedVal){
+                      this.exID = onChangedVal;
+                      print("Selected Types : $onChangedVal");
+                      this.time= this.ex_cal.where(
+                              (stateItem) => stateItem["parentID"].toString()==onChangedVal.toString()).toList();
+                      this.timeID=null;
+                    },
+                        (onValidateval){
+                      if (onValidateval==null){
+                        return 'please slecet type';
+                      }
+                      return null;
+                    },
+                    // borderColor: Theme.of(context).primaryColor,
+                    borderColor: Colors.black ,
+                    // borderFocusColor: Theme.of(context).primaryColor,
+                    borderFocusColor: Colors.black54 ,
+                    borderRadius: 10,
+                    optionLabel: "label",
+                    optionValue: "id",
 
 
+                  ),
+
+                  FormHelper.dropDownWidgetWithLabel(
+                    context,
+                    "Time:",
+                    "Select type",
+                    this.timeID,
+                    this.time,
+                        (onChangedVal){
+                      this.timeID=onChangedVal;
+                      print("Selected type: ");
+                    },
+                        (onValidate){
+                      return null;
+                    }
+                    ,
+                    // borderColor: Theme.of(context).primaryColor,
+                    borderColor: Colors.black ,
+                    // borderFocusColor: Theme.of(context).primaryColor,
+                    borderFocusColor: Colors.black54 ,
+                    borderRadius: 10,
+                    optionValue: "ID",
+                    optionLabel: "Name",
+
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal:                       Get.width * 0.08,
+                      vertical: Get.width * 0.04
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(.23),
+                          offset: Offset(0,8),
+                          blurRadius: 8
+                        )
+                      ]
+                    ),
+                    width: Get.width * 0.5,
+                    height:Get.width * 0.4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Calories burnt ' ,style: TextStyle(
+                            fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+                        ),),
 
 
-                )
+                        Expanded(
+                          child: CircularPercentIndicator(
+                            radius: Get.width * 0.135,
+                            lineWidth: 10.0,
+                            percent: 0.65,
+                            animation: true,
+                            animationDuration: 4000,
+                            center: new Text('50.0%' , style: TextStyle(
+                                fontSize: 20
+                            ),),
+                            progressColor: Color(0xFFEA9363),
 
+                          ), ),
+                      ],
+                    ),
+
+                  ) ,
+
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(.23),
+                              offset: Offset(0,8),
+                              blurRadius: 8
+                          )
+                        ]
+                    ),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: Get.width * 0.08,
+                        vertical: Get.width * 0.02
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                    height:Get.width * 0.3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        Expanded(
+                          child: Container(
+                            child: Text('Exercise Time ' ,style: TextStyle(
+                                fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+                            ), textAlign: TextAlign.center,),
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 15),
+
+                            child:  LinearPercentIndicator(
+                              width: MediaQuery.of(context).size.width - 150,
+                              animation: true,
+                              lineHeight: 25.0,
+                              animationDuration: 4000,
+                              percent: 0.64,
+                              center: Text("64.0%"),
+                              barRadius: const Radius.circular(16),
+                              progressColor: Colors.red,
+                              trailing: Icon(Icons.directions_run),
+                            ),
+                          ),
+                        ),
+
+
+                      ],
+                    ),
+
+                  ) ,
+
+                  SizedBox(height: Get.width * 0.05,),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                      child: ElevatedButton.icon(
+                          onPressed: () {
+                            // Respond to button press
+                          },
+                          icon: Icon(Icons.add, size: 30),
+                          label: Text("Calculate"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFFE5A9379),)
+                      )
+
+                    //  )
+
+                  )
+                ]
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildContainerSolids({label,amount,module}){
+    return                       Container(
+      width: Get.width *0.25,
+      height:Get.width * 0.25,                        child: Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text("$label", textAlign: TextAlign.center,
+              style: new TextStyle(
+                  fontSize: 15)),
+          Center(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: '$amount ' , style: TextStyle(
+                      fontSize: 20 , fontWeight: FontWeight.bold
+                  )),
+                  TextSpan(text: '$module' , style: TextStyle(
+                      color: Colors.grey
+                  )),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+    );
+
   }
 }

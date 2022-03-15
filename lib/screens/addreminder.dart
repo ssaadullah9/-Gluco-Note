@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:test_saja/controller/addnewreminder_controller.dart';
-import 'package:test_saja/screens/reminder.dart';
+import 'package:test_saja/screens/bottom_bar_screens/reminder.dart';
 
 import '../const/colors.dart';
 

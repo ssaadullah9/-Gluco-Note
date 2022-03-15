@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '/screens/logbook.dart';
+import '../screens/bottom_bar_screens/logbook.dart';
 import '/screens/bottom_bar_screens/home.dart';
 
-import '../Tests.dart';
-import '../screens/reminder.dart';
+import '../screens/bottom_bar_screens/test.dart';
+import '../screens/bottom_bar_screens/reminder.dart';
 
 class MainController extends GetxController{
   List<Map<dynamic,dynamic>>? pages;
@@ -23,7 +23,7 @@ class MainController extends GetxController{
         'page': LogBookScreen()
       },
       {
-        'page': MyPage()
+        'page': TestScreen()
       },
       {
         'page': ReminderScreeen()

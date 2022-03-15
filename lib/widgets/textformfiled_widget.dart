@@ -16,7 +16,7 @@ class TextFormFiledWidget extends StatelessWidget {
      this.icon,
      this.onChanged,
      this.validation,
-     this.top = 70
+     this.top = 70.0
    }) : super(key: key);
 
 
