@@ -1,24 +1,26 @@
 import 'dart:math';
 
 import 'package:dropdown_button2/custom_dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
+import 'package:test_saja/screens/addreminder.dart';
 
-class InTasksScreen extends StatefulWidget {
+class InTaksScreen extends StatefulWidget {
   static const IconData food_bank_sharp = IconData(0xe9a5, fontFamily: 'MaterialIcons');
   static const IconData medication_liquid = IconData(0xf053a, fontFamily: 'MaterialIcons');
   static const IconData fitness_center_outlined = IconData(0xf07a, fontFamily: 'MaterialIcons');
   static const IconData camera_alt_rounded = IconData(0xf60b, fontFamily: 'MaterialIcons');
 
   @override
-  State<InTasksScreen> createState() => _InTasksScreenState();
+  State<InTaksScreen> createState() => _InTaksScreenState();
 }
 
-class _InTasksScreenState extends State<InTasksScreen> {
+class _InTaksScreenState extends State<InTaksScreen> {
   var timep;
 
   var picked;
@@ -62,6 +64,7 @@ class _InTasksScreenState extends State<InTasksScreen> {
 
   @override
   void initState(){
+    timep = TimeOfDay.now();
     this.types.add({"id": 1, "label":"Fruits"});
     this.types.add({"id": 2, "label":"Meats "});
     this.types.add({"id": 3, "label":"Eggs  "});
@@ -124,14 +127,14 @@ class _InTasksScreenState extends State<InTasksScreen> {
     }
   }
 
-
+  String typeOthers = '';
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tasks'),
+          title: Text('InTaks'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -152,8 +155,8 @@ class _InTasksScreenState extends State<InTasksScreen> {
         ),
         body: TabBarView(
           children: [
+            //screen1
             ListView(
-
                 children: <Widget>[
                   FormHelper.dropDownWidgetWithLabel(
                     context,
@@ -213,11 +216,13 @@ class _InTasksScreenState extends State<InTasksScreen> {
                       children: <Widget>[
                         Text("Quantity",
                             style:  TextStyle(
-                                fontSize: 16)),
-                        SizedBox(height: Get.width * 0.05,),
+                                fontSize: Get.width * 0.05,
+                                fontWeight: FontWeight.bold
+                            )),
                         Padding(
-                          padding: EdgeInsets.all(
-                              Get.width * 0.05
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Get.width * 0.3,
+                              vertical: Get.width * 0.025
                           ),
                           child: NumberInputWithIncrementDecrement(
                             controller: TextEditingController(),
@@ -230,31 +235,43 @@ class _InTasksScreenState extends State<InTasksScreen> {
                         )
                       ]
                   ),
+                  SizedBox(height: Get.width * 0.05,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildContainerSolids(
                           label: 'Calories',
-                          amount: '30',
+                          amount: '0',
                           module: 'cal'
                       ), _buildContainerSolids(
                           label: 'Fat',
-                          amount: '20',
+                          amount: '0',
                           module: 'g'
                       ), _buildContainerSolids(
                           label: 'Protein',
-                          amount: '30',
+                          amount: '0',
                           module: 'g'
                       ),
                     ],
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.1
+                        horizontal: Get.width * 0.1,
+                        vertical: Get.width * 0.1
                     ),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          // Respond to button press
+                          Get.snackbar(
+                              'do you want save it?',
+                              'it will be show in the logbook',
+                              snackPosition: SnackPosition.BOTTOM,
+                              borderRadius: 0,
+                              duration: Duration(milliseconds: 4500),
+                              margin: EdgeInsets.zero,
+                              mainButton: TextButton(onPressed: (){}, child: Text('Save',style: TextStyle(
+                                  color: Colors.blue
+                              ),))
+                          );
                         },
                         icon: Icon(Icons.add, size: 30),
                         label: Text("Calculate"),
@@ -263,27 +280,45 @@ class _InTasksScreenState extends State<InTasksScreen> {
                     ),
                   )
                 ]),
-
+            //screen2
             ListView(
-              padding: EdgeInsets.all(Get.width * 0.08),
+                padding: EdgeInsets.all(Get.width * 0.08),
                 children: <Widget>[
                   DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder()
-                    ),
-                      items: ["Coffee ","Tea ","Juice", "Soup","Milk"].map((e) =>
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder()
+                      ),
+                      items: [
+                        "Coffee ",
+                        "Tea ",
+                        "Juice",
+                        "Soup",
+                        "Milk",
+                        "Others"
+                      ].map((e) =>
                           DropdownMenuItem(
-                    child: Text('$e'),
+                            child: Text('$e'),
                             value: e,
-                  )).toList(),
+                          )).toList(),
                       hint: Text('Select Liquids'),
-                      onChanged: (val){}),
-                  SizedBox(height: Get.width * 0.1,),
+                      onChanged: (val){
+                        typeOthers = val as String;
+                        setState(() {
+                          print(typeOthers);
+                        });
+                      }),
+                  SizedBox(height: Get.width * 0.05,),
+                  typeOthers=='Others'?TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'enter calories..'
+                    ),
+                  ):SizedBox(),
                   Column(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text("Quantity",
-                            style: new TextStyle(
+                            style:  TextStyle(
                                 fontSize: 18)),
                         SizedBox(height: Get.width * 0.05,),
                         NumberInputWithIncrementDecrement(
@@ -300,92 +335,18 @@ class _InTasksScreenState extends State<InTasksScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        width: 100,
-                        height:90,
-                        child: Card(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("Calories", textAlign: TextAlign.center,
-                                  style: new TextStyle(
-                                      fontSize: 15)),
-                              Center(
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: '30 ' , style: TextStyle(
-                                          fontSize: 20 , fontWeight: FontWeight.bold
-                                      )),
-                                      TextSpan(text: 'cal' , style: TextStyle(
-                                          color: Colors.grey
-                                      )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 100,
-                        height:90,
-                        child: Card(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("Fat", textAlign: TextAlign.center,
-                                  style: new TextStyle(
-                                      fontSize: 15)),
-                              Center(
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: '20 ' , style: TextStyle(
-                                          fontSize: 20 , fontWeight: FontWeight.bold
-                                      )),
-                                      TextSpan(text: 'g' , style: TextStyle(
-                                          color: Colors.grey
-                                      )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 100,
-                        height:90,
-                        child: Card(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("Protein", textAlign: TextAlign.center,
-                                  style: new TextStyle(
-                                      fontSize: 15)),
-                              /*Text("30", textAlign: TextAlign.center,
-                                            style: new TextStyle(
-                                                fontSize: 25 , fontWeight: FontWeight.bold)),*/
-                              Center(
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: '30 ' , style: TextStyle(
-                                          fontSize: 20 , fontWeight: FontWeight.bold
-                                      )),
-                                      TextSpan(text: 'g' , style: TextStyle(
-                                          color: Colors.grey
-                                      )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      _buildContainerSolids(
+                          label: 'Calories',
+                          amount: '0',
+                          module: 'cal'
+                      ), _buildContainerSolids(
+                          label: 'Fat',
+                          amount: '0',
+                          module: 'g'
+                      ), _buildContainerSolids(
+                          label: 'Protein',
+                          amount: '0',
+                          module: 'g'
                       ),
                     ],
                   ),
@@ -393,6 +354,18 @@ class _InTasksScreenState extends State<InTasksScreen> {
                   ElevatedButton.icon(
                       onPressed: () {
                         // Respond to button press
+                        Get.snackbar(
+                            'do you want save it?',
+                            'it will be show in the logbook',
+                            snackPosition: SnackPosition.BOTTOM,
+                            borderRadius: 0,
+                            duration: Duration(milliseconds: 4500),
+                            margin: EdgeInsets.zero,
+                            mainButton: TextButton(onPressed: (){}, child: Text('Save',style: TextStyle(
+                                color: Colors.blue
+                            ),))
+                        );
+
                       },
                       icon: Icon(Icons.add, size: 30),
                       label: Text("Calculate"),
@@ -401,132 +374,85 @@ class _InTasksScreenState extends State<InTasksScreen> {
                   )
                 ]                                  ),
 
+            //screen3
             ListView(
-              padding: EdgeInsets.all(
-                Get.width * 0.05
-              ),
+                padding: EdgeInsets.all(
+                    Get.width * 0.05
+                ),
                 children: <Widget>[
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child:TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Name',
-                            ),
-                          ),
-                        ) ,
-                        IconButton(
-                          onPressed: (){
-                            Get.defaultDialog(
-                              radius: 5,
-                              contentPadding: EdgeInsets.all(10.0),
-                              titlePadding:  EdgeInsets.all(10.0),
-                              title: 'Reset settings?',
-                              content: Text('This will reset your device to its default factory settings.'),
-                              actions: [
-                               Row(
-                                 mainAxisAlignment: MainAxisAlignment.end,
-                                 children: [
-                                   TextButton(onPressed: (){}, child: Text('Cancle',style: TextStyle(
-                                     color: Color(0xFF6200EE)
-                                   ),)),
-                                   TextButton(onPressed: (){}, child: Text('Accept',style: TextStyle(
-                                       color: Color(0xFF6200EE)
-                                   ),)),
-                                 ],
-                               )
-                              ]
-                            );
-                          } ,
-                          icon: Icon(Icons.camera_enhance),
-                        )
-                      ]
-                  ),
-                  SizedBox(height: Get.width * 0.1,),
-                  CustomDropdownButton2(
-                    // isExpanded:true,
-                    hint: 'How often',
-                    dropdownItems: items,
-                    value: selectedValue,
-                    // buttonHeight: 40,
-                    buttonWidth: Get.width,
-                    // itemPadding: 240,
-                    dropdownWidth:Get.width - Get.width*0.1,
-                    itemHeight: Get.width * 0.12,
-                    onChanged: (value) {
-                      selectedValue = value;
-                    },
-                  ),
-                  SizedBox(height: Get.width * 0.1,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                          child:Column(
-                            children: [
-                              Text("Amount",
-                                  style: new TextStyle(
-                                      fontSize: 15)),
-                              SizedBox(height: Get.width * 0.05,),
-                              NumberInputWithIncrementDecrement(
-                                controller: TextEditingController(),
-                                min: 0,
-                                max: 4,
-                                onChanged: (val){
-
-                                },
-                              ),
-                            ],
-                          )
-
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Name',
+                      suffixIcon:  IconButton(
+                        onPressed: (){
+                        } ,
+                        icon: Icon(Icons.camera_enhance),
                       ),
-                      SizedBox(width: Get.width * 0.2,),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text("",
-                                style: new TextStyle(
-                                    fontSize: 15)),
-                            SizedBox(height: Get.width * 0.05,),
-                            DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder()
-                              ),
-                              items: ["Pill", "Injection", "Topical","Liquid"].map((e) =>
-                                  DropdownMenuItem(
-                                    child: Text('$e'),
-                                    value: e,
-                                  )).toList(),
-                              onChanged: (val){},
-                              hint: Text('Type'),
-                            ),
-                          ],
-                        )
+                    ),
+                  ) ,
+                  SizedBox(height: Get.width * 0.1,),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder()
+                    ),
+                      items: items.map((e) => DropdownMenuItem(
+                        child: Text('$e'),
+                        value: e,
+                      )).toList(),
+                      hint: Text('How Often'),
+                      onChanged: (val){}),
+                  SizedBox(height: Get.width * 0.1,),
 
-                      ),
-                    ],
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder()
+                    ),
+                    items: ["Pill", "Injection", "Topical","Liquid"].map((e) =>
+                        DropdownMenuItem(
+                          child: Text('$e'),
+                          value: e,
+                        )).toList(),
+                    onChanged: (val){},
+                    hint: Text('Type'),
                   ),
                   SizedBox(height: Get.width * 0.05,),
-                  IconButton(
-                    icon: Icon(Icons.alarm),
-                    iconSize: 40,
-                    onPressed: (){
-                      selectTime(context);
-                      print(timep);
-                    },
+                  Text('Amount',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: Get.width * 0.05
+                  ),),
+                  SizedBox(height: Get.width * 0.05,),
+                  Row(
+                    children: [
+                      Expanded(child: SizedBox()),
+                      Expanded(
+                        flex: 2,
+                        child: NumberInputWithIncrementDecrement(
+                          controller: TextEditingController(),
+                          min: 0,
+                          max: 4,
+                          onChanged: (val){
+
+                          },
+                        ),
+                      ),
+                      Expanded(child: SizedBox()),
+                    ],
                   ),
-                  Text('Time ${timep.hour}:${timep.minute}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25)),
+
+                  SizedBox(height: Get.width * 0.05,),
+
                   SizedBox(height: Get.width * 0.05,),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE5A9379), ) ,
                     onPressed: () {
-                      // Respond to button press
+                      //ToDo
+                    Get.to(()=>AddnewReminder(
+                      //send parametr
+                    ));
                     },
 
                     icon: Icon(Icons.add, size: 30),
@@ -536,9 +462,7 @@ class _InTasksScreenState extends State<InTasksScreen> {
                 ]                                  ),
 
             ListView(
-
                 children: <Widget>[
-
                   FormHelper.dropDownWidgetWithLabel(
                     context,
                     "Types:",
@@ -595,20 +519,20 @@ class _InTasksScreenState extends State<InTasksScreen> {
 
                   Container(
                     margin: EdgeInsets.symmetric(
-                      horizontal:                       Get.width * 0.08,
-                      vertical: Get.width * 0.04
+                        horizontal:                       Get.width * 0.08,
+                        vertical: Get.width * 0.04
                     ),
                     padding: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(.23),
-                          offset: Offset(0,8),
-                          blurRadius: 8
-                        )
-                      ]
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(.23),
+                              offset: Offset(0,8),
+                              blurRadius: 8
+                          )
+                        ]
                     ),
                     width: Get.width * 0.5,
                     height:Get.width * 0.4,
@@ -624,6 +548,7 @@ class _InTasksScreenState extends State<InTasksScreen> {
                           child: CircularPercentIndicator(
                             radius: Get.width * 0.135,
                             lineWidth: 10.0,
+                            //ToDo FireBase
                             percent: 0.65,
                             animation: true,
                             animationDuration: 4000,
@@ -651,7 +576,7 @@ class _InTasksScreenState extends State<InTasksScreen> {
                         ]
                     ),
                     margin: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.08,
+                        horizontal: Get.width * 0.08,
                         vertical: Get.width * 0.02
                     ),
                     padding: EdgeInsets.all(10.0),
@@ -677,6 +602,7 @@ class _InTasksScreenState extends State<InTasksScreen> {
                               animation: true,
                               lineHeight: 25.0,
                               animationDuration: 4000,
+                              //ToDo FireBase
                               percent: 0.64,
                               center: Text("64.0%"),
                               barRadius: const Radius.circular(16),
@@ -694,7 +620,7 @@ class _InTasksScreenState extends State<InTasksScreen> {
 
                   SizedBox(height: Get.width * 0.05,),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                      margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                       child: ElevatedButton.icon(
                           onPressed: () {
                             // Respond to button press

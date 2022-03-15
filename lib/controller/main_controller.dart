@@ -17,16 +17,20 @@ class MainController extends GetxController{
   void onInit() {
     pages = [
       {
-        'page': Home()
+        'page': Home(),
+        'appBar':true
       },
       {
-        'page': LogBookScreen()
+        'page': LogBookScreen(),
+        'appBar':false
       },
       {
-        'page': TestScreen()
+        'page': TestScreen(),
+        'appBar':false
       },
       {
-        'page': ReminderScreeen()
+        'page': ReminderScreeen(),
+        'appBar':false
       }
     ];
     super.onInit();

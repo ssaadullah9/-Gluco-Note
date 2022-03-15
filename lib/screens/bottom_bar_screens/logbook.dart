@@ -22,6 +22,7 @@ class LogBookScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        leading: null,
         backgroundColor: Colors.blueGrey,
         title: Text('Logbook', style: TextStyle(
           color: Colors.white
@@ -82,7 +83,9 @@ class LogBookScreen extends StatelessWidget {
                          }
                    });
                   },
-                  icon: const Icon(Icons.upload_file)))
+                  icon:  Icon(Icons.upload_file),
+                tooltip: 'Export pdf',
+              ),),
         ],
       ),
       body: ListView(
@@ -139,6 +142,7 @@ class LogBookScreen extends StatelessWidget {
                     )).toList(),
                     rows:
                     // get Rows List
+                    //fireBAse
                     row.map((e) => DataRow(
                         cells: e.map((e) => DataCell(
                             Text(e)
@@ -255,6 +259,15 @@ List<String> column = [
   'Details',
 ];
   List<List<String>> row  = [
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
     ['Solid','06','${intl.DateFormat.yMd().format(DateTime.now())}','120 Cal','Bread'],
     ['Solid','12','${intl.DateFormat.yMd().format(DateTime.now())}','160 Cal','Oil'],

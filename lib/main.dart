@@ -4,12 +4,12 @@
 import 'package:get/get.dart';
 import 'package:test_saja/screens/health_info.dart';
 import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
-import 'package:test_saja/screens/in_tasks_screen.dart';
 import 'screens/bottom_bar_screens/logbook.dart';
+import 'screens/in_taks_screen.dart';
 import 'screens/mainpage.dart';
 import '/screens/signup.dart';
 import '/screens/splash_screen.dart';
-import 'health_record.dart';
+import 'screens/health_record.dart';
 import 'screens/bottom_bar_screens/reminder.dart';
 import 'screens/profile.dart';
 
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryColor,
       ),
-      home: ProfileScreen(),
+      home: SplashScreen(),
       // initialRoute: '/',
       //   routes: {
          //  '/': (context) => SplashScreen(),

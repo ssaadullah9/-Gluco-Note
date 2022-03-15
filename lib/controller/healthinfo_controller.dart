@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HealthInfoController extends GetxController{
+  var keyForm = GlobalKey<FormState>().obs;
   var selectedGender = ''.obs;
   var selectedType = ''.obs;
   var selectedBirthDate = DateTime.now().obs;

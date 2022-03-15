@@ -9,8 +9,6 @@ import '../const/colors.dart';
 
 class AddnewReminder extends StatelessWidget {
   final controller = Get.put(AddNewReminderController());
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +36,7 @@ class AddnewReminder extends StatelessWidget {
                 horizontal: Get.width*0.03,
                 vertical: Get.width*0.03,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ListView(
               children: [
                 Container(
                   child: TableCalendar(
@@ -60,96 +57,68 @@ class AddnewReminder extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: Get.width*0.05,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Reminder Time: ',
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        onTap: (){
-                          controller.selectedTime(context);
-                        },
-                        readOnly: true,
-                        initialValue: TimeOfDay.now().format(context).toString(),
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.access_time),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: Get.width * 0.05
-                            ),
-                            border: OutlineInputBorder()
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: Get.width*0.05,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Reminder Type:',
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Expanded(
-                      child: DropdownButtonFormField(
-                        hint: Text(controller.selectedType.value,style: TextStyle(
-                            color: Colors.black
-                        ),),
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: Get.width*0.05
-                            ),
-                            border: OutlineInputBorder(
-
-                            )
-                        ),
-                        items: [
-                          "Medication",
-                          "Exercise",
-                          "Liquid",
-                          "Solid",
-                          "Appointments"
-                        ].map((e) => DropdownMenuItem(
-                          child: Text(e),
-                          value: e,
-                        )).toList(),
-                        onChanged: (val) {
-                          controller.selectedType.value = val as String;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: Get.width*0.05,),
-                InkWell(
-                  onTap: (){
-                    Get.back();
-                    Get.snackbar('Done', 'Add NewReminder Successfully');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(15.0),
-
-                    decoration: BoxDecoration(
-                        color: mainColor,
-                        borderRadius: BorderRadius.circular(8.0)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.add),
-                        Text('Add New Reminder',style: TextStyle(
-                            fontSize: Get.width * 0.05
-                        ),),
-                      ],
-                    ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Reminder description',
                   ),
+                  onChanged: (val){
+
+                  },
+                ),
+                SizedBox(height: Get.width * 0.05,),
+                TextFormField(
+                  onTap: (){
+                    controller.selectedTime(context);
+                  },
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    label: Text('Reminder Time'),
+                    hintText: TimeOfDay.now().format(context).toString(),
+                    suffixIcon: Icon(Icons.access_time),
+                      border: OutlineInputBorder()
+                  ),
+                ),
+                SizedBox(height: Get.width*0.05,),
+
+                DropdownButtonFormField(
+                  hint: Text(controller.selectedType.value,style: TextStyle(
+                      color: Colors.black
+                  ),),
+                  decoration: InputDecoration(
+
+                      border: OutlineInputBorder(
+
+                      )
+                  ),
+                  items: [
+                    "Medication",
+                    "Exercise",
+                    "Liquid",
+                    "Solid",
+                    "Appointments"
+                  ].map((e) => DropdownMenuItem(
+                    child: Text(e),
+                    value: e,
+                  )).toList(),
+                  onChanged: (val) {
+                    controller.selectedType.value = val as String;
+                  },
+                ),
+                SizedBox(height: Get.width*0.05,),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                        },
+                        icon: Icon(Icons.done, size: 30),
+                        label: Text("Save Information"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    )
+
+                  //  )
+
                 )
               ],
             ),

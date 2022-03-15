@@ -7,7 +7,7 @@ import '../screens/profile.dart';
 import '/screens/login.dart';
 import 'package:get/get.dart';
 
-import '../health_record.dart';
+import '../screens/health_record.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key}) : super(key: key);

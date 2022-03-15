@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:test_saja/controller/health_record_controller.dart';
 
-import 'const/colors.dart';
+import '../const/colors.dart';
 
 
 
@@ -15,11 +15,8 @@ class HealthRecordScreen extends StatelessWidget {
   var selectedTGDates = TextEditingController();
   var selectedLDLDates = TextEditingController();
   var selectedAlbuminDates = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    //AppBar
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -145,34 +142,26 @@ class HealthRecordScreen extends StatelessWidget {
                   selectDate: selectedAlbuminDates
                 ),
                 SizedBox(height: Get.width * 0.06,),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          if(controller.keyForm.currentState!.validate()){
+                          }else{
 
-                InkWell(
-                  onTap: (){
-                    if(controller.keyForm.currentState!.validate()){
-                      Get.back();
-                      Get.snackbar('Done', 'Update Information Successfully');
-                    }else{
+                          }
+                        },
+                        icon: Icon(Icons.done, size: 30),
+                        label: Text("Save Information"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    )
 
-                    }
-                     },
-                  child: Container(
-                    padding: EdgeInsets.all(15.0),
+                  //  )
 
-                    decoration: BoxDecoration(
-                        color: mainColor,
-                        borderRadius: BorderRadius.circular(8.0)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.done),
-                        Text('Save Information',style: TextStyle(
-                            fontSize: Get.width * 0.05
-                        ),),
-                      ],
-                    ),
-                  ),
                 )
+
+
               ],
             ),
           )

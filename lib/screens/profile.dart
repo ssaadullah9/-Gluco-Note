@@ -36,52 +36,32 @@ class ProfileScreen extends StatelessWidget {
                   init: ProfileController(),
                   builder: (_){
                     return Stack(
-                      alignment: Alignment.bottomCenter,
                       children: [
                         ClipOval(
                           child: Container(
                               width: Get.width * 0.35,
                               height: Get.width * 0.35,
-                              child: controller.imageFile==null
-                                  ?Image.asset('assets/person.jpg')
-                                  : Image.file(File('${controller.imageFile.path}'))),
+                              child: controller.imageFile == null
+                                  ?Image.asset(
+                                  'assets/person.jpg',
+                                fit: BoxFit.cover,
+                              )
+                                  : Image.file(
+                                  File('${controller.imageFile.path}'),
+                                fit: BoxFit.cover,
+                              )),
                         ),
-                        Container(
-                          width: Get.width * 0.35,
-                          child: ClipOval(
-                            child: InkWell(
-                              onTap: (){
-                                controller.showChoiceDialog(context);
-                                controller.update();
-                              },
-                              child: Container(
-                                height: Get.width * 0.1,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(150),
-                                      bottomLeft: Radius.circular(150),
-                                    )
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('change',style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10
-                                    ),),
-                                    SizedBox(width: Get.width *0.02,),
-                                    Icon(Icons.add_photo_alternate_rounded,
-                                      color: Colors.white,
-                                      size: Get.width * 0.05,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: GestureDetector(
+                            onTap: (){
+                              controller.showChoiceDialog(context);
+                            },
+                            child: CircleAvatar(
+                                child: Icon(Icons.add_a_photo,size: Get.width * 0.05,)),
                           ),
                         )
-
                       ],
                     );}),
               SizedBox(height: 10,),
@@ -94,6 +74,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     children: <Widget>[
                       TextFormField(
+                        readOnly: true,
                         autovalidateMode: AutovalidateMode.always,
                         initialValue: '${controller.name}',
                         decoration: InputDecoration(
@@ -112,6 +93,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Get.width*0.05,),
                       TextFormField(
+                        readOnly: true,
                         autovalidateMode: AutovalidateMode.always,
                         initialValue: '${controller.email}',
                         decoration: InputDecoration(
@@ -181,29 +163,22 @@ class ProfileScreen extends StatelessWidget {
                           }, child: Text('change Password'))
                         ],
                       ),
-                      InkWell(
-                        onTap: (){
-                          Get.back();
-                         Get.snackbar('Done', 'Update Information Successfully');
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(15.0),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                          child: ElevatedButton.icon(
+                              onPressed: () {
+                                // Respond to button press
+                              },
+                              icon: Icon(Icons.done, size: 30),
+                              label: Text("Save Information"),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5A9379),)
+                          )
 
-                          decoration: BoxDecoration(
-                              color: mainColor,
-                              borderRadius: BorderRadius.circular(8.0)
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(Icons.done),
-                              Text('Save Information',style: TextStyle(
-                                fontSize: Get.width * 0.05
-                              ),),
-                            ],
-                          ),
-                        ),
+                        //  )
+
                       )
+
                     ],
                   ),
                 ),

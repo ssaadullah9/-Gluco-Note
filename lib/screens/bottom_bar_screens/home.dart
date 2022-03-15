@@ -7,7 +7,6 @@ import '../mainpage.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -25,6 +24,7 @@ class Home extends StatelessWidget {
           ), ),
         ),
         Container(
+          alignment: Alignment.center,
           margin: EdgeInsets.symmetric(
               horizontal: Get.width * 0.1,
           ),
@@ -46,20 +46,16 @@ class Home extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                child: Text('Your glucose today' ,style: TextStyle(
-                    fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
-                ), textAlign: TextAlign.center,),
-              ),
-              Container(
-                child: Text('10  mg/dl' ,style: TextStyle(
-                    fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
-                ), textAlign: TextAlign.center,),
-              ),
+              Text('Your glucose today' ,style: TextStyle(
+                  fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+              ),),
+              SizedBox(height: Get.width * 0.015,),
+              Text('10  mg/dl' ,style: TextStyle(
+                  fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
+              )),
             ],
           ),
         ) ,
-
         Container(
           margin: EdgeInsets.symmetric(
             horizontal: Get.width * 0.1,
@@ -91,10 +87,10 @@ class Home extends StatelessWidget {
                 child: CircularPercentIndicator(
                   radius: Get.width * 0.15,
                   lineWidth: 10.0,
-                  percent: 0.45,
+                  percent: 0.55,                  //FireBase
                   animation: true,
-                  animationDuration: 4000,
-                  center: new Text('15.0 %' , style: TextStyle(
+                  animationDuration: 2000,
+                  center:  Text('15.0 %' , style: TextStyle(
                       fontSize: 20
                   ),),
                   progressColor: Color(0xFFEA9363),
@@ -110,7 +106,7 @@ class Home extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ), ),
         Container(
-          height: 340,
+          height: Get.width * 0.8,
           child: SfCartesianChart(
               primaryXAxis: CategoryAxis(),
               primaryYAxis: NumericAxis(),
@@ -119,8 +115,7 @@ class Home extends StatelessWidget {
                     color: Color(0xFF9F87BF),
                     dataSource: getCulomnData(),
                     xValueMapper: (GlucoseDate data,_)=> data.GDay ,
-
-                    yValueMapper: (GlucoseDate data,_)=> data.Glevel ,
+                    yValueMapper: (GlucoseDate data,_)=> data.Glevel,
                     dataLabelSettings: DataLabelSettings(
                         isVisible: true,
                         labelPosition: ChartDataLabelPosition.inside

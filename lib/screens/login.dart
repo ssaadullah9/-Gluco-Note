@@ -125,7 +125,7 @@ class LoginScreen extends StatelessWidget {
                 onTap: () {
                   if(controller.keyForm.currentState!.validate()){
                     // print(controller.email.value + controller.passWord.value);
-                    Get.offAll(()=>main_page());
+                    Get.offAll(()=>MainScreen());
                   }
                 },
                 child: Container(

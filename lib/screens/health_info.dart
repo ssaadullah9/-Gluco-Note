@@ -108,28 +108,23 @@ class HealthInfoScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: Get.width * 0.05,),
-              InkWell(
-                onTap: (){
-                  Get.back();
-                  Get.snackbar('Done', 'Update Information Successfully');
-                },
-                child: Container(
-                  padding: EdgeInsets.all(15.0),
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                  child: ElevatedButton.icon(
+                      onPressed: () {
+                        // if(controller.keyForm.value.currentState!.validate()){
+                        // }else{
+                        //
+                        // }
+                      },
+                      icon: Icon(Icons.done, size: 30),
+                      label: Text("Save Information"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFE5A9379),)
+                  )
 
-                  decoration: BoxDecoration(
-                      color: mainColor,
-                      borderRadius: BorderRadius.circular(8.0)
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Icon(Icons.done),
-                      Text('Save Information',style: TextStyle(
-                          fontSize: Get.width * 0.05
-                      ),),
-                    ],
-                  ),
-                ),
+                //  )
+
               )
             ],
           )

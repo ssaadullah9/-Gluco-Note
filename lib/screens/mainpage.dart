@@ -6,70 +6,79 @@ import '/const/colors.dart';
 import '/controller/main_controller.dart';
 import '../widgets/navbar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '/screens/in_tasks_screen.dart';
+import '/screens/in_taks_screen.dart';
 
-class main_page extends StatelessWidget {
+class MainScreen extends StatelessWidget {
   final controller = Get.put(MainController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: NavBar(),
-      appBar: AppBar(
-        title: Text(
-          'Hi  ,',
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        child: Icon(Icons.add,color: Colors.white,),
-        onPressed: () {
-          Get.to(() => InTasksScreen());
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Obx(() => controller.pages![controller.currentIndex.value]['page']),
-      bottomNavigationBar: Obx(
-          ()=>Container(
-            height: Get.width * 0.18,
-            child: BottomAppBar(
-              color: Colors.white,
-              shape: CircularNotchedRectangle(), //shape of notch
-              notchMargin: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  //children inside bottom appbar
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    _buildIconBottomBar(
-                      icon:Icons.home,
-                      index: 0,
-                      label: 'Home'
-                    ),
-                    _buildIconBottomBar(
-                      icon:Icons.add_chart_rounded,
-                      index: 1,
-                      label: 'LogBook'
-                    ),
-                    _buildIconBottomBar(
-                      icon:Icons.add_a_photo,
-                      index: 2,
-                      label: 'Tests'
-                    ),
-                    _buildIconBottomBar(
-                      icon:Icons.calculate_outlined,
-                      index: 3,
-                      label: 'Reminder'
-                    ),
-                  ],
-                ),
-              ),
+    return  Obx(
+        ()=>Scaffold(
+          resizeToAvoidBottomInset: false,
+          drawer: NavBar(),
+          appBar: controller.pages!
+          [controller.currentIndex.value]['appBar']
+          ?AppBar(
+            title: Text(
+              'Hi  ,',
+              style: TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
             ),
-          )
-      ),
+          ):null,
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.green,
+            child: Icon(Icons.add,color: Colors.white,),
+            onPressed: () {
+              Get.to(() => InTaksScreen());
+            },
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+          body: Obx(() => controller.pages![
+          controller.currentIndex.value]
+          ['page']),
+
+          bottomNavigationBar: Obx(
+                  ()=>Container(
+                height: Get.width * 0.18,
+                child: BottomAppBar(
+                  color: Colors.white,
+                  shape: CircularNotchedRectangle(), //shape of notch
+                  notchMargin: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      //children inside bottom appbar
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        _buildIconBottomBar(
+                            icon:Icons.home,
+                            index: 0,
+                            label: 'Home'
+                        ),
+                        _buildIconBottomBar(
+                            icon:Icons.add_chart_rounded,
+                            index: 1,
+                            label: 'LogBook'
+                        ),
+                        _buildIconBottomBar(
+                            icon:Icons.calculate_outlined,
+                            index: 2,
+                            label: 'Tests'
+                        ),
+                        _buildIconBottomBar(
+                            icon:Icons.calculate_outlined,
+                            index: 3,
+                            label: 'Reminder'
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+          ),
+        )
     );
   }
   Widget _buildIconBottomBar({icon,index,label = 'lable'}){
