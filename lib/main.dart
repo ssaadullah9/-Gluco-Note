@@ -1,22 +1,16 @@
 
 
- import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:test_saja/screens/health_info.dart';
-import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
-import 'screens/bottom_bar_screens/logbook.dart';
-import 'screens/in_taks_screen.dart';
-import 'screens/mainpage.dart';
-import '/screens/signup.dart';
-import '/screens/splash_screen.dart';
-import 'screens/health_record.dart';
-import 'screens/bottom_bar_screens/reminder.dart';
-import 'screens/profile.dart';
+ import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+ import 'package:get/get.dart';
+ import 'package:test_saja/screens/splash_screen.dart';
 
 
-Future main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp() ;
+
+
+ Future main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+   await  Firebase.initializeApp() ;
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {

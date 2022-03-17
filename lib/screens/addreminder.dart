@@ -40,6 +40,7 @@ class AddnewReminder extends StatelessWidget {
               children: [
                 Container(
                   child: TableCalendar(
+                //  controller.selected_date ,
                     onDaySelected: (x, y) {
                       controller.selected_date.value = x;
                       controller.focsed_date.value = y;
@@ -58,12 +59,13 @@ class AddnewReminder extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  decoration: InputDecoration(
+                    decoration: InputDecoration(
+                    label: Text('Reminder description'),
                     border: OutlineInputBorder(),
                     hintText: 'Reminder description',
                   ),
                   onChanged: (val){
-
+                  controller.description.value=val ;
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
@@ -78,6 +80,9 @@ class AddnewReminder extends StatelessWidget {
                     suffixIcon: Icon(Icons.access_time),
                       border: OutlineInputBorder()
                   ),
+                  onChanged: (val){
+                    controller.selected_time.value=val as TimeOfDay ;
+                  },
                 ),
                 SizedBox(height: Get.width*0.05,),
 
@@ -110,6 +115,7 @@ class AddnewReminder extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
+                            
                         },
                         icon: Icon(Icons.done, size: 30),
                         label: Text("Save Information"),
