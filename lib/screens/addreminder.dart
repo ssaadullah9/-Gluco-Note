@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -115,7 +116,12 @@ class AddnewReminder extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                            
+                          addReminder();
+                          Get.snackbar(
+                              "Reminder added succesfully ! " ,
+                              ""
+
+                          );
                         },
                         icon: Icon(Icons.done, size: 30),
                         label: Text("Save Information"),
@@ -132,4 +138,20 @@ class AddnewReminder extends StatelessWidget {
       ),
     );
   }
+
+
+  addReminder() async{
+    CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders") ;
+    newReminder.add(
+        {
+          "Reminder_Date" : controller.selected_date.value.toString(),
+          "Remindnder_Description" : controller.description.value.toString(),
+          "Reminder_Time" : controller.selected_time.value.toString(),
+          "Reminder_Type" : controller.selectedType.value.toString(),
+        }
+    ) ;
+
+  }
+
+
 } // end of the class

@@ -1,4 +1,5 @@
 // TODO Implement this library.
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,28 +10,32 @@ import 'package:test_saja/const/colors.dart';
 
 import '../addreminder.dart';
 
+
+
 class ReminderScreeen extends StatelessWidget {
-  List<Map> reminde = [
+  var selectedRD = "".obs ;
+/*
+  List<Map> remindersList = [
     {
       'name' : 'Ahmad',
-      'date' : DateTime.january,
-    }, {
-      'name' : 'Saja',
       'date' : DateTime.april,
-    }, {
-      'name' : 'Maram',
-      'date' : DateTime.august,
-    }, {
-      'name' : 'Roba',
-      'date' : DateTime.january,
-    }, {
-      'name' : 'Kholod',
-      'date' : DateTime.april,
-    }, {
-      'name' : 'Rabee',
-      'date' : DateTime.november,
     },
   ];
+*/
+  List reminderList = [] ;
+
+  final firestoreInstance = FirebaseFirestore.instance;
+  getReminder() async {
+
+      firestoreInstance.collection("Reminders").get().then((querySnapshot) {
+       querySnapshot.docs.forEach((result) {
+         reminderList = result as List ;
+        });
+      });
+    }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +65,8 @@ class ReminderScreeen extends StatelessWidget {
           DatePicker(
             DateTime.now(),
                 initialSelectedDate: DateTime.now(),
+
+
             //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
@@ -68,10 +75,10 @@ class ReminderScreeen extends StatelessWidget {
               ? Expanded(
                 child: ListView.builder(
             //ToDo List.length
-            itemCount: reminde.length,
-            itemBuilder: (_,index){
+            itemCount: reminderList.length,
+            itemBuilder: (context,index){
                 return ExpansionTile(
-                  title: Text('${reminde[index]['name']}'),
+                  title: Text('${reminderList[index]['Reminder_Date']}'),
                 children: [
                   Card(
                     margin: EdgeInsets.all(20.0),
@@ -80,9 +87,9 @@ class ReminderScreeen extends StatelessWidget {
                       color: Colors.orangeAccent[100],
                       child: ListTile(
                         leading: CircleAvatar(
-                          child: Text('${reminde[index]['date']}'),
+                          child: Text('${reminderList[index]['Reminder_Date']}'),
                         ),
-                        title: Text('${reminde[index]['name']}'),
+                        title: Text('${reminderList[index]['Reminder_Date']}'),
                         trailing: IconButton(
                           onPressed: (){},
                           icon: Icon(Icons.arrow_drop_down),
@@ -103,6 +110,7 @@ class ReminderScreeen extends StatelessWidget {
                   ),),
                 ],
               )
+
 
         ],
       ),
