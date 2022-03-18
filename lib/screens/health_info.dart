@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +11,10 @@ import '../widgets/navbar.dart';
 
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +87,9 @@ class HealthInfoScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: "Weight",
                 ),
+                onChanged: (val){
+                  controller.selectedWeight.value= val ;
+                },
               ),
               SizedBox(height: Get.width * 0.05,),
               DropdownButtonFormField(
@@ -95,7 +103,7 @@ class HealthInfoScreen extends StatelessWidget {
                 ))
                     .toList(),
                 onChanged: (val) {
-                    controller.selectedGender.value = val as String;
+                    controller.selectedType.value = val as String;
                 },
                 hint: Text('Diabetes Type:'),
               ),
@@ -112,10 +120,17 @@ class HealthInfoScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                   child: ElevatedButton.icon(
                       onPressed: () {
-                        // if(controller.keyForm.value.currentState!.validate()){
-                        // }else{
-                        //
-                        // }
+                        /* if(controller.keyForm.value.currentState!.validate()){
+                        }else{
+
+                         }*/
+                         addData() ;
+                         Get.snackbar(
+                             "Data Saved " ,
+                             ""
+
+                         );
+
                       },
                       icon: Icon(Icons.done, size: 30),
                       label: Text("Save Information"),
@@ -168,4 +183,17 @@ class HealthInfoScreen extends StatelessWidget {
         ),
         onTap: onTap);
   }
+  addData() async{
+    CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
+    Health_info.add(
+      {
+        "Gender" : controller.radioButtonItem.value.toString(),
+        "Weight" : controller.selectedWeight.value,
+        "Diabetes_Type" : controller.selectedType.value,
+        "DOB" : controller.selectedBirthDate.value.toString(),
+      }
+    ) ;
+
+  }
+
 }

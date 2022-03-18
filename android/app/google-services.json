@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "901649797802",
+    "project_id": "gluconote-43342",
+    "storage_bucket": "gluconote-43342.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901649797802:android:a3d4c3b4c52410b95636d3",
+        "android_client_info": {
+          "package_name": "com.example.test_saja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901649797802-cpt4r2agkvvtq27slgnkm2orkml000us.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEodCh-ZvbTmrfseKk2r0vLcxWBf4szDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901649797802-cpt4r2agkvvtq27slgnkm2orkml000us.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

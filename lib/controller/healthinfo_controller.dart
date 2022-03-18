@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 class HealthInfoController extends GetxController{
   var keyForm = GlobalKey<FormState>().obs;
   var selectedGender = ''.obs;
-  var selectedType = ''.obs;
+  var selectedWeight = ''.obs;
+  var selectedType = 'ff'.obs;
   var selectedBirthDate = DateTime.now().obs;
   var selectedDate= DateTime.now().obs;
   var firstDate = DateTime(1970 , 1).obs;
