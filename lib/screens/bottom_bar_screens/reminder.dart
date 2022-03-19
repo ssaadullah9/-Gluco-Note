@@ -13,7 +13,7 @@ import '../addreminder.dart';
 
 
 class ReminderScreeen extends StatelessWidget {
-  var selectedRD = "".obs ;
+
 /*
   List<Map> remindersList = [
     {
@@ -22,16 +22,14 @@ class ReminderScreeen extends StatelessWidget {
     },
   ];
 */
-  List reminderList = [] ;
+  List reminderList = [
 
-  final firestoreInstance = FirebaseFirestore.instance;
+  ] ;
+
+  CollectionReference remindersref = FirebaseFirestore.instance.collection("Reminders");
   getReminder() async {
 
-      firestoreInstance.collection("Reminders").get().then((querySnapshot) {
-       querySnapshot.docs.forEach((result) {
-         reminderList = result as List ;
-        });
-      });
+
     }
 
 
@@ -50,6 +48,7 @@ class ReminderScreeen extends StatelessWidget {
         actions: <Widget>[
           IconButton(onPressed:(){
             Get.to(()=>AddnewReminder());
+
           },  icon: const Icon(Icons.add , color: Colors.green,)),
 
         ],
@@ -71,38 +70,50 @@ class ReminderScreeen extends StatelessWidget {
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-          true == true
-              ? Expanded(
-                child: ListView.builder(
-            //ToDo List.length
-            itemCount: reminderList.length,
-            itemBuilder: (context,index){
-                return ExpansionTile(
-                  title: Text('${reminderList[index]['Reminder_Date']}'),
-                children: [
-                  Card(
-                    margin: EdgeInsets.all(20.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      color: Colors.orangeAccent[100],
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Text('${reminderList[index]['Reminder_Date']}'),
-                        ),
-                        title: Text('${reminderList[index]['Reminder_Date']}'),
+          if (true == true) Expanded(
+                child: FutureBuilder(
+                future:remindersref.get() ,
+                  builder: (context,AsyncSnapshot snapshot){
+                    return ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        return ExpansionTile(
+                          // title: Text('${reminderList[index]['Reminder_Date']}'),
+                          title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
+                          children: [
+                            Card(
+                              margin: EdgeInsets.all(20.0),
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                color: Colors.orangeAccent[100],
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    child: Text(
+                                     //   '${reminderList[index]['Reminder_Date']}'),
+                                      '${snapshot.data!.docs[index]['Reminder_Date']}'),
+                                  ),
+                                  title: Text(
+                                     // '${reminderList[index]['Reminder_Date']}'),
+                                   '${snapshot.data!.docs[index]['Remindnder_Description']}'),
+
                         trailing: IconButton(
-                          onPressed: (){},
-                          icon: Icon(Icons.arrow_drop_down),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-                );
+                                    onPressed: () {},
+                                    icon: Icon(Icons.arrow_drop_down),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+
+                    );
+
+                    //Text("") ;
             },
+
           ),
-              )
-              : Column(
+              ) else Column(
                 children: [
                   SizedBox(height: Get.width * 0.5,),
                   Text('No Reminders Yet!!',style: TextStyle(
