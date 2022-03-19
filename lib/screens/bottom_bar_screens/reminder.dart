@@ -8,29 +8,14 @@ import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:test_saja/const/colors.dart';
 
+import '../../controller/reminder_controller.dart';
 import '../addreminder.dart';
 
 
 
 class ReminderScreeen extends StatelessWidget {
-
-/*
-  List<Map> remindersList = [
-    {
-      'name' : 'Ahmad',
-      'date' : DateTime.april,
-    },
-  ];
-*/
-  List reminderList = [
-
-  ] ;
-
+  final controller = Get.put(ReminderController());
   CollectionReference remindersref = FirebaseFirestore.instance.collection("Reminders");
-  getReminder() async {
-
-
-    }
 
 
 
@@ -65,12 +50,12 @@ class ReminderScreeen extends StatelessWidget {
             DateTime.now(),
                 initialSelectedDate: DateTime.now(),
 
-
-            //ToDO Convert Color To HexaDecimal
+                //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-          if (true == true) Expanded(
+          if ( 1== 1)
+            Expanded(
                 child: FutureBuilder(
                 future:remindersref.get() ,
                   builder: (context,AsyncSnapshot snapshot){
@@ -80,25 +65,29 @@ class ReminderScreeen extends StatelessWidget {
                         return ExpansionTile(
                           // title: Text('${reminderList[index]['Reminder_Date']}'),
                           title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
+
                           children: [
                             Card(
                               margin: EdgeInsets.all(20.0),
                               child: Container(
                                 padding: EdgeInsets.all(10.0),
-                                color: Colors.orangeAccent[100],
+                                color:  Colors.grey[200],
                                 child: ListTile(
                                   leading: CircleAvatar(
                                     child: Text(
                                      //   '${reminderList[index]['Reminder_Date']}'),
-                                      '${snapshot.data!.docs[index]['Reminder_Date']}'),
+                                   '${snapshot.data!.docs[index]['Reminder_Date']}'),
+                                  //  backgroundColor: Colors.grey[200],
                                   ),
                                   title: Text(
                                      // '${reminderList[index]['Reminder_Date']}'),
                                    '${snapshot.data!.docs[index]['Remindnder_Description']}'),
 
                         trailing: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.arrow_drop_down),
+                                    onPressed: () {
+                                   snapshot.data.docs[index].delete().await() ;
+                                    },
+                                    icon: Icon(Icons.delete_forever , color: Colors.red,),
                                   ),
                                 ),
                               ),
