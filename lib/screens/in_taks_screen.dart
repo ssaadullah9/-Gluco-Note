@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,15 +126,27 @@ class _InTaksScreenState extends State<InTaksScreen> {
       timep = picked;
     }
   }
+  int cal_liq( String x , String u)
+  {
+    var v1 = int.parse(x) ;
+    var v2 = int.parse(u) ;
+    var result = v1 * v2 ;
+    return result;
 
-  String typeOthers = '';
+  }
+
+
+  String selected_Ltype = '';
+  var selected_Lquantity = '';
+  var L_calories = '';
+  var liquid_result =0;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('InTaks'),
+          title: Text('InTakes'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -302,18 +314,22 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           )).toList(),
                       hint: Text('Select Liquids'),
                       onChanged: (val){
-                        typeOthers = val as String;
+                        selected_Ltype = val as String;
                         setState(() {
-                          print(typeOthers);
+                          print(selected_Ltype);
                         });
                       }),
                   SizedBox(height: Get.width * 0.05,),
-                  typeOthers=='Others'?TextFormField(
+                  //selected_Ltype=='Others'?
+                  TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'enter calories..'
                     ),
-                  ):SizedBox(),
+                    onChanged: (val){
+                      L_calories = val as String;
+                    },
+                  ) , SizedBox(),
                   Column(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -326,6 +342,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           min: 0,
                           max: 10,
                           onChanged: (val){
+                            selected_Lquantity = val as String ;
 
                           },
                         )
@@ -353,7 +370,9 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   SizedBox(height: Get.width * 0.1,),
                   ElevatedButton.icon(
                       onPressed: () {
-                        // Respond to button press
+                        //selected_Lquantity *L_calories
+                      liquid_result =cal_liq(selected_Lquantity ,L_calories);
+                        print(liquid_result);
                         Get.snackbar(
                             'do you want save it?',
                             'it will be show in the logbook',
