@@ -21,6 +21,7 @@ class InTaksScreen extends StatefulWidget {
 }
 
 class _InTaksScreenState extends State<InTaksScreen> {
+
   var timep;
 
   var picked;
@@ -126,20 +127,19 @@ class _InTaksScreenState extends State<InTaksScreen> {
       timep = picked;
     }
   }
-  int cal_liq( String x , String u)
+  int cal_liq( int x , int u)
   {
-    var v1 = int.parse(x) ;
-    var v2 = int.parse(u) ;
-    var result = v1 * v2 ;
-    return result;
+
+    var result = x * u ;
+    return result as int ;
 
   }
 
 
   String selected_Ltype = '';
-  var selected_Lquantity = '';
-  var L_calories = '';
-  var liquid_result =0;
+  var selected_Lquantity ;
+  var L_calories ;
+  int liquid_result =0   ;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -322,12 +322,13 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   SizedBox(height: Get.width * 0.05,),
                   //selected_Ltype=='Others'?
                   TextFormField(
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'enter calories..'
                     ),
                     onChanged: (val){
-                      L_calories = val as String;
+                      L_calories = val ;
                     },
                   ) , SizedBox(),
                   Column(
@@ -341,8 +342,17 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           controller: TextEditingController(),
                           min: 0,
                           max: 10,
+                          onDecrement: (val){
+                            selected_Lquantity = val ;
+
+    },
+                          onIncrement: (val){
+                            selected_Lquantity = val ;
+
+    },
                           onChanged: (val){
-                            selected_Lquantity = val as String ;
+                         //   print(selected_Lquantity);
+                            selected_Lquantity = val  ;
 
                           },
                         )
@@ -370,9 +380,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   SizedBox(height: Get.width * 0.1,),
                   ElevatedButton.icon(
                       onPressed: () {
-                        //selected_Lquantity *L_calories
-                      liquid_result =cal_liq(selected_Lquantity ,L_calories);
-                        print(liquid_result);
+                       print(L_calories);
+                       print(selected_Lquantity);
+                        print("############") ;
+                   liquid_result= cal_liq(L_calories , selected_Lquantity)   ;
+                        print(liquid_result.toInt());
                         Get.snackbar(
                             'do you want save it?',
                             'it will be show in the logbook',

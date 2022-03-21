@@ -116,12 +116,20 @@ class AddnewReminder extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          addReminder();
-                          Get.snackbar(
-                              "Reminder added succesfully ! " ,
-                              ""
+                          if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
+                              && controller.selected_date != null && controller.selected_time!= null){
+                            addReminder();
+                            Get.snackbar(
+                                "Reminder added successfully ! " ,
+                                ""
+                            );
+                          }else {
+                            Get.snackbar(
+                                "Can't add Reminder  succesfully ! " ,
+                                ""
+                            );
 
-                          );
+                          }
                         },
                         icon: Icon(Icons.done, size: 30),
                         label: Text("Save Information"),
@@ -152,6 +160,5 @@ class AddnewReminder extends StatelessWidget {
     ) ;
 
   }
-
 
 } // end of the class

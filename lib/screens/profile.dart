@@ -189,59 +189,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-   // creatUser()  async
-   // {
-   //    await firebase.collection('User').
-   //    doc(controllerEmail.text).
-   //    set({
-   //      "name": controllerName.text,
-   //      "email": controllerEmail.text,
-   //      "phone": int.parse(controllerPhone.text),
-   //      "password": controllerPassword.text ,
-   //
-   //    });
-   //
-   //     // final json= user.ToJson() ;
-   //      //await docUser.set(json) ;
-   // }
-  // Widget bottomsheet(){
-  //   return Container(
-  //       height: 100,
-  //       width: MediaQuery.of(context).size.width,
-  //         margin: EdgeInsets.symmetric(
-  //           horizontal: 20 , vertical: 20
-  //         ),
-  //     child: Column(
-  //       children: <Widget>[
-  //         Text("Choose profile photo",
-  //         style: TextStyle(fontSize: 20),
-  //         ),
-  //         SizedBox(height: 20),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //             TextButton.icon(onPressed: () {
-  //               _getFromCamera();
-  //             },
-  //               label: Text('Camera'),
-  //               icon: Icon(Icons.camera_alt),
-  //             ),
-  //             TextButton.icon(onPressed: () {
-  //
-  //               _getFromGallery();
-  //             },
-  //               label: Text('Gallery'),
-  //               icon: Icon(Icons.image),
-  //             ),
-  //           ],
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-  //
-  //
-  //
 
 }
 
