@@ -126,7 +126,7 @@ class LogBookScreen extends StatelessWidget {
             child: ExpansionTile(
               title: Text('Caloriess'),
             trailing: FlatButton.icon(
-                onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('show')),
+                onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
             children: [
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -203,9 +203,9 @@ DataRow(cells: [
               )
             ),
             child: ExpansionTile(
-              title: Text('Clucose'),
+              title: Text('Glucose'),
               trailing: FlatButton.icon(
-                  onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('show')),
+                  onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
               children: [
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

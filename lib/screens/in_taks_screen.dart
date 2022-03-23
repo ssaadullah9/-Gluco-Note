@@ -10,6 +10,20 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:test_saja/screens/addreminder.dart';
 
+
+
+ // add_lequids() async {
+ //  CollectionReference liquid_ref = FirebaseFirestore.instance.collection("Liquids");
+ //  liquid_ref.add(
+ //      {
+ //        "Liquid_Cal": liquid_result.toString(),
+ //        "Liquid_Type": selected_Ltype.toString(),
+ //        "Liquid_Quantity": selected_Lquantity.toString(),
+ //      }
+ //
+ //  );
+
+
 class InTaksScreen extends StatefulWidget {
   static const IconData food_bank_sharp = IconData(0xe9a5, fontFamily: 'MaterialIcons');
   static const IconData medication_liquid = IconData(0xf053a, fontFamily: 'MaterialIcons');
@@ -26,25 +40,25 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   var picked;
 
-  var selectedf , s2 , selectedff;
+  var selectedf, s2, selectedff;
 
-  List<dynamic> types =[];
+  List<dynamic> types = [];
 
-  List<dynamic> typesname =[];
+  List<dynamic> typesname = [];
 
-  List<dynamic> food=[];
+  List<dynamic> food = [];
 
-  List<dynamic> ex=[];
+  List<dynamic> ex = [];
 
-  List<dynamic> time=[];
+  List<dynamic> time = [];
 
-  List<dynamic> ex_cal=[];
+  List<dynamic> ex_cal = [];
 
   String ? typesID;
 
   String ? foodID;
 
-  String ? exID ;
+  String ? exID;
 
   String ? timeID;
 
@@ -64,82 +78,78 @@ class _InTaksScreenState extends State<InTaksScreen> {
   late String dropdownValue;
 
   @override
-  void initState(){
+  void initState() {
     timep = TimeOfDay.now();
-    this.types.add({"id": 1, "label":"Fruits"});
-    this.types.add({"id": 2, "label":"Meats "});
-    this.types.add({"id": 3, "label":"Eggs  "});
-    this.types.add({"id": 4, "label":"Carbohydrates  "});
-    this.types.add({"id": 5, "label":"Sweets "});
-    this.types.add({"id": 6, "label":"Ice-Cream "});
+    this.types.add({"id": 1, "label": "Fruits"});
+    this.types.add({"id": 2, "label": "Meats "});
+    this.types.add({"id": 3, "label": "Eggs  "});
+    this.types.add({"id": 4, "label": "Carbohydrates  "});
+    this.types.add({"id": 5, "label": "Sweets "});
+    this.types.add({"id": 6, "label": "Ice-Cream "});
 
-    this.typesname= [
-      {"ID": 1 , "Name":"Apple", "parentID": 1},
-      {"ID": 2 , "Name":"Orange", "parentID": 1},
-      {"ID": 3 , "Name":"Banana", "parentID": 1},
-      {"ID": 4 , "Name":"dates", "parentID": 1},
-      {"ID": 1 , "Name":"Chicken", "parentID": 2},
-      {"ID": 2 , "Name":"Fried Fish", "parentID": 2},
-      {"ID": 3 , "Name":"Fillet-fish", "parentID": 2},
-      {"ID": 4 , "Name":"meat", "parentID": 2},
-      {"ID": 1 , "Name":"Omelet", "parentID": 3},
-      {"ID": 2 , "Name":"Fried", "parentID": 3},
-      {"ID": 3 , "Name":"Boiled", "parentID": 3},
-      {"ID": 1 , "Name":"White Bread", "parentID": 4},
-      {"ID": 2 , "Name":"Pasta", "parentID": 4},
-      {"ID": 3 , "Name":"Spaghetti", "parentID": 4},
-      {"ID": 4, "Name":"chicken kabsa", "parentID": 4},
-      {"ID": 5, "Name":"White Rice", "parentID": 4},
+    this.typesname = [
+      {"ID": 1, "Name": "Apple", "parentID": 1},
+      {"ID": 2, "Name": "Orange", "parentID": 1},
+      {"ID": 3, "Name": "Banana", "parentID": 1},
+      {"ID": 4, "Name": "dates", "parentID": 1},
+      {"ID": 1, "Name": "Chicken", "parentID": 2},
+      {"ID": 2, "Name": "Fried Fish", "parentID": 2},
+      {"ID": 3, "Name": "Fillet-fish", "parentID": 2},
+      {"ID": 4, "Name": "meat", "parentID": 2},
+      {"ID": 1, "Name": "Omelet", "parentID": 3},
+      {"ID": 2, "Name": "Fried", "parentID": 3},
+      {"ID": 3, "Name": "Boiled", "parentID": 3},
+      {"ID": 1, "Name": "White Bread", "parentID": 4},
+      {"ID": 2, "Name": "Pasta", "parentID": 4},
+      {"ID": 3, "Name": "Spaghetti", "parentID": 4},
+      {"ID": 4, "Name": "chicken kabsa", "parentID": 4},
+      {"ID": 5, "Name": "White Rice", "parentID": 4},
 
-      {"ID": 1 , "Name":"Oreo", "parentID": 5},
-      {"ID": 2 , "Name":"Snickers", "parentID": 5},
-      {"ID": 3 , "Name":"Maltesers", "parentID": 5},
-      {"ID": 1, "Name":"Vanilla", "parentID": 6},
-      {"ID": 2, "Name":"Chocolate ", "parentID": 6},
-      {"ID": 3 , "Name":"Strawberry ", "parentID": 6},
+      {"ID": 1, "Name": "Oreo", "parentID": 5},
+      {"ID": 2, "Name": "Snickers", "parentID": 5},
+      {"ID": 3, "Name": "Maltesers", "parentID": 5},
+      {"ID": 1, "Name": "Vanilla", "parentID": 6},
+      {"ID": 2, "Name": "Chocolate ", "parentID": 6},
+      {"ID": 3, "Name": "Strawberry ", "parentID": 6},
     ];
 
-    this.ex.add({"id": 1, "label":"Walking"});
-    this.ex.add({"id": 2, "label":"Running"});
-    this.ex.add({"id": 3, "label":"Swimming"});
+    this.ex.add({"id": 1, "label": "Walking"});
+    this.ex.add({"id": 2, "label": "Running"});
+    this.ex.add({"id": 3, "label": "Swimming"});
 
-    this.ex_cal= [
-      {"ID": 1 , "Name":"20 Minutes", "parentID": 1},
-      {"ID": 2 , "Name":"30 Minutes", "parentID": 1},
-      {"ID": 3 , "Name":"45 Minutes", "parentID": 1},
-      {"ID": 4 , "Name":"60 Minutes", "parentID": 1},
-      {"ID": 5 , "Name":"20 Minutes", "parentID": 1},
-      {"ID": 1, "Name":"09 Minutes", "parentID": 2},
-      {"ID": 2 , "Name":"14 Minutes", "parentID": 2},
-      {"ID": 3 , "Name":"21 Minutes", "parentID": 2},
-      {"ID": 4 , "Name":"27 Minutes", "parentID": 2},
-      {"ID": 5 , "Name":"41 Minutes", "parentID": 2},
-      {"ID": 1 , "Name":"60 Minutes", "parentID": 3},
+    this.ex_cal = [
+      {"ID": 1, "Name": "20 Minutes", "parentID": 1},
+      {"ID": 2, "Name": "30 Minutes", "parentID": 1},
+      {"ID": 3, "Name": "45 Minutes", "parentID": 1},
+      {"ID": 4, "Name": "60 Minutes", "parentID": 1},
+      {"ID": 5, "Name": "20 Minutes", "parentID": 1},
+      {"ID": 1, "Name": "09 Minutes", "parentID": 2},
+      {"ID": 2, "Name": "14 Minutes", "parentID": 2},
+      {"ID": 3, "Name": "21 Minutes", "parentID": 2},
+      {"ID": 4, "Name": "27 Minutes", "parentID": 2},
+      {"ID": 5, "Name": "41 Minutes", "parentID": 2},
+      {"ID": 1, "Name": "60 Minutes", "parentID": 3},
     ];
   }
 
-  Future<void> selectTime (BuildContext context)async{
-    picked= (await showTimePicker(
+  Future<void> selectTime(BuildContext context) async {
+    picked = (await showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: 10, minute: 20)
-    ))! ;
-    if (picked != null){
+    ))!;
+    if (picked != null) {
       timep = picked;
     }
-  }
-  int cal_liq( int x , int u)
-  {
-
-    var result = x * u ;
-    return result as int ;
-
   }
 
 
   String selected_Ltype = '';
-  var selected_Lquantity ;
-  var L_calories ;
-  int liquid_result =0   ;
+  dynamic selected_Lquantity = 0;
+
+  dynamic L_calories = 0;
+
+  dynamic liquid_result = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -151,10 +161,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
           bottom: TabBar(
             tabs: [
               Tab(text: 'Solids', icon: Icon(Icons.local_pizza)),
-              Tab(text: 'Liquids' ,icon: Icon(Icons.emoji_food_beverage)),
-              Tab(text: 'Medication',icon: Icon(Icons.medication)),
-              Tab(text: 'Exercise',icon: Icon(Icons.directions_run)),
-            ],unselectedLabelColor: Colors.blueGrey,
+              Tab(text: 'Liquids', icon: Icon(Icons.emoji_food_beverage)),
+              Tab(text: 'Medication', icon: Icon(Icons.medication)),
+              Tab(text: 'Exercise', icon: Icon(Icons.directions_run)),
+            ],
+            unselectedLabelColor: Colors.blueGrey,
             labelColor: Colors.white,
             indicatorColor: Colors.blueGrey,
             indicatorWeight: 3,
@@ -176,23 +187,25 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     "Select Type: ",
                     this.typesID,
                     this.types,
-                        (onChangedVal){
+                        (onChangedVal) {
                       this.typesID = onChangedVal;
                       print("Selected Types : $onChangedVal");
-                      this.food= this.typesname.where(
-                              (stateItem) => stateItem["parentID"].toString()==onChangedVal.toString()).toList();
-                      this.foodID=null;
+                      this.food = this.typesname.where(
+                              (stateItem) =>
+                          stateItem["parentID"].toString() ==
+                              onChangedVal.toString()).toList();
+                      this.foodID = null;
                     },
-                        (onValidateval){
-                      if (onValidateval==null){
+                        (onValidateval) {
+                      if (onValidateval == null) {
                         return 'please slecet type';
                       }
                       return null;
                     },
                     // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black ,
+                    borderColor: Colors.black,
                     // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54 ,
+                    borderFocusColor: Colors.black54,
                     borderRadius: 10,
                     optionLabel: "label",
                     optionValue: "id",
@@ -201,22 +214,22 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   ),
                   FormHelper.dropDownWidgetWithLabel(
                     context,
-                    "Type:" ,
+                    "Type:",
                     "Select type",
                     this.foodID,
                     this.food,
-                        (onChangedVal){
-                      this.foodID=onChangedVal;
+                        (onChangedVal) {
+                      this.foodID = onChangedVal;
                       print("Selected type: ");
                     },
-                        (onValidate){
+                        (onValidate) {
                       return null;
                     }
                     ,
                     // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black ,
+                    borderColor: Colors.black,
                     // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54 ,
+                    borderFocusColor: Colors.black54,
                     borderRadius: 10,
                     optionValue: "ID",
                     optionLabel: "Name",
@@ -227,7 +240,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     //   mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text("Quantity",
-                            style:  TextStyle(
+                            style: TextStyle(
                                 fontSize: Get.width * 0.05,
                                 fontWeight: FontWeight.bold
                             )),
@@ -240,7 +253,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             controller: TextEditingController(),
                             min: 0,
                             max: 10,
-                            onChanged: (val){
+                            onChanged: (val) {
                               print(val);
                             },
                           ),
@@ -280,9 +293,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               borderRadius: 0,
                               duration: Duration(milliseconds: 4500),
                               margin: EdgeInsets.zero,
-                              mainButton: TextButton(onPressed: (){}, child: Text('Save',style: TextStyle(
-                                  color: Colors.blue
-                              ),))
+                              mainButton: TextButton(
+                                  onPressed: () {}, child: Text('Save',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),))
                           );
                         },
                         icon: Icon(Icons.add, size: 30),
@@ -313,7 +328,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             value: e,
                           )).toList(),
                       hint: Text('Select Liquids'),
-                      onChanged: (val){
+                      onChanged: (val) {
                         selected_Ltype = val as String;
                         setState(() {
                           print(selected_Ltype);
@@ -324,36 +339,32 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   TextFormField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'enter calories..'
+                        border: OutlineInputBorder(),
+                        hintText: 'enter calories..'
                     ),
-                    onChanged: (val){
-                      L_calories = val ;
+                    onChanged: (val) {
+                      L_calories = int.parse(val);
                     },
-                  ) , SizedBox(),
+                  ), SizedBox(),
                   Column(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text("Quantity",
-                            style:  TextStyle(
+                            style: TextStyle(
                                 fontSize: 18)),
                         SizedBox(height: Get.width * 0.05,),
                         NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           min: 0,
                           max: 10,
-                          onDecrement: (val){
-                            selected_Lquantity = val ;
-
-    },
-                          onIncrement: (val){
-                            selected_Lquantity = val ;
-
-    },
-                          onChanged: (val){
-                         //   print(selected_Lquantity);
-                            selected_Lquantity = val  ;
-
+                          onDecrement: (val) {
+                            selected_Lquantity = val;
+                          },
+                          onIncrement: (val) {
+                            selected_Lquantity = val;
+                          },
+                          onChanged: (val) {
+                            selected_Lquantity = val;
                           },
                         )
                       ]
@@ -361,30 +372,30 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   SizedBox(height: Get.width * 0.1,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+
                     children: <Widget>[
-                      _buildContainerSolids(
+                      _buildContainerlequids(
                           label: 'Calories',
-                          amount: '0',
+                          amount: liquid_result,
                           module: 'cal'
-                      ), _buildContainerSolids(
-                          label: 'Fat',
-                          amount: '0',
-                          module: 'g'
-                      ), _buildContainerSolids(
-                          label: 'Protein',
-                          amount: '0',
-                          module: 'g'
                       ),
+                        // _buildContainerSolids(
+                      //     label: 'Fat',
+                      //     amount: '0',
+                      //     module: 'g'
+                      // ), _buildContainerSolids(
+                      //     label: 'Protein',
+                      //     amount: '0',
+                      //     module: 'g'
+                      // ),
                     ],
                   ),
                   SizedBox(height: Get.width * 0.1,),
                   ElevatedButton.icon(
                       onPressed: () {
-                       print(L_calories);
-                       print(selected_Lquantity);
-                        print("############") ;
-                   liquid_result= cal_liq(L_calories , selected_Lquantity)   ;
-                        print(liquid_result.toInt());
+                        liquid_result = L_calories * selected_Lquantity;
+                        print(liquid_result);
+                        setState(() {});
                         Get.snackbar(
                             'do you want save it?',
                             'it will be show in the logbook',
@@ -392,18 +403,24 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             borderRadius: 0,
                             duration: Duration(milliseconds: 4500),
                             margin: EdgeInsets.zero,
-                            mainButton: TextButton(onPressed: (){}, child: Text('Save',style: TextStyle(
-                                color: Colors.blue
-                            ),))
-                        );
+                            mainButton: TextButton(onPressed: () {
+                              add_lequids();
+                              liquid_result=0;
+                              setState(() {});
+                            },
+                                child: Text('Save', style: TextStyle(
+                                    color: Colors.blue
+                                ),)
 
+                            )
+                        );
                       },
                       icon: Icon(Icons.add, size: 30),
                       label: Text("Calculate"),
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFE5A9379),)
                   )
-                ]                                  ),
+                ]),
 
             //screen3
             ListView(
@@ -415,45 +432,45 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
-                      suffixIcon:  IconButton(
-                        onPressed: (){
-                        } ,
+                      suffixIcon: IconButton(
+                        onPressed: () {},
                         icon: Icon(Icons.camera_enhance),
                       ),
                     ),
-                  ) ,
+                  ),
                   SizedBox(height: Get.width * 0.1,),
                   DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder()
-                    ),
-                      items: items.map((e) => DropdownMenuItem(
-                        child: Text('$e'),
-                        value: e,
-                      )).toList(),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder()
+                      ),
+                      items: items.map((e) =>
+                          DropdownMenuItem(
+                            child: Text('$e'),
+                            value: e,
+                          )).toList(),
                       hint: Text('How Often'),
-                      onChanged: (val){}),
+                      onChanged: (val) {}),
                   SizedBox(height: Get.width * 0.1,),
 
                   DropdownButtonFormField(
                     decoration: InputDecoration(
                         border: OutlineInputBorder()
                     ),
-                    items: ["Pill", "Injection", "Topical","Liquid"].map((e) =>
+                    items: ["Pill", "Injection", "Topical", "Liquid"].map((e) =>
                         DropdownMenuItem(
                           child: Text('$e'),
                           value: e,
                         )).toList(),
-                    onChanged: (val){},
+                    onChanged: (val) {},
                     hint: Text('Type'),
                   ),
                   SizedBox(height: Get.width * 0.05,),
                   Text('Amount',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: Get.width * 0.05
-                  ),),
+                        fontWeight: FontWeight.bold,
+                        fontSize: Get.width * 0.05
+                    ),),
                   SizedBox(height: Get.width * 0.05,),
                   Row(
                     children: [
@@ -464,7 +481,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           controller: TextEditingController(),
                           min: 0,
                           max: 4,
-                          onChanged: (val){
+                          onChanged: (val) {
 
                           },
                         ),
@@ -478,19 +495,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   SizedBox(height: Get.width * 0.05,),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE5A9379), ) ,
+                      primary: Color(0xFFE5A9379),),
                     onPressed: () {
                       //ToDo
-                    Get.to(()=>AddnewReminder(
-                      //send parametr
-                    ));
+                      Get.to(() =>
+                          AddnewReminder(
+                            //send parametr
+                          ));
                     },
 
                     icon: Icon(Icons.add, size: 30),
                     label: Text("Add reminder"),
 
                   )
-                ]                                  ),
+                ]),
 
             ListView(
                 children: <Widget>[
@@ -500,23 +518,25 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     "Select Type: ",
                     this.exID,
                     this.ex,
-                        (onChangedVal){
+                        (onChangedVal) {
                       this.exID = onChangedVal;
                       print("Selected Types : $onChangedVal");
-                      this.time= this.ex_cal.where(
-                              (stateItem) => stateItem["parentID"].toString()==onChangedVal.toString()).toList();
-                      this.timeID=null;
+                      this.time = this.ex_cal.where(
+                              (stateItem) =>
+                          stateItem["parentID"].toString() ==
+                              onChangedVal.toString()).toList();
+                      this.timeID = null;
                     },
-                        (onValidateval){
-                      if (onValidateval==null){
+                        (onValidateval) {
+                      if (onValidateval == null) {
                         return 'please slecet type';
                       }
                       return null;
                     },
                     // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black ,
+                    borderColor: Colors.black,
                     // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54 ,
+                    borderFocusColor: Colors.black54,
                     borderRadius: 10,
                     optionLabel: "label",
                     optionValue: "id",
@@ -530,18 +550,18 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     "Select type",
                     this.timeID,
                     this.time,
-                        (onChangedVal){
-                      this.timeID=onChangedVal;
+                        (onChangedVal) {
+                      this.timeID = onChangedVal;
                       print("Selected type: ");
                     },
-                        (onValidate){
+                        (onValidate) {
                       return null;
                     }
                     ,
                     // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black ,
+                    borderColor: Colors.black,
                     // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54 ,
+                    borderFocusColor: Colors.black54,
                     borderRadius: 10,
                     optionValue: "ID",
                     optionLabel: "Name",
@@ -550,7 +570,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
                   Container(
                     margin: EdgeInsets.symmetric(
-                        horizontal:                       Get.width * 0.08,
+                        horizontal: Get.width * 0.08,
                         vertical: Get.width * 0.04
                     ),
                     padding: EdgeInsets.all(10.0),
@@ -560,18 +580,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withOpacity(.23),
-                              offset: Offset(0,8),
+                              offset: Offset(0, 8),
                               blurRadius: 8
                           )
                         ]
                     ),
                     width: Get.width * 0.5,
-                    height:Get.width * 0.4,
+                    height: Get.width * 0.4,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Calories burnt ' ,style: TextStyle(
-                            fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+                        Text('Calories burnt ', style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
                         ),),
 
 
@@ -583,16 +605,16 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             percent: 0.65,
                             animation: true,
                             animationDuration: 4000,
-                            center: new Text('50.0%' , style: TextStyle(
+                            center: new Text('50.0%', style: TextStyle(
                                 fontSize: 20
                             ),),
                             progressColor: Color(0xFFEA9363),
 
-                          ), ),
+                          ),),
                       ],
                     ),
 
-                  ) ,
+                  ),
 
                   Container(
                     decoration: BoxDecoration(
@@ -601,7 +623,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withOpacity(.23),
-                              offset: Offset(0,8),
+                              offset: Offset(0, 8),
                               blurRadius: 8
                           )
                         ]
@@ -611,15 +633,17 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         vertical: Get.width * 0.02
                     ),
                     padding: EdgeInsets.all(10.0),
-                    height:Get.width * 0.3,
+                    height: Get.width * 0.3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
 
                         Expanded(
                           child: Container(
-                            child: Text('Exercise Time ' ,style: TextStyle(
-                                fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+                            child: Text('Exercise Time ', style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
                             ), textAlign: TextAlign.center,),
                           ),
                         ),
@@ -628,8 +652,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           child: Container(
                             margin: EdgeInsets.only(top: 15),
 
-                            child:  LinearPercentIndicator(
-                              width: MediaQuery.of(context).size.width - 150,
+                            child: LinearPercentIndicator(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width - 150,
                               animation: true,
                               lineHeight: 25.0,
                               animationDuration: 4000,
@@ -647,11 +674,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       ],
                     ),
 
-                  ) ,
+                  ),
 
                   SizedBox(height: Get.width * 0.05,),
                   Container(
-                      margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: Get.width * 0.08),
                       child: ElevatedButton.icon(
                           onPressed: () {
                             // Respond to button press
@@ -673,24 +701,24 @@ class _InTaksScreenState extends State<InTaksScreen> {
     );
   }
 
-  Widget _buildContainerSolids({label,amount,module}){
-    return                       Container(
-      width: Get.width *0.25,
-      height:Get.width * 0.25,                        child: Card(
+  Widget _buildContainerSolids({label, amount, module}) {
+    return Container(
+      width: Get.width * 0.25,
+      height: Get.width * 0.25, child: Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text("$label", textAlign: TextAlign.center,
               style: new TextStyle(
-                  fontSize: 15)),
+                  fontSize: 16 , fontWeight: FontWeight.bold)),
           Center(
             child: Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(text: '$amount ' , style: TextStyle(
-                      fontSize: 20 , fontWeight: FontWeight.bold
+                  TextSpan(text: '$amount ', style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold
                   )),
-                  TextSpan(text: '$module' , style: TextStyle(
+                  TextSpan(text: '$module', style: TextStyle(
                       color: Colors.grey
                   )),
                 ],
@@ -701,6 +729,47 @@ class _InTaksScreenState extends State<InTaksScreen> {
       ),
     ),
     );
+  }
+  Widget _buildContainerlequids({label, amount, module}) {
+    return Container(
+      width: Get.width * 0.5,
+      height: Get.width * 0.25, child: Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text("$label", textAlign: TextAlign.center,
+              style: new TextStyle(
+                  fontSize: 16 , fontWeight: FontWeight.bold)),
+          Center(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: '$amount ', style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold
+                  )),
+                  TextSpan(text: '$module', style: TextStyle(
+                      color: Colors.grey
+                  )),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+    );
+  }
 
+  add_lequids() async {
+    CollectionReference liquid_ref = FirebaseFirestore.instance.collection(
+        "Liquids");
+    liquid_ref.add(
+        {
+          "Liquid_Cal": liquid_result.toString(),
+          "Liquid_Type": selected_Ltype.toString(),
+          "Liquid_Quantity": selected_Lquantity.toString(),
+        }
+
+    );
   }
 }
