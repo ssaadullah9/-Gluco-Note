@@ -22,7 +22,7 @@ class AddnewReminder extends StatelessWidget {
             color: Colors.red,
           ),
           onPressed: () {
-            Get.to(() => ReminderScreeen());
+            Get.back();
           },
         ),
         title: Text(
@@ -125,7 +125,7 @@ class AddnewReminder extends StatelessWidget {
                             );
                           }else {
                             Get.snackbar(
-                                "Can't add Reminder  succesfully ! " ,
+                                "Can't add Reminder   ! " ,
                                 ""
                             );
 

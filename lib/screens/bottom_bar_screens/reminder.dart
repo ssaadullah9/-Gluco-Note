@@ -16,8 +16,19 @@ import '../addreminder.dart';
 class ReminderScreeen extends StatelessWidget {
   final controller = Get.put(ReminderController());
   CollectionReference remindersref = FirebaseFirestore.instance.collection("Reminders");
+  DateTime d=DateTime.now() ;
 
 
+  dynamic data;
+
+  Future<dynamic> getData() async {
+
+    final DocumentReference document =FirebaseFirestore.instance.collection("Reminders").where("Reminder_Date") as DocumentReference<Object?>;
+    await document.get().then<dynamic>(( DocumentSnapshot snapshot) async{
+        data = snapshot.data().toString() ;
+        //Update() ;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +60,15 @@ class ReminderScreeen extends StatelessWidget {
           DatePicker(
             DateTime.now(),
                 initialSelectedDate: DateTime.now(),
-
+                  onDateChange: (d){
+              print(DateFormat.d().format(d)) ;
+              print(data.toString());
+    },
                 //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-          if ( 1== 1)
+          if ( d== data)
             Expanded(
                 child: FutureBuilder(
                 future:remindersref.get() ,
