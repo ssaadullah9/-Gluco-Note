@@ -226,8 +226,8 @@ class TestScreen extends StatelessWidget {
                                                           actions: [
                                                             ElevatedButton(
                                                                 onPressed: () {
-
                                                                   add_bmi();
+
 
                                                                   Navigator.pop(
                                                                       context);
