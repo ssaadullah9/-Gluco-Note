@@ -226,8 +226,13 @@ class TestScreen extends StatelessWidget {
                                                           actions: [
                                                             ElevatedButton(
                                                                 onPressed: () {
-                                                                  add_bmi();
-
+                                                           /*       add_bmi();
+                                                            print(controller.bmiModel
+                                                                .value.comments);
+                                                            print(controller.time.value);
+                                                            print(controller.bmiModel
+                                                                .value.bmi);*/
+                                                                print("xx") ;
 
                                                                   Navigator.pop(
                                                                       context);
@@ -238,7 +243,8 @@ class TestScreen extends StatelessWidget {
 
                                                                 },
                                                                 child:
-                                                                    Text('OK'))
+                                                                    Text('OK')),
+
 
                                                           ],
                                                         ),
