@@ -15,21 +15,7 @@ import '../addreminder.dart';
 
 class ReminderScreeen extends StatelessWidget {
   final controller = Get.put(ReminderController());
-  CollectionReference remindersref = FirebaseFirestore.instance.collection("Reminders");
   DateTime d=DateTime.now() ;
-
-
-  dynamic data;
-
-  Future<dynamic> getData() async {
-
-    final DocumentReference document =FirebaseFirestore.instance.collection("Reminders").where("Reminder_Date") as DocumentReference<Object?>;
-    await document.get().then<dynamic>(( DocumentSnapshot snapshot) async{
-        data = snapshot.data().toString() ;
-        //Update() ;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,62 +47,73 @@ class ReminderScreeen extends StatelessWidget {
             DateTime.now(),
                 initialSelectedDate: DateTime.now(),
                   onDateChange: (d){
-              print(DateFormat.d().format(d)) ;
-              print(data.toString());
-    },
+              print(DateFormat.yMd().format(d)) ;
+              if(DateTime.parse('2022-03-27').isAtSameMomentAs(d)){
+                print('Yes');
+              }else{
+                print('No');
+              }
+              },
                 //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-          if ( d== data)
-            Expanded(
-                child: FutureBuilder(
-                future:remindersref.get() ,
-                  builder: (context,AsyncSnapshot snapshot){
-                    return ListView.builder(
-                    itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        return ExpansionTile(
-                          // title: Text('${reminderList[index]['Reminder_Date']}'),
-                          title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
+          if ( d== d)
+            FutureBuilder(
+            future:controller.remindersref!.get() ,
+              builder: (context,AsyncSnapshot snapshot){
 
-                          children: [
-                            Card(
-                              margin: EdgeInsets.all(20.0),
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                color:  Colors.grey[200],
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    child: Text(
+               if(!snapshot.hasData){
+                 return Center(
+                   child: CircularProgressIndicator(),
+                 );
+               }else{
+
+                 return Expanded(
+                   child: ListView.builder(
+                     itemCount: snapshot.data.docs.length,
+                     itemBuilder: (context, index) {
+                       return ExpansionTile(
+                         title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
+                         children: [
+                           Card(
+                             margin: EdgeInsets.all(20.0),
+                             child: Container(
+                               padding: EdgeInsets.all(10.0),
+                               color:  Colors.grey[200],
+                               child: ListTile(
+                                 leading: CircleAvatar(
+                                   child: Text(
                                      //   '${reminderList[index]['Reminder_Date']}'),
-                                   '${snapshot.data!.docs[index]['Reminder_Date']}'),
-                                  //  backgroundColor: Colors.grey[200],
-                                  ),
-                                  title: Text(
-                                     // '${reminderList[index]['Reminder_Date']}'),
-                                   '${snapshot.data!.docs[index]['Remindnder_Description']}'),
+                                       '${snapshot.data!.docs[index]['Reminder_Date']}'),
+                                   //  backgroundColor: Colors.grey[200],
+                                 ),
+                                 title: Text(
+                                   // '${reminderList[index]['Reminder_Date']}'),
+                                     '${snapshot.data!.docs[index]['Remindnder_Description']}'),
 
-                        trailing: IconButton(
-                                    onPressed: () {
-                                   snapshot.data.docs[index].delete().await() ;
-                                    },
-                                    icon: Icon(Icons.delete_forever , color: Colors.red,),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        );
-                      },
+                                 trailing: IconButton(
+                                   onPressed: () {
+                                     print(controller.listReminderDate);
+                                     //  snapshot.data.docs[index] ;
+                                   },
+                                   icon: Icon(Icons.delete_forever , color: Colors.red,),
+                                 ),
+                               ),
+                             ),
+                           )
+                         ],
+                       );
+                     },
 
-                    );
+                   ),
+                 );
+               }
 
-                    //Text("") ;
+                //Text("") ;
             },
 
-          ),
-              ) else Column(
+          ) else Column(
                 children: [
                   SizedBox(height: Get.width * 0.5,),
                   Text('No Reminders Yet!!',style: TextStyle(

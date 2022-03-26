@@ -77,8 +77,8 @@ class LogBookScreen extends StatelessWidget {
                           );
                          }else{
                            controller.createPDF(
-                             column,
-                             row
+                             Calcolumn,
+                             Calrow
                            );
                          }
                    });
@@ -137,35 +137,18 @@ class LogBookScreen extends StatelessWidget {
                     headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
                     columns:
                     //send column List
-                    column.map((e) => DataColumn(
+                    Calcolumn.map((e) => DataColumn(
                       label: Text(e),
                     )).toList(),
                     rows:
                     // get Rows List
                     //fireBAse
-                    row.map((e) => DataRow(
+                    Calrow.map((e) => DataRow(
                         cells: e.map((e) => DataCell(
                             Text(e)
                         )).toList()
                     )).toList()
                 ),
-/*
-DataRow(cells: [
-                        DataCell(Text('Solid Intake')),
-                        DataCell(Text('10:20 ')),
-                        DataCell(Text('12/12/2022')),
-                        DataCell(Text('100 Cal')),
-                        DataCell(Text('Egg')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('Solid Intake')),
-                        DataCell(Text('17:00 ')),
-                        DataCell(Text('12/12/2022')),
-                        DataCell(Text('300 Cal')),
-                        DataCell(Text('Meat')),
-
-                      ]),
- */
               ),
             ],
             ),
@@ -209,36 +192,26 @@ DataRow(cells: [
               children: [
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-
                 child: Container(
                   color: Colors.white,
                   child: DataTable(
-                      columnSpacing: 30.0 ,
+                      columnSpacing: size.width *0.08 ,
                       sortColumnIndex: controller.currentSortColumn.value,
                       sortAscending: controller.isAscending.value,
                       headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
-                      columns: [
-                        DataColumn(label: Text('Category')),
-                        DataColumn(label: Text('Time')),
-                        DataColumn(label: Text('Date')),
-                        DataColumn(label: Text('Glucose Level')),
-
-                      ],
-                      rows: [
-                        DataRow(cells: [
-                          DataCell(Text('Low')),
-                          DataCell(Text('10:20 ')),
-                          DataCell(Text('12/12/2022')),
-                          DataCell(Text('5.6  mg/dl ')),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text('High')),
-                          DataCell(Text('16:33 ')),
-                          DataCell(Text('12/12/2022')),
-                          DataCell(Text('10 mg/dl ')),
-                        ]),
-
-                      ]
+                      columns:
+                      //send column List
+                      Glucolumn.map((e) => DataColumn(
+                        label: Text(e),
+                      )).toList(),
+                      rows:
+                      // get Rows List
+                      //fireBAse
+                      Glurow.map((e) => DataRow(
+                          cells: e.map((e) => DataCell(
+                              Text(e)
+                          )).toList()
+                      )).toList()
                   ),
                 ),
 
@@ -251,14 +224,14 @@ DataRow(cells: [
 
     );
   }
-List<String> column = [
+List<String> Calcolumn = [
   'Type',
   'Time',
   'Date',
   'Calories',
   'Details',
 ];
-  List<List<String>> row  = [
+  List<List<String>> Calrow  = [
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
@@ -272,5 +245,17 @@ List<String> column = [
     ['Solid','06','${intl.DateFormat.yMd().format(DateTime.now())}','120 Cal','Bread'],
     ['Solid','12','${intl.DateFormat.yMd().format(DateTime.now())}','160 Cal','Oil'],
     ['Solid','15','${intl.DateFormat.yMd().format(DateTime.now())}','10 Cal','Meat'],
+  ];
+  List<String> Glucolumn = [
+    'Type',
+    'Time',
+    'Date',
+    'Calories',
+    'Details',
+  ];
+  List<List<String>> Glurow  = [
+   /* ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+*/
   ];
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:test_saja/controller/addnewreminder_controller.dart';
-import 'package:test_saja/screens/bottom_bar_screens/reminder.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../const/colors.dart';
 
@@ -124,11 +124,18 @@ class AddnewReminder extends StatelessWidget {
                                 ""
                             );
                           }else {
-                            Get.snackbar(
+                            /*Get.snackbar(
                                 "Can't add Reminder   ! " ,
                                 ""
-                            );
-
+                            );*/
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'Eroor',
+                              desc: 'You must fill all the information',
+                              btnOkOnPress: () {},
+                            )..show();
                           }
                         },
                         icon: Icon(Icons.done, size: 30),
