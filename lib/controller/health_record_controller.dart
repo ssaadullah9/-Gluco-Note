@@ -9,6 +9,4 @@ class HealthRecordController extends GetxController{
   var ldl = ''.obs;
   var tg = ''.obs;
   var albumin = ''.obs;
-
-  final keyForm = GlobalKey<FormState>();
 }

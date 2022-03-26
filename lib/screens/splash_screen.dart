@@ -1,13 +1,36 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '/controller/splash_controller.dart';
 import '/screens/login.dart';
+import 'dart:math' as math;
 
 
+class SplashScreen extends StatefulWidget{
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
 
-class SplashScreen extends StatelessWidget{
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 5000),
+      vsync: this,
+    );
+    _controller!.repeat();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +50,24 @@ class SplashScreen extends StatelessWidget{
                     end: Alignment.bottomCenter
                 )
             ),
-            child:  Image.asset("assets/app_icon.jpg"),
+            child:  Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RotationTransition(
+                      turns: Tween(begin: 0.0, end: 1.0).animate(_controller!),
+                      child: Stack(
+                        children: [
+                          SvgPicture.asset('assets/line1.svg'),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                )
+              ],
+            ),
           );
         },
       ),

@@ -15,6 +15,7 @@ class HealthRecordScreen extends StatelessWidget {
   var selectedTGDates = TextEditingController();
   var selectedLDLDates = TextEditingController();
   var selectedAlbuminDates = TextEditingController();
+  final _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,133 +39,152 @@ class HealthRecordScreen extends StatelessWidget {
       ),
 
       // start body
-      body: Obx(
-          ()=>Form(
-            key: controller.keyForm,
-            child: ListView(
-              padding: EdgeInsets.all(Get.width * 0.05),
-              children: [
-                _buildDropDown(
-                    hintText: 'AntiDiabteees',
-                    value: controller.anti_diabteees.value
-                ),
-                SizedBox(height: Get.width * 0.06,),
-                _buildDropDown(
-                    hintText: 'Insulin',
-                    value: controller.insulin.value
-                ),
-                SizedBox(height: Get.width * 0.06,),
+      body: Form(
+        key: _key,
+        child: ListView(
+          padding: EdgeInsets.all(Get.width * 0.05),
+          children: [
+           Obx(
+               ()=> _buildDropDown(
+                   hintText: 'AntiDiabteees',
+                   value: controller.anti_diabteees.value
+               )
+           ),
+            SizedBox(height: Get.width * 0.06,),
+           Obx(
+               ()=> _buildDropDown(
+                   hintText: 'Insulin',
+                   value: controller.insulin.value
+               ),
+           ),
+            SizedBox(height: Get.width * 0.06,),
 
-                _buildDropDown(
-                    hintText: 'Injectable',
-                    value: controller.injectable.value
-                ),
-                SizedBox(height: Get.width * 0.06,),
+           Obx(
+               ()=> _buildDropDown(
+                   hintText: 'Injectable',
+                   value: controller.injectable.value
+               )
+           ),
+            SizedBox(height: Get.width * 0.06,),
 
-                _buildDropDown(
-                    hintText: 'Nutrition',
-                    value: controller.nutrition.value
-                ),
-                SizedBox(height: Get.width * 0.06,),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "LDL",
-                  ),
-                  validator: (val){
-                    return val!.trim().isEmpty
-                        ? 'can\'t be empty'
-                        : null;
-                  },
-                  onChanged: (val){
-                    controller.ldl.value = val;
-                  },
-                ),
-                SizedBox(height: Get.width * 0.06,),
-                _buildDateSelected(
-                    text: 'LDL Date',
-                    context: context,
-                    selectDate: selectedLDLDates
-                ),
-                SizedBox(height: Get.width * 0.06,),
+           Obx(
+               ()=> _buildDropDown(
+                   hintText: 'Nutrition',
+                   value: controller.nutrition.value
+               )
+           ),
+            SizedBox(height: Get.width * 0.06,),
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.numberWithOptions(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "LDL",
+              ),
+              validator: (val){
+                return val!.trim().isEmpty
+                    ? 'can\'t be empty'
+                    : null;
+              },
+              onChanged: (val){
+                controller.ldl.value = val;
+              },
+            ),
+            SizedBox(height: Get.width * 0.06,),
+            _buildDateSelected(
+                text: 'LDL Date',
+                context: context,
+                selectDate: selectedLDLDates
+            ),
+            SizedBox(height: Get.width * 0.06,),
 
-                //SizedBox(width: 10),
+            //SizedBox(width: 10),
 
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "TG",
-                  ),
-                  validator: (val){
-                    return val!.trim().isEmpty
-                        ? 'can\'t be empty'
-                        : null;
-                  },
-                  onChanged: (val){
-                    controller.tg.value = val;
-                  },
-                ),
-                SizedBox(height: Get.width * 0.06,),
-                /// 2
-                _buildDateSelected(
-                    text: 'TG Date',
-                    context: context,
-                    selectDate: selectedTGDates
-                ),
-                SizedBox(height: Get.width * 0.06,),
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.numberWithOptions(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "TG",
+              ),
+              validator: (val){
+                return val!.trim().isEmpty
+                    ? 'can\'t be empty'
+                    : null;
+              },
+              onChanged: (val){
+                controller.tg.value = val;
+              },
+            ),
+            SizedBox(height: Get.width * 0.06,),
+            /// 2
+            _buildDateSelected(
+                text: 'TG Date',
+                context: context,
+                selectDate: selectedTGDates
+            ),
+            SizedBox(height: Get.width * 0.06,),
 
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Albumin",
-                  ),
-                  validator: (val){
-                    return val!.trim().isEmpty
-                        ? 'can\'t be empty'
-                        : null;
-                  },
-                  onChanged: (val){
-                    controller.albumin.value = val;
-                  },
-                ),
-                SizedBox(height: Get.width * 0.06,),
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.numberWithOptions(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Albumin",
+              ),
+              validator: (val){
+                return val!.trim().isEmpty
+                    ? 'can\'t be empty'
+                    : null;
+              },
+              onChanged: (val){
+                controller.albumin.value = val;
+              },
+            ),
+            SizedBox(height: Get.width * 0.06,),
 
-                /// 3
-                _buildDateSelected(
-                  text: 'Albumin Date',
-                  context: context,
-                  selectDate: selectedAlbuminDates
-                ),
-                SizedBox(height: Get.width * 0.06,),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
-                    child: ElevatedButton.icon(
-                        onPressed: () {
-                          if(controller.keyForm.currentState!.validate()){
-                          }else{
+            /// 3
+            _buildDateSelected(
+                text: 'Albumin Date',
+                context: context,
+                selectDate: selectedAlbuminDates
+            ),
+            SizedBox(height: Get.width * 0.06,),
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                child: ElevatedButton.icon(
+                    onPressed: () {
+                      print(
+                          '${selectedAlbuminDates.text}'+
+                              '${selectedTGDates.text}'+
+                              '${selectedLDLDates.text}'+
+                              '${controller.tg}'+
+                              '${controller.ldl}'+
+                              '${controller.injectable}'+
+                              '${controller.albumin}'+
+                              '${controller.anti_diabteees}'+
+                              '${controller.insulin}'+
+                              '${controller.nutrition}'
+                      );
 
-                          }
-                        },
-                        icon: Icon(Icons.done, size: 30),
-                        label: Text("Save Information"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE5A9379),)
-                    )
+                      if(_key.currentState!.validate()){
+                      }else{
 
-                  //  )
-
+                      }
+                    },
+                    icon: Icon(Icons.done, size: 30),
+                    label: Text("Save Information"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFE5A9379),)
                 )
 
+              //  )
 
-              ],
-            ),
-          )
+            )
+
+
+          ],
+        ),
       ),
 
       //  Start BottomAppBar
@@ -255,7 +275,7 @@ Widget _buildDateSelected({text,context,selectDate}){
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       readOnly: true,
-      controller: selectedAlbuminDates,
+      controller: selectDate,
       decoration: InputDecoration(
         labelText: '$text',
         border: OutlineInputBorder()
@@ -287,6 +307,7 @@ Widget _buildDropDown({hintText,value}){
       autovalidateMode: AutovalidateMode.onUserInteraction,
       icon: Icon(Icons.keyboard_arrow_down),
       decoration: InputDecoration(
+        hintText: '$hintText',
         border: OutlineInputBorder()
       ),
       items: ["Yes", "No"]
@@ -296,14 +317,13 @@ Widget _buildDropDown({hintText,value}){
       ))
           .toList(),
       onChanged: (val) {
-        value = val as String;
+        value = val;
       },
       validator: (String? val){
        if(val==null){
          return 'can\'t be empty';
        }
       },
-      hint: Text('$hintText'),
     );
 }
 }

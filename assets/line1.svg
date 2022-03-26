@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112.721" height="188.383" viewBox="0 0 112.721 188.383">
+  <g id="Group_1" data-name="Group 1" transform="matrix(-1, -0.017, 0.017, -1, 270.488, 417.228)">
+    <g id="Rectangle_1" data-name="Rectangle 1" transform="translate(166.5 412.5) rotate(-90)" fill="none" stroke="#707070" stroke-width="10">
+      <path d="M0,0H185a0,0,0,0,1,0,0V15.5A92.5,92.5,0,0,1,92.5,108h0A92.5,92.5,0,0,1,0,15.5V0A0,0,0,0,1,0,0Z" stroke="none"/>
+      <path d="M5,5H180a0,0,0,0,1,0,0V15.5A87.5,87.5,0,0,1,92.5,103h0A87.5,87.5,0,0,1,5,15.5V5A0,0,0,0,1,5,5Z" fill="none"/>
+    </g>
+    <rect id="Rectangle_2" data-name="Rectangle 2" width="12" height="187" transform="translate(165 226)" fill="#fff"/>
+  </g>
+</svg>
