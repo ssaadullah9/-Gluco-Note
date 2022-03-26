@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class AddnewReminder extends StatelessWidget {
             color: Colors.red,
           ),
           onPressed: () {
-            Get.to(() => ReminderScreeen());
+            Get.back();
           },
         ),
         title: Text(
@@ -40,6 +41,7 @@ class AddnewReminder extends StatelessWidget {
               children: [
                 Container(
                   child: TableCalendar(
+                //  controller.selected_date ,
                     onDaySelected: (x, y) {
                       controller.selected_date.value = x;
                       controller.focsed_date.value = y;
@@ -58,12 +60,13 @@ class AddnewReminder extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  decoration: InputDecoration(
+                    decoration: InputDecoration(
+                    label: Text('Reminder description'),
                     border: OutlineInputBorder(),
                     hintText: 'Reminder description',
                   ),
                   onChanged: (val){
-
+                  controller.description.value=val ;
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
@@ -78,6 +81,9 @@ class AddnewReminder extends StatelessWidget {
                     suffixIcon: Icon(Icons.access_time),
                       border: OutlineInputBorder()
                   ),
+                  onChanged: (val){
+                    controller.selected_time.value=val as TimeOfDay ;
+                  },
                 ),
                 SizedBox(height: Get.width*0.05,),
 
@@ -110,6 +116,20 @@ class AddnewReminder extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
+                          if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
+                              && controller.selected_date != null && controller.selected_time!= null){
+                            addReminder();
+                            Get.snackbar(
+                                "Reminder added successfully ! " ,
+                                ""
+                            );
+                          }else {
+                            Get.snackbar(
+                                "Can't add Reminder   ! " ,
+                                ""
+                            );
+
+                          }
                         },
                         icon: Icon(Icons.done, size: 30),
                         label: Text("Save Information"),
@@ -126,4 +146,19 @@ class AddnewReminder extends StatelessWidget {
       ),
     );
   }
+
+
+  addReminder() async{
+    CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders") ;
+    newReminder.add(
+        {
+          "Reminder_Date" : controller.selected_date.value.toString(),
+          "Remindnder_Description" : controller.description.value.toString(),
+          "Reminder_Time" : controller.selected_time.value.toString(),
+          "Reminder_Type" : controller.selectedType.value.toString(),
+        }
+    ) ;
+
+  }
+
 } // end of the class

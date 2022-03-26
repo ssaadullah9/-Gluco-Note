@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_saja/const/colors.dart';
@@ -189,7 +190,7 @@ class TestScreen extends StatelessWidget {
                                                                     .bmi1.value,
                                                                 isNormal: true,
                                                                 comments:
-                                                                    "You are Totaly Fit");
+                                                                    " Normal");
                                                       } else if (controller
                                                               .bmi1.value <
                                                           18.5) {
@@ -201,7 +202,7 @@ class TestScreen extends StatelessWidget {
                                                                     .roundToDouble(),
                                                                 isNormal: false,
                                                                 comments:
-                                                                    "You are Underweighted");
+                                                                    " Underweighted");
                                                       } else {
                                                         controller.bmiModel
                                                                 .value =
@@ -210,7 +211,7 @@ class TestScreen extends StatelessWidget {
                                                                     .bmi1.value,
                                                                 isNormal: false,
                                                                 comments:
-                                                                    "You are Overweighted");
+                                                                    " Overweighted");
                                                       }
                                                       showDialog(
                                                         context: context,
@@ -218,16 +219,27 @@ class TestScreen extends StatelessWidget {
                                                             CustomDialogBox(
                                                           title: " RESULT",
                                                           descriptions:
-                                                              "Your BMI is ${controller.bmi1.value.round()} \n ${controller.comments.value}",
+                                                              "Your BMI is ${controller.bmiModel
+                                                                  .value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel
+                                                                  .value.comments}",
                                                           text: "Ok",
                                                           actions: [
                                                             ElevatedButton(
                                                                 onPressed: () {
+                                                                  add_bmi();
+
+
                                                                   Navigator.pop(
                                                                       context);
+                                                                  /*print('${controller.bmiModel
+                                                                      .value.bmi.toStringAsFixed(2)}'+ '\n' + '${controller.bmiModel
+                                                                      .value.comments}');*/
+
+
                                                                 },
                                                                 child:
                                                                     Text('OK'))
+
                                                           ],
                                                         ),
                                                       );
@@ -464,6 +476,7 @@ class TestScreen extends StatelessWidget {
                                         vertical: Get.width * 0.05),
                                     child: ElevatedButton.icon(
                                         onPressed: () {
+                                          add_glu();
                                           // Respond to button press
                                         },
                                         icon: Icon(Icons.done, size: 30),
@@ -478,6 +491,32 @@ class TestScreen extends StatelessWidget {
                       ],
                     ))
               ])),
+    );
+  }
+
+  add_bmi()
+   async {
+    CollectionReference bmi_info = FirebaseFirestore.instance.collection("BMI");
+    bmi_info.add(
+      {
+        "Status " : controller.bmiModel
+            .value.comments,
+        "Date" : controller.time.value,
+        "Result " : controller.bmiModel
+            .value.bmi.toStringAsFixed(2),
+      }
+    );
+  }
+
+  add_glu()
+  async {
+    CollectionReference glu_info = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    glu_info.add(
+        {
+          "Result " : controller.valueHolder.value.toString(),
+          "Test preiod " : controller.selectedval.value,
+          "Time " : controller.time.value.toString(),
+        }
     );
   }
 }

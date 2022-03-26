@@ -1,4 +1,5 @@
 // TODO Implement this library.
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,30 +8,28 @@ import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:test_saja/const/colors.dart';
 
+import '../../controller/reminder_controller.dart';
 import '../addreminder.dart';
 
+
+
 class ReminderScreeen extends StatelessWidget {
-  List<Map> reminde = [
-    {
-      'name' : 'Ahmad',
-      'date' : DateTime.january,
-    }, {
-      'name' : 'Saja',
-      'date' : DateTime.april,
-    }, {
-      'name' : 'Maram',
-      'date' : DateTime.august,
-    }, {
-      'name' : 'Roba',
-      'date' : DateTime.january,
-    }, {
-      'name' : 'Kholod',
-      'date' : DateTime.april,
-    }, {
-      'name' : 'Rabee',
-      'date' : DateTime.november,
-    },
-  ];
+  final controller = Get.put(ReminderController());
+  CollectionReference remindersref = FirebaseFirestore.instance.collection("Reminders");
+  DateTime d=DateTime.now() ;
+
+
+  dynamic data;
+
+  Future<dynamic> getData() async {
+
+    final DocumentReference document =FirebaseFirestore.instance.collection("Reminders").where("Reminder_Date") as DocumentReference<Object?>;
+    await document.get().then<dynamic>(( DocumentSnapshot snapshot) async{
+        data = snapshot.data().toString() ;
+        //Update() ;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +44,7 @@ class ReminderScreeen extends StatelessWidget {
         actions: <Widget>[
           IconButton(onPressed:(){
             Get.to(()=>AddnewReminder());
+
           },  icon: const Icon(Icons.add , color: Colors.green,)),
 
         ],
@@ -60,42 +60,63 @@ class ReminderScreeen extends StatelessWidget {
           DatePicker(
             DateTime.now(),
                 initialSelectedDate: DateTime.now(),
-            //ToDO Convert Color To HexaDecimal
+                  onDateChange: (d){
+              print(DateFormat.d().format(d)) ;
+              print(data.toString());
+    },
+                //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-          true == true
-              ? Expanded(
-                child: ListView.builder(
-            //ToDo List.length
-            itemCount: reminde.length,
-            itemBuilder: (_,index){
-                return ExpansionTile(
-                  title: Text('${reminde[index]['name']}'),
-                children: [
-                  Card(
-                    margin: EdgeInsets.all(20.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      color: Colors.orangeAccent[100],
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Text('${reminde[index]['date']}'),
-                        ),
-                        title: Text('${reminde[index]['name']}'),
+          if ( d== data)
+            Expanded(
+                child: FutureBuilder(
+                future:remindersref.get() ,
+                  builder: (context,AsyncSnapshot snapshot){
+                    return ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        return ExpansionTile(
+                          // title: Text('${reminderList[index]['Reminder_Date']}'),
+                          title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
+
+                          children: [
+                            Card(
+                              margin: EdgeInsets.all(20.0),
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                color:  Colors.grey[200],
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    child: Text(
+                                     //   '${reminderList[index]['Reminder_Date']}'),
+                                   '${snapshot.data!.docs[index]['Reminder_Date']}'),
+                                  //  backgroundColor: Colors.grey[200],
+                                  ),
+                                  title: Text(
+                                     // '${reminderList[index]['Reminder_Date']}'),
+                                   '${snapshot.data!.docs[index]['Remindnder_Description']}'),
+
                         trailing: IconButton(
-                          onPressed: (){},
-                          icon: Icon(Icons.arrow_drop_down),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-                );
+                                    onPressed: () {
+                                   snapshot.data.docs[index].delete().await() ;
+                                    },
+                                    icon: Icon(Icons.delete_forever , color: Colors.red,),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+
+                    );
+
+                    //Text("") ;
             },
+
           ),
-              )
-              : Column(
+              ) else Column(
                 children: [
                   SizedBox(height: Get.width * 0.5,),
                   Text('No Reminders Yet!!',style: TextStyle(
@@ -103,6 +124,7 @@ class ReminderScreeen extends StatelessWidget {
                   ),),
                 ],
               )
+
 
         ],
       ),

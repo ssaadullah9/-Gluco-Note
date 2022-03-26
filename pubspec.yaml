@@ -47,7 +47,8 @@ dependencies:
   dropdown_button2: ^1.1.1
   numberpicker: ^2.1.1
   number_inc_dec: ^0.8.0
-#  cloud_firestore: ^3.1.8
+  cloud_firestore: ^3.1.10
+  firebase_core:
   icon_picker: "^1.0.0"
   date_time_picker:
   day_night_time_picker: ^1.0.5
@@ -56,6 +57,7 @@ dependencies:
   path_provider:
   open_file:
   flutter_svg:
+
 
 dev_dependencies:
   flutter_test:

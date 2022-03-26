@@ -6,6 +6,7 @@ class AddNewReminderController extends GetxController{
   var selected_date = DateTime.now().obs;
   var focsed_date = DateTime.now().obs;
   var  selected_time = TimeOfDay.now().obs;
+  var description = ''.obs ;
 
   selectedTime(BuildContext context) async {
     final TimeOfDay? timeOfDay = await showTimePicker(
