@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,10 @@ class HealthRecordScreen extends StatelessWidget {
   var selectedTGDates = TextEditingController();
   var selectedLDLDates = TextEditingController();
   var selectedAlbuminDates = TextEditingController();
+  /*String antiDiabtees = '';
+  String Insulin = '';
+  String Injectable = '';
+  String Nutrition = '';*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +50,16 @@ class HealthRecordScreen extends StatelessWidget {
               padding: EdgeInsets.all(Get.width * 0.05),
               children: [
                 _buildDropDown(
-                    hintText: 'AntiDiabteees',
+                    hintText: 'AntiDiabtees',
                     value: controller.anti_diabteees.value
                 ),
                 SizedBox(height: Get.width * 0.06,),
                 _buildDropDown(
                     hintText: 'Insulin',
                     value: controller.insulin.value
+
                 ),
+
                 SizedBox(height: Get.width * 0.06,),
 
                 _buildDropDown(
@@ -90,6 +97,8 @@ class HealthRecordScreen extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width * 0.06,),
 
+
+
                 //SizedBox(width: 10),
 
                 TextFormField(
@@ -106,6 +115,7 @@ class HealthRecordScreen extends StatelessWidget {
                   },
                   onChanged: (val){
                     controller.tg.value = val;
+                   // print(controller.tg.value);
                   },
                 ),
                 SizedBox(height: Get.width * 0.06,),
@@ -114,7 +124,9 @@ class HealthRecordScreen extends StatelessWidget {
                     text: 'TG Date',
                     context: context,
                     selectDate: selectedTGDates
+
                 ),
+
                 SizedBox(height: Get.width * 0.06,),
 
                 TextFormField(
@@ -131,6 +143,8 @@ class HealthRecordScreen extends StatelessWidget {
                   },
                   onChanged: (val){
                     controller.albumin.value = val;
+                  //  print(controller.albumin.value);
+
                   },
                 ),
                 SizedBox(height: Get.width * 0.06,),
@@ -140,12 +154,15 @@ class HealthRecordScreen extends StatelessWidget {
                   text: 'Albumin Date',
                   context: context,
                   selectDate: selectedAlbuminDates
+
                 ),
+
                 SizedBox(height: Get.width * 0.06,),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
+                         add_record();
                           if(controller.keyForm.currentState!.validate()){
                           }else{
 
@@ -255,7 +272,7 @@ Widget _buildDateSelected({text,context,selectDate}){
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       readOnly: true,
-      controller: selectedAlbuminDates,
+      controller: selectDate,
       decoration: InputDecoration(
         labelText: '$text',
         border: OutlineInputBorder()
@@ -268,7 +285,7 @@ Widget _buildDateSelected({text,context,selectDate}){
           lastDate: DateTime(2025),
         ).then((selectedDate) {
           if (selectedDate != null) {
-          selectDate.text =
+            selectDate.text =
                 DateFormat('yyyy-MM-dd').format(selectedDate);
           }
         });
@@ -306,4 +323,25 @@ Widget _buildDropDown({hintText,value}){
       hint: Text('$hintText'),
     );
 }
+
+  add_record()
+  async {
+    CollectionReference helth_record = FirebaseFirestore.instance.collection("Health_Record");
+    helth_record.add(
+        {
+          "AntiDiabtees" :  controller.anti_diabteees.value.toString(),
+          "Insulin" : controller.insulin.value.toString(),
+          "Injectable" : controller.injectable.value.toString(),
+          "Nutrition " : controller.nutrition.value.toString(),
+          "LDL " : controller.ldl.value.toString(),
+          "LDL Date " : selectedLDLDates.text,
+          "TG " : controller.tg.value.toString(),
+          " TG Date " : selectedTGDates.text,
+          " Albumin " : controller.albumin.value.toString(),
+          " Albumin Date " : selectedAlbuminDates.text,
+
+        }
+    );
+  }
+
 }
