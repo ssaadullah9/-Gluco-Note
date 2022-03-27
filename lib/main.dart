@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
  import 'package:get/get.dart';
 import 'package:test_saja/screens/bottom_bar_screens/reminder.dart';
 import 'package:test_saja/screens/health_record.dart';
+import 'package:test_saja/screens/in_taks_screen.dart';
  import 'package:test_saja/screens/splash_screen.dart';
+
+import 'screens/mainpage.dart';
 
 
 
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryColor,
       ),
-      home: ReminderScreeen(),
+      home: MainScreen(),
       // initialRoute: '/',
       //   routes: {
          //  '/': (context) => SplashScreen(),

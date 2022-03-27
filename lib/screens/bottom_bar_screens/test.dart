@@ -162,9 +162,7 @@ class TestScreen extends StatelessWidget {
                                                   horizontal: Get.width * 0.1),
                                               child: ElevatedButton.icon(
                                                   onPressed: () {
-                                                    if (controller.keyForm.value
-                                                        .currentState!
-                                                        .validate()) {
+                                                    if (controller.keyForm.value.currentState!.validate()) {
                                                       controller.bmi1
                                                           .value = controller
                                                               .weightOfUser
@@ -213,43 +211,82 @@ class TestScreen extends StatelessWidget {
                                                                 comments:
                                                                     " Overweighted");
                                                       }
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (context) =>
-                                                            CustomDialogBox(
-                                                          title: " RESULT",
-                                                          descriptions:
-                                                              "Your BMI is ${controller.bmiModel
-                                                                  .value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel
-                                                                  .value.comments}",
-                                                          text: "Ok",
-                                                          actions: [
-                                                            ElevatedButton(
-                                                                onPressed: () {
-                                                           /*       add_bmi();
-                                                            print(controller.bmiModel
-                                                                .value.comments);
-                                                            print(controller.time.value);
-                                                            print(controller.bmiModel
-                                                                .value.bmi);*/
-                                                                print("xx") ;
-
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  /*print('${controller.bmiModel
-                                                                      .value.bmi.toStringAsFixed(2)}'+ '\n' + '${controller.bmiModel
-                                                                      .value.comments}');*/
-
-
-                                                                },
-                                                                child:
-                                                                    Text('OK')),
-
-
-                                                          ],
-                                                        ),
+                                                      Get.dialog(
+                                                        Center(
+                                                          child: Material(
+                                                            color: Colors.transparent,
+                                                            child: Container(
+                                                              alignment: Alignment.center,
+                                                              height: Get.width*0.4,
+                                                              margin: EdgeInsets.symmetric(horizontal: Get.width *0.1),
+                                                                padding: EdgeInsets.all(10.0),
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.white,
+                                                                  borderRadius: BorderRadius.circular(12.0)
+                                                                ),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  Text('Result',
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontWeight: FontWeight.bold,
+                                                                      fontSize: 20.0
+                                                                  ),),
+                                                                  SizedBox(height: 10,),
+                                                                  Text("Your BMI is ${controller.bmiModel.value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel.value.comments}",textAlign: TextAlign.center,style: TextStyle(
+                                                                    fontSize: 18.0
+                                                                  ),),
+                                                                  Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                    children: [
+                                                                      TextButton(onPressed: (){
+                                                                        add_bmi();
+                                                                        Get.back();
+                                                                      }, child: Text('ok',style: TextStyle(
+                                                                        color: Colors.black
+                                                                      ),))
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
                                                       );
-                                                    } else {}
+                                                      // showDialog(
+                                                      //   context: context,
+                                                      //   builder: (context) =>
+                                                      //       CustomDialogBox(
+                                                      //     title: " RESULT",
+                                                      //     descriptions:
+                                                      //         "Your BMI is ${controller.bmiModel.value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel.value.comments}",
+                                                      //     text: "Ok",
+                                                      //     actions: [
+                                                      //       ElevatedButton(
+                                                      //           onPressed: () {
+                                                      //             /*       add_bmi();
+                                                      //       print(controller.bmiModel
+                                                      //           .value.comments);
+                                                      //       print(controller.time.value);
+                                                      //       print(controller.bmiModel
+                                                      //           .value.bmi);*/
+                                                      //             print("xx");
+                                                      //
+                                                      //             Navigator.pop(
+                                                      //                 context);
+                                                      //             /*print('${controller.bmiModel
+                                                      //                 .value.bmi.toStringAsFixed(2)}'+ '\n' + '${controller.bmiModel
+                                                      //                 .value.comments}');*/
+                                                      //           },
+                                                      //           child:
+                                                      //               Text('OK')),
+                                                      //     ],
+                                                      //   ),
+                                                      // );
+                                                    }
                                                   }, // End OnPressesd
 
                                                   label:
@@ -423,8 +460,9 @@ class TestScreen extends StatelessWidget {
                                 ),
                                 TextFormField(
                                   readOnly: true,
-                                  onTap: (){
-                                     controller.date =  Navigator.of(context).push(
+                                  onTap: () {
+                                    controller.date =
+                                        Navigator.of(context).push(
                                       showPicker(
                                         context: context,
                                         value: controller.time.value,
@@ -434,10 +472,10 @@ class TestScreen extends StatelessWidget {
                                     );
                                   },
                                   decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    suffixIcon: Icon(Icons.access_time),
-                                    hintText: '${controller.time.value.format(context)}'
-                                  ),
+                                      border: OutlineInputBorder(),
+                                      suffixIcon: Icon(Icons.access_time),
+                                      hintText:
+                                          '${controller.time.value.format(context)}'),
                                 ),
                                 // GestureDetector(
                                 //   onTap: () {
@@ -500,30 +538,32 @@ class TestScreen extends StatelessWidget {
     );
   }
 
-  add_bmi()
-   async {
-    CollectionReference bmi_info = FirebaseFirestore.instance.collection("BMI");
-    bmi_info.add(
-      {
-        "Status " : controller.bmiModel
-            .value.comments,
-        "Date" : controller.time.value,
-        "Result " : controller.bmiModel
-            .value.bmi.toStringAsFixed(2),
-      }
-    );
+  add_bmi() async {
+    print("Status"+ controller.bmiModel.value.comments.toString());
+    print("Date"+ controller.time.value.toString());
+    print("Result"+ controller.bmiModel.value.bmi.toStringAsFixed(2).toString());
+    CollectionReference bmi_info = FirebaseFirestore.instance.collection("temp");
+    bmi_info.add({
+      // "Status": controller.bmiModel.value.comments.toString(),
+      // "Date": controller.time.value.toString(),
+      // "Result": controller.bmiModel.value.bmi.toStringAsFixed(2).toString(),
+      "Status":"t",
+      "Date": "t",
+      "Result": "t",
+    });
+
+    print(await bmi_info.snapshots());
+    print("ok\n\nok");
   }
 
-  add_glu()
-  async {
-    CollectionReference glu_info = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    glu_info.add(
-        {
-          "Result " : controller.valueHolder.value.toString(),
-          "Test preiod " : controller.selectedval.value,
-          "Time " : controller.time.value.toString(),
-        }
-    );
+  add_glu() async {
+    CollectionReference glu_info =
+        FirebaseFirestore.instance.collection("Gluco_Measurment");
+    glu_info.add({
+      "Result ": controller.valueHolder.value.toString(),
+      "Test preiod ": controller.selectedval.value,
+      "Time ": controller.time.value.toString(),
+    });
   }
 }
 
