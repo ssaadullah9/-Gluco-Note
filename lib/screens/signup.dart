@@ -22,12 +22,7 @@ class SignUpScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(90)),
-                  color:  mainColor,
-                  gradient: LinearGradient(
-                    colors: [ mainColor,mainColor],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Color(0xff0E5E5A)
                 ),
                 child: Text(
                   "Register",
@@ -126,7 +121,7 @@ class SignUpScreen extends StatelessWidget {
                   height: 54,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [  Color(0xffc5cda9),  Color(0xffdfefd2)],
+                        colors: [  Color(0xff0E5E5A), Color(0xff0E5E5A)],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight
                     ),
@@ -159,7 +154,7 @@ class SignUpScreen extends StatelessWidget {
                   }, child: Text(
                     "Login",
                     style: TextStyle(
-                        color: Color(0xff000000) //ابغا اخليه بولد
+                        color: Color(0xff000000)
                         , fontWeight: FontWeight.bold
                     ),
                   ))

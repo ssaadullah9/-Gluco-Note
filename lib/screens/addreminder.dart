@@ -132,7 +132,7 @@ class AddnewReminder extends StatelessWidget {
                               context: context,
                               dialogType: DialogType.ERROR,
                               animType: AnimType.BOTTOMSLIDE,
-                              title: 'Eroor',
+                              title: 'Error',
                               desc: 'You must fill all the information',
                               btnOkOnPress: () {},
                             )..show();

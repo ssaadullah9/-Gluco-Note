@@ -27,12 +27,7 @@ class LoginScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(90)),
-                  color:  mainColor,
-                  gradient: LinearGradient(
-                    colors: [ mainColor,mainColor],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color:  Color(0xff9F87BF)
                 ),
                 child: Text(
                   "Login",
@@ -85,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                        border: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color: Colors.transparent
+                               color: Color(0xff9F87BF)
                            )
                        ),
                        filled: true,
@@ -93,13 +88,13 @@ class LoginScreen extends StatelessWidget {
                        enabledBorder: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color: Colors.transparent
+                               color: Color(0xff9F87BF)
                            )
                        ),
                        focusedBorder: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color: Colors.transparent
+                               color: Color(0xff9F87BF)
                            )
                        ),
                      ),
@@ -136,8 +131,8 @@ class LoginScreen extends StatelessWidget {
                   height: size.width / 8,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [  Color(0xffc5cda9),
-                          Color(0xffdfefd2)],
+                        colors: [  Color(0xff9F87BF),
+                          Color(0xff9F87BF)],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight
                     ),
@@ -171,7 +166,7 @@ class LoginScreen extends StatelessWidget {
                   }, child: Text(
                     "Register Now",
                     style: TextStyle(
-                        color: Color(0xff000000) //ابغا اخليه بولد
+                        color: Color(0xff000000)
                         , fontWeight: FontWeight.bold
                     ),
                   ))

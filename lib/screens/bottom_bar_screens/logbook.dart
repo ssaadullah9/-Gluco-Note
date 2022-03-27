@@ -247,11 +247,11 @@ List<String> Calcolumn = [
     ['Solid','15','${intl.DateFormat.yMd().format(DateTime.now())}','10 Cal','Meat'],
   ];
   List<String> Glucolumn = [
-    'Type',
+    'Category',
     'Time',
     'Date',
-    'Calories',
-    'Details',
+    'Amount',
+
   ];
   List<List<String>> Glurow  = [
    /* ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],

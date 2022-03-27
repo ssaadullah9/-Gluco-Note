@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,17 +121,22 @@ class HealthInfoScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                   child: ElevatedButton.icon(
                       onPressed: () {
-                        /* if(controller.keyForm.value.currentState!.validate()){
-                        }else{
-
-                         }*/
+                        if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
+                            && controller.selectedBirthDate != null && controller.selectedType.value != null)){
                          addData() ;
                          Get.snackbar(
                              "Data Saved " ,
                              ""
-
-                         );
-
+                         ); }
+                        else
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.ERROR,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: 'Error',
+                            desc: 'You must fill all the information',
+                            btnOkOnPress: () {},
+                          )..show();
                       },
                       icon: Icon(Icons.done, size: 30),
                       label: Text("Save Information"),
@@ -190,7 +196,7 @@ class HealthInfoScreen extends StatelessWidget {
         "Gender" : controller.radioButtonItem.value.toString(),
         "Weight" : controller.selectedWeight.value,
         "Diabetes_Type" : controller.selectedType.value,
-        "DOB" : controller.selectedBirthDate.value.toString(),
+        "DOB" :DateFormat('dd-MM-yyyy').format(DateTime.parse(controller.selectedBirthDate.value.toString())) ,
       }
     ) ;
 
