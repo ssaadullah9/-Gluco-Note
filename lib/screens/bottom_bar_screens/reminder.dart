@@ -68,7 +68,6 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
             // }
                     print('============');
               },
-                //ToDO Convert Color To HexaDecimal
             selectionColor: Color(0xffEA9363),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
@@ -77,7 +76,11 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
               builder: (context,AsyncSnapshot snapshot){
                if(!snapshot.hasData){
                  return Center(
-                   child: CircularProgressIndicator(),
+                   child: CircularProgressIndicator(
+                     semanticsLabel: 'LOADING',
+                     backgroundColor: Colors.blueGrey,
+                     strokeWidth: 10,
+                   ),
                  );
                }
                else{
@@ -132,7 +135,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                      onPressed: () {
                                        //  snapshot.data.docs[index] ;
                                      },
-                                     icon: Icon(Icons.delete_forever , color: Colors.red,),
+                                     icon: Icon(Icons.check , color: Colors.grey,),
                                    ),
                                  ),
                                ),

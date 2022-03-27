@@ -117,17 +117,13 @@ class AddnewReminder extends StatelessWidget {
                     child: ElevatedButton.icon(
                         onPressed: () {
                           if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
-                              && controller.selected_date != null && controller.selected_time!= null){
+                              && controller.selected_date != null && controller.selected_time.value != null){
                             addReminder();
                             Get.snackbar(
                                 "Reminder added successfully ! " ,
                                 ""
                             );
                           }else {
-                            /*Get.snackbar(
-                                "Can't add Reminder   ! " ,
-                                ""
-                            );*/
                             AwesomeDialog(
                               context: context,
                               dialogType: DialogType.ERROR,

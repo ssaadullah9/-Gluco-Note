@@ -13,7 +13,7 @@ class AddNewReminderController extends GetxController{
         context: context,
         initialTime: TimeOfDay.now(),
         initialEntryMode: TimePickerEntryMode.input); // end of showpicker
-    if (timeOfDay != null && timeOfDay != selected_time) {
+    if (timeOfDay != null && timeOfDay != selected_time.value) {
       selected_time.value = timeOfDay;
     }
   } // end of method

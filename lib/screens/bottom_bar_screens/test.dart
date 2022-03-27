@@ -46,7 +46,7 @@ class TestScreen extends StatelessWidget {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: controller.index.value == 0
-                                                ? mainColor
+                                                ? mainColor1
                                                 : Colors.transparent,
                                             width: 3))),
                               ),
@@ -72,7 +72,7 @@ class TestScreen extends StatelessWidget {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: controller.index.value == 1
-                                                ? mainColor
+                                                ? mainColor1
                                                 : Colors.transparent,
                                             width: 3))),
                               ),
