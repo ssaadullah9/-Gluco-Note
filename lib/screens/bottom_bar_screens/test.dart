@@ -544,16 +544,11 @@ class TestScreen extends StatelessWidget {
     print("Result"+ controller.bmiModel.value.bmi.toStringAsFixed(2).toString());
     CollectionReference bmi_info = FirebaseFirestore.instance.collection("temp");
     bmi_info.add({
-      // "Status": controller.bmiModel.value.comments.toString(),
-      // "Date": controller.time.value.toString(),
-      // "Result": controller.bmiModel.value.bmi.toStringAsFixed(2).toString(),
-      "Status":"t",
-      "Date": "t",
-      "Result": "t",
+      "Status": controller.bmiModel.value.comments.toString(),
+      "Date": controller.time.value.toString(),
+      "Result": controller.bmiModel.value.bmi.toStringAsFixed(2).toString(),
     });
 
-    print(await bmi_info.snapshots());
-    print("ok\n\nok");
   }
 
   add_glu() async {
