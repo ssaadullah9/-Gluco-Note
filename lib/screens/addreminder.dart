@@ -156,7 +156,7 @@ class AddnewReminder extends StatelessWidget {
 
 
   addReminder() async{
-    CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders") ;
+    CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders");
     newReminder.add(
         {
           "Reminder_Date" : controller.selected_date.value.toString(),

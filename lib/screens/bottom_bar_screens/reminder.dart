@@ -13,9 +13,14 @@ import '../addreminder.dart';
 
 
 
-class ReminderScreeen extends StatelessWidget {
+class ReminderScreeen extends StatefulWidget {
+  @override
+  State<ReminderScreeen> createState() => _ReminderScreeenState();
+}
+
+class _ReminderScreeenState extends State<ReminderScreeen> {
   final controller = Get.put(ReminderController());
-  DateTime d=DateTime.now() ;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,79 +51,103 @@ class ReminderScreeen extends StatelessWidget {
           DatePicker(
             DateTime.parse('2022-03-01'),
                 initialSelectedDate: DateTime.now(),
-                  onDateChange: (d){
-              // controller.remindersDate.forEach((element) {
-              //   var e =  DateTime.parse('$element');
-              //   // print(
-              //   //   DateFormat.yMd().format(DateTime.parse('$element'))
-              //   // );
-              //   print(e);
-              //   print(d) ;
-              //
-              //   if(d.isAtSameMomentAs(e)){
-              //     print('Yes');
-              //   }else{
-              //     print('No');
-              //   }
-              // });
+                  onDateChange: (date){
+                    print('============');
+                    controller.d.value=date;
+                    print(controller.d.value);
+                    setState(() {
 
-            for(var i = 0 ; i < controller.remindersDate.length; i++){
-              if(d.isAtSameMomentAs(DateTime
-                  .parse(controller.remindersDate[i]))){
-                print('Yes');
-              }else{
-                print('Woow');
-              }
-            }
-
+                    });
+            // for(var i = 0 ; i < controller.remindersDate.length; i++){
+            //   if(d.isAtSameMomentAs(DateTime
+            //       .parse(controller.remindersDate[i]))){
+            //     print('Yes');
+            //   }else{
+            //     print('Woow');
+            //   }
+            // }
+                    print('============');
               },
                 //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
           ),
           //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-          if ( d== d)
             FutureBuilder(
-            future:controller.remindersref!.get() ,
+            future: controller.remindersref!.get() ,
               builder: (context,AsyncSnapshot snapshot){
                if(!snapshot.hasData){
                  return Center(
                    child: CircularProgressIndicator(),
                  );
-               }else{
+               }
+               else{
                  return Expanded(
                    child: ListView.builder(
                      itemCount: snapshot.data.docs.length,
                      itemBuilder: (context, index) {
-                       return ExpansionTile(
-                         title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
-                         children: [
-                           Card(
-                             margin: EdgeInsets.all(20.0),
-                             child: Container(
-                               padding: EdgeInsets.all(10.0),
-                               color:  Colors.grey[200],
-                               child: ListTile(
-                                 leading: CircleAvatar(
-                                   child: Text(
-                                     //   '${reminderList[index]['Reminder_Date']}'),
-                                       '${snapshot.data!.docs[index]['Reminder_Date']}'),
-                                   //  backgroundColor: Colors.grey[200],
-                                 ),
-                                 title: Text(
-                                   // '${reminderList[index]['Reminder_Date']}'),
-                                     '${snapshot.data!.docs[index]['Remindnder_Description']}'),
+                       print(DateFormat.yMd().format(controller.d.value));
+                       print('\n');
+                       print( DateFormat.yMd().format(
+                         DateTime.parse(snapshot.data!.docs[index]
+                         ['Reminder_Date'])
+                       ));
 
-                                 trailing: IconButton(
-                                   onPressed: () {
-                                     //  snapshot.data.docs[index] ;
-                                   },
-                                   icon: Icon(Icons.delete_forever , color: Colors.red,),
+                       if(DateFormat.yMd().format(controller.d.value)==DateFormat.yMd().format(
+                           DateTime.parse(snapshot.data!.docs[index]
+                           ['Reminder_Date'])
+                           )
+                       ){
+                         print("Oooook");
+                         return ExpansionTile(
+                           title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
+                           children: [
+                             Card(
+                               margin: EdgeInsets.all(20.0),
+                               child: Container(
+                                 padding: EdgeInsets.all(10.0),
+                                 color:  Colors.grey[200],
+                                 child: ListTile(
+                                   leading: CircleAvatar(
+                                     child: Text(
+                                       //   '${reminderList[index]['Reminder_Date']}'),
+                                         '${
+                                             DateFormat.d().format(
+                                                 DateTime.parse(                                           snapshot.data!.docs[index]['Reminder_Date']
+                                                 )
+                                             )
+                                         }'),
+                                     //  backgroundColor: Colors.grey[200],
+                                   ),
+                                   title: Row(
+                                     children: [
+                                       Expanded(
+                                         child: Text(
+                                           // '${reminderList[index]['Reminder_Date']}'),
+                                             '${snapshot.data!.docs[index]['Remindnder_Description']}'),
+                                       ),
+                                       Expanded(child: Text('${
+                                           snapshot.data!.docs[index]
+                                           ['Reminder_Time']
+                                       }'))
+                                     ],
+                                   ),
+
+                                   trailing: IconButton(
+                                     onPressed: () {
+                                       //  snapshot.data.docs[index] ;
+                                     },
+                                     icon: Icon(Icons.delete_forever , color: Colors.red,),
+                                   ),
                                  ),
                                ),
-                             ),
-                           )
-                         ],
-                       );
+                             )
+                           ],
+                         );
+                       }else{
+                         print("Noooooooo");
+                         return SizedBox();
+                       }
+
                      },
 
                    ),
@@ -128,14 +157,7 @@ class ReminderScreeen extends StatelessWidget {
                 //Text("") ;
             },
 
-          ) else Column(
-                children: [
-                  SizedBox(height: Get.width * 0.5,),
-                  Text('No Reminders Yet!!',style: TextStyle(
-                    fontSize: Get.width * 0.08
-                  ),),
-                ],
-              ),
+          ),
           Obx(
               (){
                 return controller.remindersDate
