@@ -542,7 +542,7 @@ class TestScreen extends StatelessWidget {
     print("Status"+ controller.bmiModel.value.comments.toString());
     print("Date"+ controller.time.value.toString());
     print("Result"+ controller.bmiModel.value.bmi.toStringAsFixed(2).toString());
-    CollectionReference bmi_info = FirebaseFirestore.instance.collection("temp");
+    CollectionReference bmi_info = FirebaseFirestore.instance.collection("BMI");
     bmi_info.add({
       "Status": controller.bmiModel.value.comments.toString(),
       "Date": controller.time.value.toString(),

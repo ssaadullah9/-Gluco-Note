@@ -20,6 +20,7 @@ class MainScreen extends StatelessWidget {
           appBar: controller.pages!
           [controller.currentIndex.value]['appBar']
           ?AppBar(
+            backgroundColor: Colors.blueGrey,
             title: Text(
               'Hi  ,',
               style: TextStyle(
@@ -68,7 +69,7 @@ class MainScreen extends StatelessWidget {
                             label: 'Tests'
                         ),
                         _buildIconBottomBar(
-                            icon:Icons.calculate_outlined,
+                            icon:Icons.notification_important,
                             index: 3,
                             label: 'Reminder'
                         ),
@@ -89,7 +90,7 @@ class MainScreen extends StatelessWidget {
             icon:
             Icon(icon,
               color: controller.currentIndex.value == index
-                  ?Colors.green
+                  ?Color(0xff0E5E5A)
                   :Colors.black,),
             onPressed: () {
               controller.onTabIconBottomBar(index);
@@ -98,7 +99,7 @@ class MainScreen extends StatelessWidget {
         ),
         Text(label,style: TextStyle(
           color: controller.currentIndex.value == index
-              ?Colors.green
+              ?Color(0xff0E5E5A)
               :Colors.black,
         ),)
       ],

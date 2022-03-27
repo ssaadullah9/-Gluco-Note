@@ -43,6 +43,7 @@ class SignUpScreen extends StatelessWidget {
                   return controller.validationUserName(val);
                 },
               ),
+
               TextFormFiledWidget(
                 icon: Icons.email,
                 size: size,
@@ -54,6 +55,13 @@ class SignUpScreen extends StatelessWidget {
                 validation: (val){
                   return controller.validationEmail(val);
                 },
+              ),
+              TextFormFiledWidget(
+                icon: Icons.phone,
+                size: size,
+                top: 15.0,
+                hintText: 'Phone Number',
+
               ),
               Obx(
                       ()=> Container(
