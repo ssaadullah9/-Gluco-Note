@@ -1,27 +1,15 @@
-import 'dart:math';
+import 'dart:async';
+//import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/custom_dropdown_button2.dart';
+//import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:snippet_coder_utils/FormHelper.dart';
+//import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:test_saja/screens/addreminder.dart';
-
-
-
- // add_lequids() async {
- //  CollectionReference liquid_ref = FirebaseFirestore.instance.collection("Liquids");
- //  liquid_ref.add(
- //      {
- //        "Liquid_Cal": liquid_result.toString(),
- //        "Liquid_Type": selected_Ltype.toString(),
- //        "Liquid_Quantity": selected_Lquantity.toString(),
- //      }
- //
- //  );
 
 
 class InTaksScreen extends StatefulWidget {
@@ -33,11 +21,9 @@ class InTaksScreen extends StatefulWidget {
   @override
   State<InTaksScreen> createState() => _InTaksScreenState();
 }
-
 class _InTaksScreenState extends State<InTaksScreen> {
-
   var timep;
-
+  var t;
   var picked;
 
   var selectedf, s2, selectedff;
@@ -53,6 +39,23 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic> time = [];
 
   List<dynamic> ex_cal = [];
+  //************
+
+  List<String>? category = [];
+
+  List<List<dynamic>>? categoryType = [];
+
+  List<String>? exerciseTypes = [];
+
+  List<List<dynamic>>? exerciseTime = [];
+
+  var selectCategory;
+  var selectCategoryType;
+
+  var selectExerciseType;
+  var selectExerciseTime;
+  var protein;
+  //************
 
   String ? typesID;
 
@@ -80,58 +83,71 @@ class _InTaksScreenState extends State<InTaksScreen> {
   @override
   void initState() {
     timep = TimeOfDay.now();
-    this.types.add({"id": 1, "label": "Fruits"});
-    this.types.add({"id": 2, "label": "Meats "});
-    this.types.add({"id": 3, "label": "Eggs  "});
-    this.types.add({"id": 4, "label": "Carbohydrates  "});
-    this.types.add({"id": 5, "label": "Sweets "});
-    this.types.add({"id": 6, "label": "Ice-Cream "});
+    this.category = [
+      "Fruits",
+      "Meats",
+      "Eggs",
+      "Carbohydrates",
+      "Sweets",
+      "Ice-Cream"
+    ];
+    this.categoryType = [
+      [
+        {"name":"Apple","cal":0.3,"fat":0.3,"pro":0.3},
+        {"name":"Orange","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Banana","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"dates","cal":0.3,"fat":0.3,"pro":10},
+      ],
+      [
+        {"name":"Chicken","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Fried Fish","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Fillet-fish","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"meat","cal":0.3,"fat":0.3,"pro":10},
+      ],
+      [
+        {"name":"Omelet","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Fried","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Boiled","cal":0.3,"fat":0.3,"pro":10},
+      ],
+      [
+        {"name":"White Bread","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Pasta","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Spaghetti","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"chicken kabsa","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"White Rice","cal":0.3,"fat":0.3,"pro":10},
+      ],
+      [
+        {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
+        {"name":"Snickers","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Maltesers","cal":0.3,"fat":0.3,"pro":10},
+      ],
+      [
+        {"name":"Vanilla","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Chocolate","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Strawberry","cal":0.4,"fat":0.3,"pro":10},
+      ],
 
-    this.typesname = [
-      {"ID": 1, "Name": "Apple", "parentID": 1},
-      {"ID": 2, "Name": "Orange", "parentID": 1},
-      {"ID": 3, "Name": "Banana", "parentID": 1},
-      {"ID": 4, "Name": "dates", "parentID": 1},
-      {"ID": 1, "Name": "Chicken", "parentID": 2},
-      {"ID": 2, "Name": "Fried Fish", "parentID": 2},
-      {"ID": 3, "Name": "Fillet-fish", "parentID": 2},
-      {"ID": 4, "Name": "meat", "parentID": 2},
-      {"ID": 1, "Name": "Omelet", "parentID": 3},
-      {"ID": 2, "Name": "Fried", "parentID": 3},
-      {"ID": 3, "Name": "Boiled", "parentID": 3},
-      {"ID": 1, "Name": "White Bread", "parentID": 4},
-      {"ID": 2, "Name": "Pasta", "parentID": 4},
-      {"ID": 3, "Name": "Spaghetti", "parentID": 4},
-      {"ID": 4, "Name": "chicken kabsa", "parentID": 4},
-      {"ID": 5, "Name": "White Rice", "parentID": 4},
 
-      {"ID": 1, "Name": "Oreo", "parentID": 5},
-      {"ID": 2, "Name": "Snickers", "parentID": 5},
-      {"ID": 3, "Name": "Maltesers", "parentID": 5},
-      {"ID": 1, "Name": "Vanilla", "parentID": 6},
-      {"ID": 2, "Name": "Chocolate ", "parentID": 6},
-      {"ID": 3, "Name": "Strawberry ", "parentID": 6},
+    ];
+    this.exerciseTypes = [
+      "Walking",
+      "Running",
+      "Swimming"
     ];
 
-    this.ex.add({"id": 1, "label": "Walking"});
-    this.ex.add({"id": 2, "label": "Running"});
-    this.ex.add({"id": 3, "label": "Swimming"});
-
-    this.ex_cal = [
-      {"ID": 1, "Name": "20 Minutes", "parentID": 1},
-      {"ID": 2, "Name": "30 Minutes", "parentID": 1},
-      {"ID": 3, "Name": "45 Minutes", "parentID": 1},
-      {"ID": 4, "Name": "60 Minutes", "parentID": 1},
-      {"ID": 5, "Name": "20 Minutes", "parentID": 1},
-      {"ID": 1, "Name": "09 Minutes", "parentID": 2},
-      {"ID": 2, "Name": "14 Minutes", "parentID": 2},
-      {"ID": 3, "Name": "21 Minutes", "parentID": 2},
-      {"ID": 4, "Name": "27 Minutes", "parentID": 2},
-      {"ID": 5, "Name": "41 Minutes", "parentID": 2},
-      {"ID": 1, "Name": "60 Minutes", "parentID": 3},
+    this.exerciseTime = [
+      ["20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "75 Minutes", ],
+      ["09 Minutes", "14 Minutes", "21 Minutes", "27 Minutes", "41 Minutes",],
+      ["60 Minutes"]
     ];
   }
 
+
+  String typeOthers = '';
+  int indexType=0;
+  int indexType2=0;
+  bool isLoading = false;
+  bool isLoading2 = false;
   Future<void> selectTime(BuildContext context) async {
     picked = (await showTimePicker(
         context: context,
@@ -145,10 +161,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   String selected_Ltype = '';
   dynamic selected_Lquantity = 0;
-
+  dynamic solids_result;
+  dynamic selected_squantity;
   dynamic L_calories = 0;
 
   dynamic liquid_result = 0;
+ dynamic protein_s =0 , fat=0 , cal_s=0;
 
   @override
   Widget build(BuildContext context) {
@@ -180,64 +198,93 @@ class _InTaksScreenState extends State<InTaksScreen> {
           children: [
             //screen1
             ListView(
+                padding: EdgeInsets.all(15.0),
                 children: <Widget>[
-                  FormHelper.dropDownWidgetWithLabel(
-                    context,
-                    "Category:",
-                    "Select Type: ",
-                    this.typesID,
-                    this.types,
-                        (onChangedVal) {
-                      this.typesID = onChangedVal;
-                      print("Selected Types : $onChangedVal");
-                      this.food = this.typesname.where(
-                              (stateItem) =>
-                          stateItem["parentID"].toString() ==
-                              onChangedVal.toString()).toList();
-                      this.foodID = null;
-                    },
-                        (onValidateval) {
-                      if (onValidateval == null) {
-                        return 'please slecet type';
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Category: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Get.width * 0.05,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  DropdownButtonFormField(
+                      decoration: InputDecoration(
+                          hintText: 'selectCategory', border: OutlineInputBorder()),
+                      items: category!.map((e) {
+                        return DropdownMenuItem(
+                          child: Text('$e'),
+                          value: e,
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        selectCategory = val;
+                        indexType = category!.indexOf('$selectCategory');
+                        isLoading = true;
+                        Timer(Duration(milliseconds: 500),(){
+                          isLoading = false;
+                          setState(() {});
+                        });
+                        setState(() {});
+
+                      }),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Type: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Get.width * 0.05,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  isLoading
+                      ?Center(child: CircularProgressIndicator())
+                      :DropdownButtonFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (val){
+                      if(val == null){
+                        return 'Error';
                       }
-                      return null;
                     },
-                    // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black,
-                    // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54,
-                    borderRadius: 10,
-                    optionLabel: "label",
-                    optionValue: "id",
+                    decoration: InputDecoration(
+                        hintText: 'SelectType', border: OutlineInputBorder()),
+                    items: categoryType![indexType]
+                        .map((e) {
+                      return DropdownMenuItem(
+                        child: Text('${e['name']}'),
+                        value: e['name'],
+                      );
+
+                    }).toList(),
+                    onChanged: selectCategory == null? null
+                        :(val) {
+                      selectCategoryType = val;
 
 
-                  ),
-                  FormHelper.dropDownWidgetWithLabel(
-                    context,
-                    "Type:",
-                    "Select type",
-                    this.foodID,
-                    this.food,
-                        (onChangedVal) {
-                      this.foodID = onChangedVal;
-                      print("Selected type: ");
                     },
-                        (onValidate) {
-                      return null;
-                    }
-                    ,
-                    // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black,
-                    // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54,
-                    borderRadius: 10,
-                    optionValue: "ID",
-                    optionLabel: "Name",
-
                   ),
-                  SizedBox(height: Get.width * 0.05,),
+                  SizedBox(
+                    height: Get.width * 0.05,
+                  ),
                   Column(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
+
                       children: <Widget>[
                         Text("Quantity",
                             style: TextStyle(
@@ -252,10 +299,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           child: NumberInputWithIncrementDecrement(
                             controller: TextEditingController(),
                             min: 0,
-                            max: 10,
-                            onChanged: (val) {
-                              print(val);
+
+                            onDecrement: (val) {
+                              selected_squantity = val;
                             },
+                            onIncrement: (val) {
+                              selected_squantity= val;
+                            },
+                            onChanged: (val) {
+                              selected_squantity = val;
+                            },
+
+                            // onChanged: (val) {
+                            //   print(val);
+                            // },
                           ),
                         )
                       ]
@@ -266,15 +323,15 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     children: <Widget>[
                       _buildContainerSolids(
                           label: 'Calories',
-                          amount: '0',
+                          amount: cal_s,
                           module: 'cal'
                       ), _buildContainerSolids(
                           label: 'Fat',
-                          amount: '0',
+                          amount: fat,
                           module: 'g'
                       ), _buildContainerSolids(
                           label: 'Protein',
-                          amount: '0',
+                          amount: protein_s,
                           module: 'g'
                       ),
                     ],
@@ -286,6 +343,22 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     ),
                     child: ElevatedButton.icon(
                         onPressed: () {
+                          for(var i = 0 ; i < categoryType!.length;i++){
+                            for(var j = 0 ; j < categoryType![i].length;j++){
+                              if(selectCategoryType==categoryType![i][j]["name"]){
+                                //هون عرفي 3 متحولات واسندي القيمة الهن واعرضيهن عادي
+                                print(categoryType![i][j]["cal"]);
+                                cal_s=categoryType![i][j]["cal"];
+                                print(categoryType![i][j]["fat"]);
+                                fat=categoryType![i][j]["fat"];
+                                print(categoryType![i][j]["pro"]);
+                                protein_s=categoryType![i][j]["pro"];
+                                setState(() {
+
+                                });
+                              }
+                            }
+                          }
                           Get.snackbar(
                               'do you want save it?',
                               'it will be show in the logbook',
@@ -294,7 +367,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               duration: Duration(milliseconds: 4500),
                               margin: EdgeInsets.zero,
                               mainButton: TextButton(
-                                  onPressed: () {}, child: Text('Save',
+                                  onPressed: () {
+                                   // solids_result = cal_s * selected_squantity;
+                                    print(solids_result);
+                                    setState(() {});
+                                  }, child: Text('Save',
                                 style: TextStyle(
                                     color: Colors.blue
                                 ),))
@@ -356,7 +433,6 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           min: 0,
-                          max: 10,
                           onDecrement: (val) {
                             selected_Lquantity = val;
                           },
@@ -379,7 +455,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           amount: liquid_result,
                           module: 'cal'
                       ),
-                        // _buildContainerSolids(
+                      // _buildContainerSolids(
                       //     label: 'Fat',
                       //     amount: '0',
                       //     module: 'g'
@@ -511,62 +587,85 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 ]),
 
             ListView(
+                padding: EdgeInsets.all(15.0),
                 children: <Widget>[
-                  FormHelper.dropDownWidgetWithLabel(
-                    context,
-                    "Types:",
-                    "Select Type: ",
-                    this.exID,
-                    this.ex,
-                        (onChangedVal) {
-                      this.exID = onChangedVal;
-                      print("Selected Types : $onChangedVal");
-                      this.time = this.ex_cal.where(
-                              (stateItem) =>
-                          stateItem["parentID"].toString() ==
-                              onChangedVal.toString()).toList();
-                      this.timeID = null;
-                    },
-                        (onValidateval) {
-                      if (onValidateval == null) {
-                        return 'please slecet type';
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Types: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Get.width * 0.06,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  DropdownButtonFormField(
+                      decoration: InputDecoration(
+                          hintText: 'selectType', border: OutlineInputBorder()),
+                      items: exerciseTypes!.map((e) {
+                        return DropdownMenuItem(
+                          child: Text('$e'),
+                          value: e,
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        selectExerciseType = val;
+                        indexType2 = exerciseTypes!.indexOf('$selectExerciseType');
+                        isLoading2 = true;
+                        Timer(Duration(milliseconds: 500),(){
+                          isLoading2 = false;
+                          setState(() {});
+                        });
+                        setState(() {});
+
+                      }),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Time: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Get.width * 0.06,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  isLoading2
+                      ?Center(child: CircularProgressIndicator())
+                      :DropdownButtonFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (val){
+                      if(val == null){
+                        return 'Error';
                       }
-                      return null;
                     },
-                    // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black,
-                    // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54,
-                    borderRadius: 10,
-                    optionLabel: "label",
-                    optionValue: "id",
-
-
+                    decoration: InputDecoration(
+                        hintText: 'SelectTime', border: OutlineInputBorder()),
+                    items: exerciseTime![indexType2]
+                        .map((e) {
+                      return DropdownMenuItem(
+                        child: Text('$e'),
+                        value: e,
+                      );
+                    }).toList(),
+                    onChanged: selectExerciseType == null? null
+                        :(val) {
+                      selectExerciseTime = val;
+                    },
                   ),
 
-                  FormHelper.dropDownWidgetWithLabel(
-                    context,
-                    "Time:",
-                    "Select type",
-                    this.timeID,
-                    this.time,
-                        (onChangedVal) {
-                      this.timeID = onChangedVal;
-                      print("Selected type: ");
-                    },
-                        (onValidate) {
-                      return null;
-                    }
-                    ,
-                    // borderColor: Theme.of(context).primaryColor,
-                    borderColor: Colors.black,
-                    // borderFocusColor: Theme.of(context).primaryColor,
-                    borderFocusColor: Colors.black54,
-                    borderRadius: 10,
-                    optionValue: "ID",
-                    optionLabel: "Name",
-
-                  ),
 
                   Container(
                     margin: EdgeInsets.symmetric(
