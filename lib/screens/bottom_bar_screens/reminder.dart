@@ -44,15 +44,33 @@ class ReminderScreeen extends StatelessWidget {
             ),
           ),
           DatePicker(
-            DateTime.now(),
+            DateTime.parse('2022-03-01'),
                 initialSelectedDate: DateTime.now(),
                   onDateChange: (d){
-              print(DateFormat.yMd().format(d)) ;
-              if(DateTime.parse('2022-03-27').isAtSameMomentAs(d)){
+              // controller.remindersDate.forEach((element) {
+              //   var e =  DateTime.parse('$element');
+              //   // print(
+              //   //   DateFormat.yMd().format(DateTime.parse('$element'))
+              //   // );
+              //   print(e);
+              //   print(d) ;
+              //
+              //   if(d.isAtSameMomentAs(e)){
+              //     print('Yes');
+              //   }else{
+              //     print('No');
+              //   }
+              // });
+
+            for(var i = 0 ; i < controller.remindersDate.length; i++){
+              if(d.isAtSameMomentAs(DateTime
+                  .parse(controller.remindersDate[i]))){
                 print('Yes');
               }else{
-                print('No');
+                print('Woow');
               }
+            }
+
               },
                 //ToDO Convert Color To HexaDecimal
             selectionColor: Colors.orangeAccent.withOpacity(.8),
@@ -62,13 +80,11 @@ class ReminderScreeen extends StatelessWidget {
             FutureBuilder(
             future:controller.remindersref!.get() ,
               builder: (context,AsyncSnapshot snapshot){
-
                if(!snapshot.hasData){
                  return Center(
                    child: CircularProgressIndicator(),
                  );
                }else{
-
                  return Expanded(
                    child: ListView.builder(
                      itemCount: snapshot.data.docs.length,
@@ -94,7 +110,6 @@ class ReminderScreeen extends StatelessWidget {
 
                                  trailing: IconButton(
                                    onPressed: () {
-                                     print(controller.listReminderDate);
                                      //  snapshot.data.docs[index] ;
                                    },
                                    icon: Icon(Icons.delete_forever , color: Colors.red,),
@@ -120,8 +135,19 @@ class ReminderScreeen extends StatelessWidget {
                     fontSize: Get.width * 0.08
                   ),),
                 ],
-              )
+              ),
+          Obx(
+              (){
+                return controller.remindersDate
+                    .isEmpty
+                    ?CircularProgressIndicator()
+                    : Column(
+                  children: controller.
+                  remindersDate.map((e) => Text('$e')).toList(),
+                );
 
+              }
+          )
 
         ],
       ),

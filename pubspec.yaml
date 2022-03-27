@@ -56,6 +56,8 @@ dependencies:
   syncfusion_flutter_pdf:
   path_provider:
   open_file:
+  awesome_dialog:
+  flutter_svg:
 
 
 dev_dependencies:

@@ -7,19 +7,9 @@ import 'package:test_saja/controller/health_record_controller.dart';
 
 import '../const/colors.dart';
 
-
-
-
-
 class HealthRecordScreen extends StatelessWidget {
   final controller = Get.put(HealthRecordController());
-  var selectedTGDates = TextEditingController();
-  var selectedLDLDates = TextEditingController();
-  var selectedAlbuminDates = TextEditingController();
-  /*String antiDiabtees = '';
-  String Insulin = '';
-  String Injectable = '';
-  String Nutrition = '';*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,36 +33,37 @@ class HealthRecordScreen extends StatelessWidget {
       ),
 
       // start body
-      body: Obx(
-          ()=>Form(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(Get.width * 0.05),
+          child: Form(
             key: controller.keyForm,
-            child: ListView(
-              padding: EdgeInsets.all(Get.width * 0.05),
+            child: Column(
               children: [
-                _buildDropDown(
+                DropDownFromFiled(
                     hintText: 'AntiDiabtees',
-                    value: controller.anti_diabteees.value
+                    result: controller.anti_diabteees),
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
-                SizedBox(height: Get.width * 0.06,),
-                _buildDropDown(
-                    hintText: 'Insulin',
-                    value: controller.insulin.value
+                DropDownFromFiled(
+                    hintText: 'Insulin', result: controller.insulin),
 
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
 
-                SizedBox(height: Get.width * 0.06,),
-
-                _buildDropDown(
-                    hintText: 'Injectable',
-                    value: controller.injectable.value
+                DropDownFromFiled(
+                    hintText: 'Injectable', result: controller.injectable),
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
-                SizedBox(height: Get.width * 0.06,),
 
-                _buildDropDown(
-                    hintText: 'Nutrition',
-                    value: controller.nutrition.value
+                DropDownFromFiled(
+                    hintText: 'Nutrition', result: controller.nutrition),
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
-                SizedBox(height: Get.width * 0.06,),
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.numberWithOptions(),
@@ -80,24 +71,23 @@ class HealthRecordScreen extends StatelessWidget {
                     border: OutlineInputBorder(),
                     labelText: "LDL",
                   ),
-                  validator: (val){
-                    return val!.trim().isEmpty
-                        ? 'can\'t be empty'
-                        : null;
+                  validator: (val) {
+                    return val!.trim().isEmpty ? 'can\'t be empty' : null;
                   },
-                  onChanged: (val){
-                    controller.ldl.value = val;
+                  onChanged: (val) {
+                    controller.ldl.text = val;
                   },
                 ),
-                SizedBox(height: Get.width * 0.06,),
+                SizedBox(
+                  height: Get.width * 0.06,
+                ),
                 _buildDateSelected(
                     text: 'LDL Date',
                     context: context,
-                    selectDate: selectedLDLDates
+                    selectDate: controller.selectedLDLDates),
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
-                SizedBox(height: Get.width * 0.06,),
-
-
 
                 //SizedBox(width: 10),
 
@@ -108,26 +98,27 @@ class HealthRecordScreen extends StatelessWidget {
                     border: OutlineInputBorder(),
                     labelText: "TG",
                   ),
-                  validator: (val){
-                    return val!.trim().isEmpty
-                        ? 'can\'t be empty'
-                        : null;
+                  validator: (val) {
+                    return val!.trim().isEmpty ? 'can\'t be empty' : null;
                   },
-                  onChanged: (val){
-                    controller.tg.value = val;
-                   // print(controller.tg.value);
+                  onChanged: (val) {
+                    controller.tg.text = val;
+                    // print(controller.tg.value);
                   },
                 ),
-                SizedBox(height: Get.width * 0.06,),
+                SizedBox(
+                  height: Get.width * 0.06,
+                ),
+
                 /// 2
                 _buildDateSelected(
                     text: 'TG Date',
                     context: context,
-                    selectDate: selectedTGDates
+                    selectDate: controller.selectedTGDates),
 
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
-
-                SizedBox(height: Get.width * 0.06,),
 
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -136,147 +127,80 @@ class HealthRecordScreen extends StatelessWidget {
                     border: OutlineInputBorder(),
                     labelText: "Albumin",
                   ),
-                  validator: (val){
-                    return val!.trim().isEmpty
-                        ? 'can\'t be empty'
-                        : null;
+                  validator: (val) {
+                    return val!.trim().isEmpty ? 'can\'t be empty' : null;
                   },
-                  onChanged: (val){
-                    controller.albumin.value = val;
-                  //  print(controller.albumin.value);
-
+                  onChanged: (val) {
+                    controller.albumin.text = val;
+                    //  print(controller.albumin.value);
                   },
                 ),
-                SizedBox(height: Get.width * 0.06,),
+                SizedBox(
+                  height: Get.width * 0.06,
+                ),
 
                 /// 3
                 _buildDateSelected(
-                  text: 'Albumin Date',
-                  context: context,
-                  selectDate: selectedAlbuminDates
+                    text: 'Albumin Date',
+                    context: context,
+                    selectDate: controller.selectedAlbuminDates),
 
+                SizedBox(
+                  height: Get.width * 0.06,
                 ),
-
-                SizedBox(height: Get.width * 0.06,),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                         add_record();
-                          if(controller.keyForm.currentState!.validate()){
-                          }else{
+                          if (controller.keyForm.currentState!.validate()) {
+                            add_record();
+                            print(
+                                '${controller.anti_diabteees.text}' +
+                                '\n' +
+                                '${controller.insulin.text}' +
+                                '\n' +
+                                '${controller.injectable.text}' +
+                                '\n' +
+                                '${controller.nutrition.text}' +
+                                '\n' +
+                                '${controller.ldl.text}' +
+                                '\n' +
+                                '${controller.selectedLDLDates.text}' +
 
+                                '\n' +
+                                '${controller.tg.text}' +
+                                '\n' +
+                                '${controller.selectedTGDates.text}' +
+                                '\n' +
+                                    '${controller.albumin.text}'+
+                            '\n' +
+                                '${controller.selectedAlbuminDates.text}');
                           }
                         },
                         icon: Icon(Icons.done, size: 30),
                         label: Text("Save Information"),
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE5A9379),)
+                          primary: Color(0xFFE5A9379),
+                        ))
+
+                    //  )
+
                     )
-
-                  //  )
-
-                )
-
-
               ],
             ),
-          )
-      ),
-
-      //  Start BottomAppBar
-     /* floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        child: Icon(Icons.add),
-        onPressed: () { Navigator.pushNamed(context, '/intakes')  ;},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              // left icons
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: (){ Navigator.pushNamed(context, '/');},
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.home_filled),
-                        Text('Home')
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: (){ Navigator.pushNamed(context, '/logbook');},
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_chart_rounded),
-                        Text('LogBook')
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              // right icons
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: (){},
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.calculate_outlined ),
-                        Text('Tests')
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: (){ Navigator.pushNamed(context, '/reminder');},
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.notification_important),
-                        Text('Reminder')
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
           ),
         ),
-      ),*/
-      // end BottomAoppBar
-
+      ),
     );
   }
-Widget _buildDateSelected({text,context,selectDate}){
+
+  Widget _buildDateSelected({text, context, selectDate}) {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       readOnly: true,
       controller: selectDate,
-      decoration: InputDecoration(
-        labelText: '$text',
-        border: OutlineInputBorder()
-      ),
+      decoration:
+          InputDecoration(labelText: '$text', border: OutlineInputBorder()),
       onTap: () async {
         await showDatePicker(
           context: context,
@@ -285,8 +209,7 @@ Widget _buildDateSelected({text,context,selectDate}){
           lastDate: DateTime(2025),
         ).then((selectedDate) {
           if (selectedDate != null) {
-            selectDate.text =
-                DateFormat('yyyy-MM-dd').format(selectedDate);
+            selectDate.text = DateFormat('yyyy-MM-dd').format(selectedDate);
           }
         });
       },
@@ -297,51 +220,61 @@ Widget _buildDateSelected({text,context,selectDate}){
         return null;
       },
     );
+  }
+
+  Future<void> add_record() async {
+    CollectionReference helth_record =
+         FirebaseFirestore.instance.collection("Health_Record");
+     helth_record.add({
+      "AntiDiabtees": controller.anti_diabteees.text,
+      "Insulin": controller.insulin.text,
+      "Injectable": controller.injectable.text,
+      "Nutrition ": controller.nutrition.text,
+      "LDL ": controller.ldl.text,
+      "LDL Date ": controller.selectedLDLDates.text,
+      "TG ": controller.tg.text,
+      "TG Date ": controller.selectedTGDates.text,
+      "Albumin ": controller.albumin.text,
+      "Albumin Date ": controller.selectedAlbuminDates.text,
+    });
+    // Get.snackbar('Hello', 'successfully add data');
+  }
 }
-//DropDown Methods
-Widget _buildDropDown({hintText,value}){
+
+class DropDownFromFiled extends StatefulWidget {
+  final String? hintText;
+  var result;
+
+  DropDownFromFiled({Key? key, this.hintText, this.result}) : super(key: key);
+
+  @override
+  _DropDownFromFiledState createState() => _DropDownFromFiledState();
+}
+
+class _DropDownFromFiledState extends State<DropDownFromFiled> {
+  @override
+  Widget build(BuildContext context) {
     return DropdownButtonFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       icon: Icon(Icons.keyboard_arrow_down),
       decoration: InputDecoration(
-        border: OutlineInputBorder()
-      ),
+        label: Text('${widget.hintText}'),
+          hintText: '${widget.hintText}', border: OutlineInputBorder()),
       items: ["Yes", "No"]
           .map((e) => DropdownMenuItem(
-        child: Text("$e"),
-        value: e,
-      ))
+                child: Text("$e"),
+                value: e,
+              ))
           .toList(),
       onChanged: (val) {
-        value = val as String;
+        widget.result.text = val.toString();
+        setState(() {});
       },
-      validator: (String? val){
-       if(val==null){
-         return 'can\'t be empty';
-       }
-      },
-      hint: Text('$hintText'),
-    );
-}
-
-  add_record()
-  async {
-    CollectionReference helth_record = FirebaseFirestore.instance.collection("Health_Record");
-    helth_record.add(
-        {
-          "AntiDiabtees" :  controller.anti_diabteees.value.toString(),
-          "Insulin" : controller.insulin.value.toString(),
-          "Injectable" : controller.injectable.value.toString(),
-          "Nutrition " : controller.nutrition.value.toString(),
-          "LDL " : controller.ldl.value.toString(),
-          "LDL Date " : selectedLDLDates.text,
-          "TG " : controller.tg.value.toString(),
-          " TG Date " : selectedTGDates.text,
-          " Albumin " : controller.albumin.value.toString(),
-          " Albumin Date " : selectedAlbuminDates.text,
-
+      validator: (String? val) {
+        if (val == null) {
+          return 'can\'t be empty';
         }
+      },
     );
   }
-
 }
