@@ -142,11 +142,11 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                            ],
                          );
                        }else{
-                         Text("Noooooooo");
+                         Text("");
                         //return SizedBox();
 
                        }
-                          return Text("xxxxxxxxxx") ;
+                          return Text("") ;
                      },
 
 

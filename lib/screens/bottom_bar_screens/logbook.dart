@@ -88,154 +88,171 @@ class LogBookScreen extends StatelessWidget {
               ),),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            padding:const EdgeInsets.all(12.0),
-            height: Get.width * 0.3,
-            child: Row(
-              children: [
-                BuildCaloriseAndClucoseWidget(
-                  label: 'Lowest Caloriess',
-                  amount: '100 cal',
-                  color: Colors.green,
-                ),
-                SizedBox(width: size.width *0.05,),
-                BuildCaloriseAndClucoseWidget(
-                  label: 'Highest Caloriess',
-                  amount: '300 cal',
-                  color: Colors.red,
-                ),
-              ],
-            ),
-          ),
-            // DataTable part
-          // for bisrcollable You can use two SingleChildScrollView or one InteractiveViewer.
-          Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 10
-            ),
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(
-                        color: Colors.blueGrey,
-                      width: 2
+      body: Obx(
+          ()=>ListView(
+            children: <Widget>[
+              Container(
+                padding:const EdgeInsets.all(12.0),
+                height: Get.width * 0.3,
+                child: Row(
+                  children: [
+                    BuildCaloriseAndClucoseWidget(
+                      label: 'Lowest Caloriess',
+                      amount: '100 cal',
+                      color: Colors.green,
                     ),
-                )
-            ),
-            child: ExpansionTile(
-              title: Text('Caloriess'),
-            trailing: FlatButton.icon(
-                onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                    columnSpacing: size.width *0.08 ,
-                    sortColumnIndex: controller.currentSortColumn.value,
-                    sortAscending: controller.isAscending.value,
-                    headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
-                    columns:
-                    //send column List
-                    Calcolumn.map((e) => DataColumn(
-                      label: Text(e),
-                    )).toList(),
-                    rows:
-                    // get Rows List
-                    //fireBAse
-                    Calrow.map((e) => DataRow(
-                        cells: e.map((e) => DataCell(
-                            Text(e)
-                        )).toList()
-                    )).toList()
+                    SizedBox(width: size.width *0.05,),
+                    BuildCaloriseAndClucoseWidget(
+                      label: 'Highest Caloriess',
+                      amount: '300 cal',
+                      color: Colors.red,
+                    ),
+                  ],
                 ),
               ),
-            ],
-            ),
-          ),
-    // ################# Glucose Part ############
-
-          Container(
-            padding:const EdgeInsets.all(12.0),
-            height: Get.width * 0.3,
-            child: Row(
-              children: [
-                BuildCaloriseAndClucoseWidget(
-                  label: 'Lowest Glucose Level',
-                  amount: '5.6 mg/dl',
-                  color: Colors.green,
+              // DataTable part
+              // for bisrcollable You can use two SingleChildScrollView or one InteractiveViewer.
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: 10
                 ),
-                SizedBox(width: size.width *0.05,),
-                BuildCaloriseAndClucoseWidget(
-                  label: 'Highest Glucose Level',
-                  amount: '10 mg/dl',
-                  color: Colors.red,
+                decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                          color: Colors.blueGrey,
+                          width: 2
+                      ),
+                    )
                 ),
-              ],
-            ),
-          ),
-          FutureBuilder(
-            future: controller.Glucoref!.get(),
-            builder: (context,AsyncSnapshot snapshot)
-            {
-              if(!snapshot.hasData){
-                return Center(
-                  child: CircularProgressIndicator(
-                    semanticsLabel: 'LOADING',
-                    backgroundColor: Colors.blueGrey,
-                    strokeWidth: 10,
-                  ),
-                );
+                child: ExpansionTile(
+                  title: Text('Caloriess'),
+                  trailing: FlatButton.icon(
+                      onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                          columnSpacing: size.width *0.08 ,
+                          sortColumnIndex: controller.currentSortColumn.value,
+                          sortAscending: controller.isAscending.value,
+                          headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
+                          columns:
+                          //send column List
+                          Calcolumn.map((e) => DataColumn(
+                            label: Text(e),
+                          )).toList(),
+                          rows:
+                          // get Rows List
+                          //fireBAse
+                          Calrow.map((e) => DataRow(
+                              cells: e.map((e) => DataCell(
+                                  Text(e)
+                              )).toList()
+                          )).toList()
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // ################# Glucose Part ############
 
-              } else return
+              Container(
+                padding:const EdgeInsets.all(12.0),
+                height: Get.width * 0.3,
+                child: Row(
+                  children: [
+                    BuildCaloriseAndClucoseWidget(
+                      label: 'Lowest Glucose Level',
+                      amount: '5.6 mg/dl',
+                      color: Colors.green,
+                    ),
+                    SizedBox(width: size.width *0.05,),
+                    BuildCaloriseAndClucoseWidget(
+                      label: 'Highest Glucose Level',
+                      amount: '10 mg/dl',
+                      color: Colors.red,
+                    ),
+                  ],
+                ),
+              ),
+
+              FutureBuilder(
+                future: controller.Glucoref!.get(),
+                builder: (context,AsyncSnapshot snapshot)
+                {
+                  if(!snapshot.hasData){
+                    return Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: 'LOADING',
+                        backgroundColor: Colors.blueGrey,
+                        strokeWidth: 10,
+                      ),
+                    );
+
+                  } else return
                     Container(
                       margin: EdgeInsets.symmetric(
-                        vertical: 10.0
+                          vertical: 10.0
                       ),
                       decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            color: Colors.blueGrey,
-                            width: 2
-                          ),
-                        )
+                          border: Border(
+                            top: BorderSide(
+                                color: Colors.blueGrey,
+                                width: 2
+                            ),
+                          )
                       ),
 
-            child: ExpansionTile(
-              title: Text('Glucose'),
-              trailing: FlatButton.icon(
-                  onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
-              children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  color: Colors.white,
-                  child: DataTable(
-                      columnSpacing: size.width *0.08 ,
-                      sortColumnIndex: controller.currentSortColumn.value,
-                      sortAscending: controller.isAscending.value,
-                      headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
-                      columns:
-                      //send column List
-                      Glucolumn.map((e) => DataColumn(
-                        label: Text(e),
-                      )).toList(),
-                      rows:
-                      // get Rows List
-                      //fireBAse
-                      controller.Glurow.map((e) => DataRow(
-                          cells: e.map((e) => DataCell(
-                              Text(e)
-                          )).toList()
-                      )).toList()
-                  ),
-                ),
-              ),
-            ],),
-          );
-              } , ) ,
-        ],
+                      child: ExpansionTile(
+                        title: Text('Glucose'),
+                        trailing: FlatButton.icon(
+                            onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
+                        children: [
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
+                              color: Colors.white,
+                              child: DataTable(
+                                  columnSpacing: size.width *0.08 ,
+                                  sortColumnIndex: controller.currentSortColumn.value,
+                                  sortAscending: controller.isAscending.value,
+                                  headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
+                                  columns:
+                                  //send column List
+                                  Glucolumn.map((e) => DataColumn(
+                                    label: Text(e),
+                                  )).toList(),
+                                  rows:
+                                  // get Rows List
+                                  //fireBAse
+                                controller.Glurow.map((e) {
+                                  return DataRow(
+                                    cells: e.map((e){
+                                      return DataCell(
+                                                  Text('$e')
+                                                );
+                                    }).toList()
+                                  );
+                                }).toList()
+                                // controller.Glurow.map((e) => DataRow(
+                                  //     cells: e.map((e){
+                                  //       List c = e;
+                                  //       return DataCell(
+                                  //         Text('$e')
+                                  //       );
+                                  //     }).toList()
+                                  // )).toList()
+                              ),
+                            ),
+                          ),
+                        ],),
+                    );
+                } , ) ,
 
+
+            ],
+
+          )
       ),
 
     );
@@ -263,11 +280,9 @@ List<String> Calcolumn = [
     ['Solid','15','${intl.DateFormat.yMd().format(DateTime.now())}','10 Cal','Meat'],
   ];
   List<String> Glucolumn = [
-    'Category',
     'Time',
     'Date',
     'Amount',
-
   ];
  /* List<List<String>> Glurow  = [
    *//* ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],

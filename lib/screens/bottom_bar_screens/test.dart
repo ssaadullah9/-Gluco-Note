@@ -520,7 +520,7 @@ class TestScreen extends StatelessWidget {
                                         vertical: Get.width * 0.05),
                                     child: ElevatedButton.icon(
                                         onPressed: () {
-                                          add_glu();
+                                          add_glu(context);
                                           // Respond to button press
                                         },
                                         icon: Icon(Icons.done, size: 30),
@@ -551,13 +551,13 @@ class TestScreen extends StatelessWidget {
 
   }
 
-  add_glu() async {
+  add_glu(context) async {
     CollectionReference glu_info =
         FirebaseFirestore.instance.collection("Gluco_Measurment");
     glu_info.add({
-      "Result ": controller.valueHolder.value.toString(),
-      "Test preiod ": controller.selectedval.value,
-      "Time ": controller.time.value.toString(),
+      "Result": controller.valueHolder.value.toString(),
+      "Test_preiod": controller.selectedval.value.toString(),
+      "Time": controller.time.value.format(context).toString(),
     });
   }
 }

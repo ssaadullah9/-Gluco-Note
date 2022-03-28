@@ -88,13 +88,13 @@ class LoginScreen extends StatelessWidget {
                        enabledBorder: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color:  Color(0xff0E5E5A)
+                               // color:  Color(0xff0E5E5A)
                            )
                        ),
                        focusedBorder: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color:  Color(0xff0E5E5A)
+                               // color:  Color(0xff0E5E5A)
                            )
                        ),
                      ),
