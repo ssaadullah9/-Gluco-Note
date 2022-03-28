@@ -70,7 +70,6 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
               },
             selectionColor: Color(0xffEA9363),
           ),
-          //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
             FutureBuilder(
             future: controller.remindersref!.get() ,
               builder: (context,AsyncSnapshot snapshot){
@@ -143,12 +142,13 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                            ],
                          );
                        }else{
-                         print("Noooooooo");
-                         return SizedBox();
+                         Text("Noooooooo");
+                        //return SizedBox();
 
                        }
-
+                          return Text("xxxxxxxxxx") ;
                      },
+
 
                    ),
                  );

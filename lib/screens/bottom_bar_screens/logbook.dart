@@ -153,7 +153,8 @@ class LogBookScreen extends StatelessWidget {
             ],
             ),
           ),
-          // Glucose Part
+    // ################# Glucose Part ############
+
           Container(
             padding:const EdgeInsets.all(12.0),
             height: Get.width * 0.3,
@@ -173,18 +174,33 @@ class LogBookScreen extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 10.0
-            ),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Colors.blueGrey,
-                  width: 2
-                ),
-              )
-            ),
+          FutureBuilder(
+            future: controller.Glucoref!.get(),
+            builder: (context,AsyncSnapshot snapshot)
+            {
+              if(!snapshot.hasData){
+                return Center(
+                  child: CircularProgressIndicator(
+                    semanticsLabel: 'LOADING',
+                    backgroundColor: Colors.blueGrey,
+                    strokeWidth: 10,
+                  ),
+                );
+
+              } else return
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        vertical: 10.0
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: Colors.blueGrey,
+                            width: 2
+                          ),
+                        )
+                      ),
+
             child: ExpansionTile(
               title: Text('Glucose'),
               trailing: FlatButton.icon(
@@ -207,17 +223,17 @@ class LogBookScreen extends StatelessWidget {
                       rows:
                       // get Rows List
                       //fireBAse
-                      Glurow.map((e) => DataRow(
+                      controller.Glurow.map((e) => DataRow(
                           cells: e.map((e) => DataCell(
                               Text(e)
                           )).toList()
                       )).toList()
                   ),
                 ),
-
               ),
             ],),
-          ),
+          );
+              } , ) ,
         ],
 
       ),
@@ -253,9 +269,9 @@ List<String> Calcolumn = [
     'Amount',
 
   ];
-  List<List<String>> Glurow  = [
-   /* ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
+ /* List<List<String>> Glurow  = [
+   *//* ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-*/
-  ];
+*//*
+  ];*/
 }

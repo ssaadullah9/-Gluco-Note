@@ -77,7 +77,7 @@ class AddnewReminder extends StatelessWidget {
                   readOnly: true,
                   decoration: InputDecoration(
                     label: Text('Reminder Time'),
-                    hintText: TimeOfDay.now().format(context).toString(),
+                    hintText: controller.selected_time.value.format(context),
                     suffixIcon: Icon(Icons.access_time),
                       border: OutlineInputBorder()
                   ),
