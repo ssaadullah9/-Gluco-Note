@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,10 @@ class LogBookController extends GetxController{
 
   var currentSortColumn = 0.obs;
   var isAscending = true.obs;
+  CollectionReference? Glucoref;
+
+   List<List<String>> Glurow =[];
+
 
   Future<void> createPDF(List column,List rows) async {
     PdfDocument document =  PdfDocument();
@@ -57,5 +62,32 @@ class LogBookController extends GetxController{
     document.dispose();
 
     saveAndLaunchFile(bytes, 'Output.pdf');
+  }
+
+  Future<void> getData() async {
+    Glucoref= FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await Glucoref!.get().then((snapShot) {
+      for(var i = 0 ; i < snapShot.docs.length ; i++){
+        Glurow.add([]);
+        for(var j =0 ; j < 3 ; j++){
+          Glurow[i].add(snapShot.docs[i]['Result']);
+          Glurow[i].add(snapShot.docs[i]['Test_preiod']);
+          Glurow[i].add(
+              snapShot.docs[i]['Time'].toString().substring(10,15)
+          );
+          break;
+        }
+
+      }
+      print(Glurow) ;
+
+
+    });
+    update();
+  }
+  @override
+  void onInit() {
+    getData();
+    super.onInit();
   }
 }

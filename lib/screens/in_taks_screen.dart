@@ -176,7 +176,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('InTakes'),
+          backgroundColor: Colors.blueGrey,
+          title: Text('Intakes' , style: TextStyle(
+            color: Colors.white
+          ),),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -185,7 +188,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
               Tab(text: 'Medication', icon: Icon(Icons.medication)),
               Tab(text: 'Exercise', icon: Icon(Icons.directions_run)),
             ],
-            unselectedLabelColor: Colors.blueGrey,
+            unselectedLabelColor: Colors.grey,
             labelColor: Colors.white,
             indicatorColor: Colors.blueGrey,
             indicatorWeight: 3,

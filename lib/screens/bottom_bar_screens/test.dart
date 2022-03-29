@@ -46,7 +46,7 @@ class TestScreen extends StatelessWidget {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: controller.index.value == 0
-                                                ? mainColor
+                                                ? mainColor1
                                                 : Colors.transparent,
                                             width: 3))),
                               ),
@@ -72,7 +72,7 @@ class TestScreen extends StatelessWidget {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: controller.index.value == 1
-                                                ? mainColor
+                                                ? mainColor1
                                                 : Colors.transparent,
                                             width: 3))),
                               ),
@@ -311,6 +311,13 @@ class TestScreen extends StatelessWidget {
                                               child: ExpansionTile(
                                                 title: Text('show'),
                                                 children: [
+                                                  /*
+
+                                                   headingRowColor:
+                                                          MaterialStateProperty
+                                                              .all(Colors
+                                                                  .blueGrey),
+                                                   */
                                                   //ToDO Firebase
                                                   DataTable(
                                                       headingRowColor:
@@ -318,33 +325,21 @@ class TestScreen extends StatelessWidget {
                                                               .all(Colors
                                                                   .blueGrey),
                                                       //ToDO Firebase
-                                                      columns: const [
-                                                        DataColumn(
-                                                            label:
-                                                                Text('Status')),
-                                                        DataColumn(
-                                                            label:
-                                                                Text('Result')),
-                                                        DataColumn(
-                                                            label:
-                                                                Text('Date '))
-                                                      ],
-                                                      rows: const [
-                                                        DataRow(cells: [
-                                                          DataCell(
-                                                              Text('Normal')),
-                                                          DataCell(Text('23')),
-                                                          DataCell(
-                                                              Text('2/2/2022')),
-                                                        ]),
-                                                        DataRow(cells: [
-                                                          DataCell(Text(
-                                                              'OverWeight')),
-                                                          DataCell(Text('40')),
-                                                          DataCell(Text(
-                                                              '27/2/2022')),
-                                                        ]),
-                                                      ])
+                                                      columns:  Bmicolumn.map((e) => DataColumn(
+                                                        label: Text(e),
+                                                      )).toList(),
+
+                                                      rows: controller.Bmirow.map((e) {
+                                                        return DataRow(
+                                                            cells: e.map((e){
+                                                              return DataCell(
+                                                                  Text('$e')
+                                                              );
+                                                            }).toList()
+                                                        );
+                                                      }).toList()
+
+                                                  )
                                                 ],
                                               ),
                                             )
@@ -520,7 +515,7 @@ class TestScreen extends StatelessWidget {
                                         vertical: Get.width * 0.05),
                                     child: ElevatedButton.icon(
                                         onPressed: () {
-                                          add_glu();
+                                          add_glu(context);
                                           // Respond to button press
                                         },
                                         icon: Icon(Icons.done, size: 30),
@@ -539,27 +534,36 @@ class TestScreen extends StatelessWidget {
   }
 
   add_bmi() async {
-    print("Status"+ controller.bmiModel.value.comments.toString());
-    print("Date"+ controller.time.value.toString());
+
+    print("Date"+ controller.Date.value.toString());
     print("Result"+ controller.bmiModel.value.bmi.toStringAsFixed(2).toString());
+    print("Status"+ controller.bmiModel.value.comments.toString());
     CollectionReference bmi_info = FirebaseFirestore.instance.collection("BMI");
     bmi_info.add({
-      "Status": controller.bmiModel.value.comments.toString(),
-      "Date": controller.time.value.toString(),
+      "Date": controller.Date.value.toString(),
       "Result": controller.bmiModel.value.bmi.toStringAsFixed(2).toString(),
+      "Status": controller.bmiModel.value.comments.toString(),
     });
 
   }
 
-  add_glu() async {
+  add_glu(context) async {
     CollectionReference glu_info =
         FirebaseFirestore.instance.collection("Gluco_Measurment");
     glu_info.add({
-      "Result ": controller.valueHolder.value.toString(),
-      "Test preiod ": controller.selectedval.value,
-      "Time ": controller.time.value.toString(),
+      "Result": controller.valueHolder.value.toString(),
+      "Test_preiod": controller.selectedval.value.toString(),
+      "Time": controller.time.value.format(context).toString(),
     });
   }
+
+  List<String> Bmicolumn = [
+    'Date',
+    'Result ',
+    'Status ',
+  ];
+
+
 }
 
 /////

@@ -68,91 +68,117 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
             // }
                     print('============');
               },
-                //ToDO Convert Color To HexaDecimal
             selectionColor: Color(0xffEA9363),
           ),
-          //ToDo DateTime From FireBase Has Data And DateTime From FireBase == DateTime Swelected
-            FutureBuilder(
+          FutureBuilder(
             future: controller.remindersref!.get() ,
-              builder: (context,AsyncSnapshot snapshot){
-               if(!snapshot.hasData){
-                 return Center(
-                   child: CircularProgressIndicator(),
-                 );
-               }
-               else{
-                 return Expanded(
-                   child: ListView.builder(
-                     itemCount: snapshot.data.docs.length,
-                     itemBuilder: (context, index) {
-                       print(DateFormat.yMd().format(controller.d.value));
-                       print('\n');
-                       print( DateFormat.yMd().format(
-                         DateTime.parse(snapshot.data!.docs[index]
-                         ['Reminder_Date'])
-                       ));
+            builder: (context,AsyncSnapshot snapshot){
+              if(!snapshot.hasData){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              else{
+                bool dontFound = false;
+                List<int> numReminder=[];
+                for(int i=0;i<snapshot.data.docs.length;i++){
+                  if(DateFormat.yMd().format(controller.d.value)==DateFormat.yMd().format(
+                      DateTime.parse(snapshot.data!.docs[i]
+                      ['Reminder_Date'])
+                  )
+                  ){
+                    numReminder.add(i);
+                    // remiderData.add(snapshot.data!.docs[i]);
+                  }
+                }
+                print(numReminder);
+                return numReminder.isEmpty
+                    ?Center(child: Column(
+                  children: [
+                    SizedBox(height: Get.width * 0.5,),
+                    Text('No Reminders ',style: TextStyle(
+                        fontSize: Get.width * 0.1
+                    ),),
+                  ],
+                ),)
+                    :Expanded(
+                  child: ListView.builder(
+                    itemCount: numReminder.length,
+                    itemBuilder: (context, index) {
+                      return ExpansionTile(
+                        title: Text('${snapshot.data!.docs[numReminder[index]]['Reminder_Type']}'),
+                        children: [
+                          Card(
+                            margin: EdgeInsets.all(20.0),
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              color:  Colors.grey[200],
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  child: Text(
+                                    //   '${reminderList[index]['Reminder_Date']}'),
+                                      '${
+                                          DateFormat.d().format(
+                                              DateTime.parse(                                           snapshot.data!.docs[index]['Reminder_Date']
+                                              )
+                                          )
+                                      }'),
+                                  //  backgroundColor: Colors.grey[200],
+                                ),
+                                title: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        // '${reminderList[index]['Reminder_Date']}'),
+                                          '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}'),
+                                    ),
+                                    Expanded(child: Text('${
+                                        snapshot.data!.docs[numReminder[index]]
+                                        ['Reminder_Time']
+                                    }'))
+                                  ],
+                                ),
 
-                       if(DateFormat.yMd().format(controller.d.value)==DateFormat.yMd().format(
-                           DateTime.parse(snapshot.data!.docs[index]
-                           ['Reminder_Date'])
-                           )
-                       ){
-                         print("Oooook");
-                         return ExpansionTile(
-                           title: Text('${snapshot.data!.docs[index]['Reminder_Type']}'),
-                           children: [
-                             Card(
-                               margin: EdgeInsets.all(20.0),
-                               child: Container(
-                                 padding: EdgeInsets.all(10.0),
-                                 color:  Colors.grey[200],
-                                 child: ListTile(
-                                   leading: CircleAvatar(
-                                     child: Text(
-                                       //   '${reminderList[index]['Reminder_Date']}'),
-                                         '${
-                                             DateFormat.Hm().format(
-                                                 DateTime.parse(snapshot.data!.docs[index]['Reminder_Date']
-                                                 )
-                                             )
-                                         }'),
-                                     //  backgroundColor: Colors.grey[200],
-                                   ),
-                                   title: Row(
-                                     children: [
-                                       Expanded(
-                                         child: Text(
-                                           // '${reminderList[index]['Reminder_Date']}'),
-                                             '${snapshot.data!.docs[index]['Remindnder_Description']}'),
-                                       ),
-                                     ],
-                                   ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    //  snapshot.data.docs[index] ;
+                                  },
+                                  icon: Icon(Icons.delete_forever , color: Colors.red,),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                      // print(DateFormat.yMd().format(controller.d.value));
+                      // print('\n');
+                      // print( DateFormat.yMd().format(
+                      //   DateTime.parse(snapshot.data!.docs[index]
+                      //   ['Reminder_Date'])
+                      // ));
+                      // if(DateFormat.yMd().format(controller.d.value)==DateFormat.yMd().format(
+                      //     DateTime.parse(snapshot.data!.docs[numReminder[index]]
+                      //     ['Reminder_Date'])
+                      //     )
+                      // ){
+                      //   if(!dontFound)
+                      //     dontFound = true;
+                      //   //print("Oooook");
+                      //   return
+                      // }else{
+                      //   print("Noooooooo");
+                      //   return SizedBox();
+                      // }
+                    },
+                  ),
+                );
+              }
 
-                                   trailing: IconButton(
-                                     onPressed: () {
-                                       //  snapshot.data.docs[index] ;
-                                     },
-                                     icon: Icon(Icons.delete_forever , color: Colors.red,),
-                                   ),
-                                 ),
-                               ),
-                             )
-                           ],
-                         );
-                       }else{
-                         print("Noooooooo");
-                         return SizedBox();
-
-                       }
-
-                     },
-
-                   ),
-                 );
-               }
+              //Text("") ;
             },
 
           ),
+
 
 
         ],

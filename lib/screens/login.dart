@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(90)),
-                  color:  Color(0xff9F87BF)
+                  color:  Color(0xff0E5E5A)
                 ),
                 child: Text(
                   "Login",
@@ -79,22 +79,22 @@ class LoginScreen extends StatelessWidget {
                        prefixIcon: Icon(Icons.vpn_key,color: mainColor,),
                        border: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
-                           borderSide: BorderSide(
+                          /* borderSide: BorderSide(
                                color: Color(0xff9F87BF)
-                           )
+                           )*/
                        ),
                        filled: true,
                        fillColor: Colors.grey[200],
                        enabledBorder: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color: Color(0xff9F87BF)
+                               // color:  Color(0xff0E5E5A)
                            )
                        ),
                        focusedBorder: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
                            borderSide: BorderSide(
-                               color: Color(0xff9F87BF)
+                               // color:  Color(0xff0E5E5A)
                            )
                        ),
                      ),
@@ -131,8 +131,7 @@ class LoginScreen extends StatelessWidget {
                   height: size.width / 8,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [  Color(0xff9F87BF),
-                          Color(0xff9F87BF)],
+                        colors: [   Color(0xff0E5E5A), Color(0xff0E5E5A)],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight
                     ),
