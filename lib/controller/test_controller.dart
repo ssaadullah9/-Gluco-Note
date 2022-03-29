@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:test_saja/bmi.dart';
 import 'package:test_saja/const/colors.dart';
 
@@ -49,7 +51,7 @@ Future<void> getData() async{
           for (var j = 0 ; j < 3 ; j++)
             {
 
-              Bmirow[i].add(snapShot.docs[i]['Date']);
+              Bmirow[i].add(DateFormat.yMd().format(DateTime.parse(snapShot.docs[i]['Date'])));
               Bmirow[i].add(snapShot.docs[i]['Result']);
               Bmirow[i].add(snapShot.docs[i]['Status']);
               break;
