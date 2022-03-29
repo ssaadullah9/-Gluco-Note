@@ -93,33 +93,35 @@ class _InTaksScreenState extends State<InTaksScreen> {
     ];
     this.categoryType = [
       [
-        {"name":"Apple","cal":0.3,"fat":0.3,"pro":0.3},
-        {"name":"Orange","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Banana","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"dates","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Apple","cal":95,"fat":0.3,"pro":0.5},
+        {"name":"Orange","cal":62,"fat":0.2,"pro":1.9},
+        {"name":"Banana","cal":105,"fat":0.4,"pro":1.3},
+        {"name":"dates","cal":20,"fat":0 ,"pro":0.2},
       ],
       [
-        {"name":"Chicken","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Fried Fish","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Fillet-fish","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"meat","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Chicken (100 g)","cal":239,"fat":14,"pro":27},//done
+        {"name":"Fried Fish (10 g) ","cal":199,"fat":11.37,"pro":16.72},
+        {"name":"Grilled Fish (1 fillet) ","cal":123,"fat":1.33,"pro":25.53},//done
+        {"name":"Tuna (100 g) ","cal":108,"fat":0.95,"pro":23.38},//done
+        {"name":"meat (100 g) ","cal":143,"fat":3.5,"pro":26},//done
       ],
       [
-        {"name":"Omelet","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Fried","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Boiled","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"Omelet","cal":98,"fat":7.14,"pro":6.81},//done (Fatsecret)
+        {"name":"Fried","cal":89,"fat":6.76,"pro":6.24},//done
+        {"name":"Boiled","cal":77,"fat":5.28,"pro":6.26},//done
       ],
       [
-        {"name":"White Bread","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Pasta","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Spaghetti","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"chicken kabsa","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"White Rice","cal":0.3,"fat":0.3,"pro":10},
+        {"name":"White Bread (1 slice) ","cal":66,"fat":0.82,"pro":1.91},//done
+        {"name":"Pasta (100g)","cal":131,"fat":1.05,"pro":5.15},//done
+        {"name":"Spaghetti (100g)","cal":157,"fat":0.92,"pro":5.76},//done
+        {"name":"Chicken rice (100g)","cal":150,"fat":5.44,"pro":5.66},//done
+        {"name":"White Rice (100g)","cal":129,"fat":0.28,"pro":2.66},//done
+        {"name":"Brown Rice (100g)","cal":110,"fat":0.89,"pro":2.56},//done
       ],
       [
-        {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
-        {"name":"Snickers","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Maltesers","cal":0.3,"fat":0.3,"pro":10},
+       // {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
+        {"name":"Snickers (15g)","cal":80,"fat":4,"pro":1.5},//done
+        {"name":"Maltesers (37g)","cal":180,"fat":9,"pro":3},//Done
       ],
       [
         {"name":"Vanilla","cal":0.3,"fat":0.3,"pro":10},
@@ -166,7 +168,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   dynamic L_calories = 0;
 
   dynamic liquid_result = 0;
- dynamic protein_s =0 , fat=0 , cal_s=0;
+ dynamic protein_s =0 , fat_s=0 , cal_s=0;
 
   @override
   Widget build(BuildContext context) {
@@ -327,7 +329,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           module: 'cal'
                       ), _buildContainerSolids(
                           label: 'Fat',
-                          amount: fat,
+                          amount: fat_s,
                           module: 'g'
                       ), _buildContainerSolids(
                           label: 'Protein',
@@ -350,7 +352,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                 print(categoryType![i][j]["cal"]);
                                 cal_s=categoryType![i][j]["cal"];
                                 print(categoryType![i][j]["fat"]);
-                                fat=categoryType![i][j]["fat"];
+                                fat_s=categoryType![i][j]["fat"];
                                 print(categoryType![i][j]["pro"]);
                                 protein_s=categoryType![i][j]["pro"];
                                 setState(() {
