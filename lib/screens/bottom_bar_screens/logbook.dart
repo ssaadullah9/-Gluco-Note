@@ -16,6 +16,7 @@ class LogBookScreen extends StatelessWidget {
   color: Colors.blueGrey,
   );
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -163,20 +164,20 @@ class LogBookScreen extends StatelessWidget {
                   children: [
                     BuildCaloriseAndClucoseWidget(
                       label: 'Lowest Glucose Level',
-                      amount: '5.6 mg/dl',
+                      amount: controller.HighestGlu[controller.HighestGlu.length-1].toString() + ' mg/dl',
                       color: Colors.green,
                     ),
                     SizedBox(width: size.width *0.05,),
                     BuildCaloriseAndClucoseWidget(
-                      label: 'Highest Glucose Level',
-                      amount: '10 mg/dl',
+                      label: 'Highest Glucose Level' ,
+                      amount: controller.HighestGlu[0].toString() + ' mg/dl',
                       color: Colors.red,
                     ),
                   ],
                 ),
               ),
 
-              FutureBuilder(
+         /*    FutureBuilder(
                 future: controller.Glucoref!.get(),
                 builder: (context,AsyncSnapshot snapshot)
                 {
@@ -214,8 +215,8 @@ class LogBookScreen extends StatelessWidget {
                               color: Colors.white,
                               child: DataTable(
                                   columnSpacing: size.width *0.08 ,
-                                  sortColumnIndex: controller.currentSortColumn.value,
-                                  sortAscending: controller.isAscending.value,
+                                  //sortColumnIndex: controller.currentSortColumn.value,
+                                  //sortAscending: controller.isAscending.value,
                                   headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
                                   columns:
                                   //send column List
@@ -247,7 +248,7 @@ class LogBookScreen extends StatelessWidget {
                           ),
                         ],),
                     );
-                } , ) ,
+                } , ) ,*/
 
 
             ],
@@ -280,13 +281,10 @@ List<String> Calcolumn = [
     ['Solid','15','${intl.DateFormat.yMd().format(DateTime.now())}','10 Cal','Meat'],
   ];
   List<String> Glucolumn = [
+    'Amount',
     'Time',
     'Date',
-    'Amount',
+
   ];
- /* List<List<String>> Glurow  = [
-   *//* ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-*//*
-  ];*/
+
 }

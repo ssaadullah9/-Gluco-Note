@@ -551,7 +551,7 @@ class TestScreen extends StatelessWidget {
     CollectionReference glu_info =
         FirebaseFirestore.instance.collection("Gluco_Measurment");
     glu_info.add({
-      "Result": controller.valueHolder.value.toString(),
+      "Result": controller.valueHolder.value,
       "Test_preiod": controller.selectedval.value.toString(),
       "Time": controller.time.value.format(context).toString(),
     });

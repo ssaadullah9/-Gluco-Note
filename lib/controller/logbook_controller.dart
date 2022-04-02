@@ -11,7 +11,10 @@ class LogBookController extends GetxController{
   var isAscending = true.obs;
   CollectionReference? Glucoref;
 
+
    List<List<String>> Glurow =[];
+   List HighestGlu = [
+   ] ;
 
 
   Future<void> createPDF(List column,List rows) async {
@@ -85,9 +88,23 @@ class LogBookController extends GetxController{
     });
     update();
   }
+
+  Future<void> getGluData() async {
+    CollectionReference  HGlucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await HGlucoref.orderBy("Result" ,descending: true).get().then((snapShot) {
+      print(snapShot.docs.length);
+      snapShot.docs.forEach((element) {
+        print(element["Result"]);
+       HighestGlu.add(element['Result']);
+      });
+        ;
+    });
+  }
+
   @override
   void onInit() {
-    getData();
+    getGluData() ;
+   //getData();
     super.onInit();
   }
 }

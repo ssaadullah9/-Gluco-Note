@@ -3,6 +3,7 @@
  import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
  import 'package:get/get.dart';
+import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
 import 'package:test_saja/screens/bottom_bar_screens/reminder.dart';
 import 'package:test_saja/screens/bottom_bar_screens/test.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryColor,
       ),
-      home: ReminderScreeen(),
+      home: SplashScreen(),
       // initialRoute: '/',
       //   routes: {
          //  '/': (context) => SplashScreen(),
