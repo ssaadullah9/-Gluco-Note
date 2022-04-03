@@ -10,7 +10,11 @@ class LogBookController extends GetxController{
   var currentSortColumn = 0.obs;
   var isAscending = true.obs;
   CollectionReference? Glucoref;
-
+  List<String> Glucolumn = [
+    'Result',
+    'Test_preiod',
+    'Time'
+  ].obs;
 
    List<List<String>> Glurow =[];
    List HighestGlu = [
@@ -67,23 +71,20 @@ class LogBookController extends GetxController{
     saveAndLaunchFile(bytes, 'Output.pdf');
   }
 
-  Future<void> getData() async {
-    Glucoref= FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await Glucoref!.get().then((snapShot) {
+  Future<void> getData() async{
+    Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await Glucoref!.get().then((snapShot)
+    {
       for(var i = 0 ; i < snapShot.docs.length ; i++){
         Glurow.add([]);
         for(var j =0 ; j < 3 ; j++){
           Glurow[i].add(snapShot.docs[i]['Result']);
           Glurow[i].add(snapShot.docs[i]['Test_preiod']);
-          Glurow[i].add(
-              snapShot.docs[i]['Time'].toString().substring(10,15)
-          );
+          Glurow[i].add(snapShot.docs[i]['Time']);
           break;
         }
 
       }
-      print(Glurow) ;
-
 
     });
     update();
@@ -103,8 +104,8 @@ class LogBookController extends GetxController{
 
   @override
   void onInit() {
-    getGluData() ;
-   //getData();
+   getGluData() ;
+     getData();
     super.onInit();
   }
 }

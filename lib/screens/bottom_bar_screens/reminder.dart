@@ -115,12 +115,14 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                               color:  Colors.grey[200],
                               child: ListTile(
                                 leading: CircleAvatar(
+                                  radius : 20 ,
+                                  backgroundColor : Colors.blueGrey ,
                                   child: Text(
                                     //   '${reminderList[index]['Reminder_Date']}'),
                                       '${
-                                          DateFormat.d().format(
-                                              DateTime.parse(                                           snapshot.data!.docs[index]['Reminder_Date']
-                                              )
+                                          (
+                                          snapshot.data!.docs[index]['Reminder_Time']
+
                                           )
                                       }'),
                                   //  backgroundColor: Colors.grey[200],
@@ -132,18 +134,18 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                         // '${reminderList[index]['Reminder_Date']}'),
                                           '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}'),
                                     ),
-                                    Expanded(child: Text('${
-                                        snapshot.data!.docs[numReminder[index]]
-                                        ['Reminder_Time']
-                                    }'))
+
                                   ],
                                 ),
 
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    //  snapshot.data.docs[index] ;
-                                  },
-                                  icon: Icon(Icons.delete_forever , color: Colors.red,),
+                                trailing: SizedBox(
+                                  width: 99,
+                                  child: Row(
+                                    children: [
+                                      IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                                      IconButton(onPressed: () {}, icon: Icon(Icons.delete, color: Colors.red)),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

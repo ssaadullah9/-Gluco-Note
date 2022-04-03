@@ -425,13 +425,13 @@ class TestScreen extends StatelessWidget {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder()),
                                   items: [
-                                    "before breakfast",
-                                    "after breakfast",
-                                    "before lunch",
-                                    "after lunch",
-                                    "before dinner",
-                                    "after dinner",
-                                    "before sleep"
+                                    "Before breakfast",
+                                    "After breakfast",
+                                    "Before lunch",
+                                    "After lunch",
+                                    "Before dinner",
+                                    "After dinner",
+                                    "Before sleep"
                                   ]
                                       .map((e) => DropdownMenuItem(
                                             child: Text("$e"),

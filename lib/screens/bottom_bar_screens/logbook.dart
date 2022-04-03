@@ -13,7 +13,7 @@ import '../../widgets/build_section_calorises.dart';
 class LogBookScreen extends StatelessWidget {
   final controller = Get.put(LogBookController());
   final divider= Divider(
-  color: Colors.blueGrey,
+    color: Colors.blueGrey,
   );
 
 
@@ -26,71 +26,71 @@ class LogBookScreen extends StatelessWidget {
         leading: null,
         backgroundColor: Colors.blueGrey,
         title: Text('Logbook', style: TextStyle(
-          color: Colors.white
+            color: Colors.white
         ),),
         actions: <Widget>[
           GetBuilder<LogBookController>(
             init: LogBookController(),
-              builder: (_)=>IconButton(
-                  onPressed:(){
-                   showDatePicker(
-                       context: context,
-                       initialDate: DateTime.now(),
-                       firstDate: DateTime.now(),
-                       lastDate: DateTime(2050)).then((value){
-                         if(value==null){
-                          Get.dialog(
-                            Center(
-                              child:Card(
-                                child: Container(
-                                  width: Get.width - 80,
-                                  height: Get.width *0.35,
-                                  padding: EdgeInsets.only(
-                                    left: size.width *0.05
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(12.0)
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    children: [
-                                    Expanded(child: Image.asset('assets/nodata.png')),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          TextButton(onPressed: (){
-                                            Get.back();
-                                          },
-                                              child: Text("OK",style: TextStyle(
-                                                  color: Colors.black
-                                              ),))
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
+            builder: (_)=>IconButton(
+              onPressed:(){
+                showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2050)).then((value){
+                  if(value==null){
+                    Get.dialog(
+                        Center(
+                          child:Card(
+                            child: Container(
+                              width: Get.width - 80,
+                              height: Get.width *0.35,
+                              padding: EdgeInsets.only(
+                                  left: size.width *0.05
                               ),
-                            )
-                          );
-                         }else{
-                           controller.createPDF(
-                             Calcolumn,
-                             Calrow
-                           );
-                         }
-                   });
-                  },
-                  icon:  Icon(Icons.upload_file),
-                tooltip: 'Export pdf',
-              ),),
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12.0)
+                              ),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(child: Image.asset('assets/nodata.png')),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(onPressed: (){
+                                        Get.back();
+                                      },
+                                          child: Text("OK",style: TextStyle(
+                                              color: Colors.black
+                                          ),))
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                    );
+                  }else{
+                    controller.createPDF(
+                        Calcolumn,
+                        Calrow
+                    );
+                  }
+                });
+              },
+              icon:  Icon(Icons.upload_file),
+              tooltip: 'Export pdf',
+            ),),
         ],
       ),
       body: Obx(
-          ()=>ListView(
+              ()=>ListView(
             children: <Widget>[
               Container(
                 padding:const EdgeInsets.all(12.0),
@@ -177,7 +177,7 @@ class LogBookScreen extends StatelessWidget {
                 ),
               ),
 
-         /*    FutureBuilder(
+                  FutureBuilder(
                 future: controller.Glucoref!.get(),
                 builder: (context,AsyncSnapshot snapshot)
                 {
@@ -213,42 +213,32 @@ class LogBookScreen extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             child: Container(
                               color: Colors.white,
-                              child: DataTable(
-                                  columnSpacing: size.width *0.08 ,
-                                  //sortColumnIndex: controller.currentSortColumn.value,
-                                  //sortAscending: controller.isAscending.value,
-                                  headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
-                                  columns:
-                                  //send column List
-                                  Glucolumn.map((e) => DataColumn(
+                              child:DataTable(
+                                  headingRowColor:
+                                  MaterialStateProperty
+                                      .all(Colors
+                                      .blueGrey),
+                                  //ToDO Firebase
+                                  columns:  controller.Glucolumn.map((e) => DataColumn(
                                     label: Text(e),
                                   )).toList(),
-                                  rows:
-                                  // get Rows List
-                                  //fireBAse
-                                controller.Glurow.map((e) {
-                                  return DataRow(
-                                    cells: e.map((e){
-                                      return DataCell(
-                                                  Text('$e')
-                                                );
-                                    }).toList()
-                                  );
-                                }).toList()
-                                // controller.Glurow.map((e) => DataRow(
-                                  //     cells: e.map((e){
-                                  //       List c = e;
-                                  //       return DataCell(
-                                  //         Text('$e')
-                                  //       );
-                                  //     }).toList()
-                                  // )).toList()
-                              ),
+
+                                  rows: controller.Glurow.map((e) {
+                                    return DataRow(
+                                        cells: e.map((e){
+                                          return DataCell(
+                                              Text('$e')
+                                          );
+                                        }).toList()
+                                    );
+                                  }).toList()
+
+                              ) ,
                             ),
                           ),
                         ],),
                     );
-                } , ) ,*/
+                } , ) ,
 
 
             ],
@@ -258,13 +248,13 @@ class LogBookScreen extends StatelessWidget {
 
     );
   }
-List<String> Calcolumn = [
-  'Type',
-  'Time',
-  'Date',
-  'Calories',
-  'Details',
-];
+  List<String> Calcolumn = [
+    'Type',
+    'Time',
+    'Date',
+    'Calories',
+    'Details',
+  ];
   List<List<String>> Calrow  = [
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
     ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
@@ -280,11 +270,6 @@ List<String> Calcolumn = [
     ['Solid','12','${intl.DateFormat.yMd().format(DateTime.now())}','160 Cal','Oil'],
     ['Solid','15','${intl.DateFormat.yMd().format(DateTime.now())}','10 Cal','Meat'],
   ];
-  List<String> Glucolumn = [
-    'Amount',
-    'Time',
-    'Date',
 
-  ];
 
 }
