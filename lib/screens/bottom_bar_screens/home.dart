@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../controller/home_controller.dart';
 import '../mainpage.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  final controller = Get.put(HomeController());
+
   @override
+
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.only(bottom: Get.width*0.05),
@@ -50,7 +54,7 @@ class Home extends StatelessWidget {
                   fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
               ),),
               SizedBox(height: Get.width * 0.015,),
-              Text('10  mg/dl' ,style: TextStyle(
+              Text(controller.GlucoseVal[controller.GlucoseVal.length-1].toString()+' mg/dl' ,style: TextStyle(
                   fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
               )),
             ],
@@ -126,5 +130,6 @@ class Home extends StatelessWidget {
         ),
       ],
     );
+
   }
 }
