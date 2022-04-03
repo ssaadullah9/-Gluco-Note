@@ -42,10 +42,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
   //************
 
   List<String>? category = [];
+  List<String>? exercise = [];
 
   List<List<dynamic>>? categoryType = [];
 
-  List<String>? exerciseTypes = [];
+  List<dynamic>? exerciseTypes = [];
 
   List<List<dynamic>>? exerciseTime = [];
 
@@ -55,6 +56,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   var selectExerciseType;
   var selectExerciseTime;
   var protein;
+
   //************
 
   String ? typesID;
@@ -89,14 +91,32 @@ class _InTaksScreenState extends State<InTaksScreen> {
       "Eggs",
       "Carbohydrates",
       "Sweets",
-      "Ice-Cream"
+      "Ice-Cream",
+      //"Other",//add new
     ];
     this.categoryType = [
       [
         {"name":"Apple","cal":95,"fat":0.3,"pro":0.5},
-        {"name":"Orange","cal":62,"fat":0.2,"pro":1.9},
+        {"name":"Apricot","cal":17,"fat":0.14,"pro":0.49},
+        {"name":"avocado ","cal":322,"fat":29.47,"pro":4.02},
         {"name":"Banana","cal":105,"fat":0.4,"pro":1.3},
+        {"name":"Black Olives (1 Greek olive)","cal":16,"fat":1.43 ,"pro":0.13},
+        {"name":"cherry","cal":4,"fat":0.01,"pro":0.07},
         {"name":"dates","cal":20,"fat":0 ,"pro":0.2},
+        {"name":"grape","cal":3,"fat":0.01,"pro":0.04},
+        {"name":"Java Plum (3 fruits) ","cal":5,"fat":0.02,"pro":0.06},
+        {"name":"	Kiwifruit","cal":46,"fat":0.4,"pro":0.87},
+        {"name":"Lime","cal":20,"fat":0.13,"pro":0.47},
+        {"name":"mango","cal":135,"fat":0.56,"pro":1.06},
+        {"name":"Orange","cal":62,"fat":0.2,"pro":1.9},
+        {"name":"Pineapple (1 slice) ","cal":40,"fat":0.1,"pro":0.45},
+        {"name":"Pomegranate ","cal":105,"fat":0.46,"pro":1.46},
+        {"name":"Peach","cal":38,"fat":0.24,"pro":0.89},
+        {"name":"Pear","cal":96,"fat":0.2,"pro":0.63},
+        {"name":"strawberry","cal":4,"fat":0.04 ,"pro":0.08},
+        {"name":"Watermelon (1 cup of diced)","cal":46,"fat":0.23,"pro":0.93} ,
+        {"name":"Watermelon (1 melon) ","cal":1355,"fat":6.78,"pro":27.56},
+
       ],
       [
         {"name":"Chicken (100 g)","cal":239,"fat":14,"pro":27},//done
@@ -122,15 +142,45 @@ class _InTaksScreenState extends State<InTaksScreen> {
        // {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
         {"name":"Snickers (15g)","cal":80,"fat":4,"pro":1.5},//done
         {"name":"Maltesers (37g)","cal":180,"fat":9,"pro":3},//Done
+        {"name":"Milky Way Bar (52.2g)","cal":240,"fat":9,"pro":2},//done
+        {"name":"Jellybeans (10 small)","cal":41,"fat":0.01,"pro":0},//done
       ],
       [
-        {"name":"Vanilla","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Chocolate","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Strawberry","cal":0.4,"fat":0.3,"pro":10},
+        {"name":"Vanilla (1/2 cup) ","cal":145,"fat":7.92,"pro":2.52},//done
+        {"name":"Chocolate","cal":125,"fat":6.38,"pro":2.2},//done
+        {"name":"Strawberry","cal":111,"fat":4.87,"pro":1.86},//done
+
       ],
 
 
     ];
+    this.exercise =[
+      "Walking",
+      "Running",
+      "Swimming"
+
+    ];
+    // this.exerciseTypes=[
+    //   [
+    //     {"minu":"5 Minutes","calo":21},
+    //     {"minu":"10 Minutes","calo":42},
+    //     {"minu":"15 Minutes","calo":63},
+    //     {"minu":"30 Minutes","calo":42},
+    //     {"minu":"10 Minutes","calo":42},
+    //     {"minu":"10 Minutes","calo":42},
+    //
+    //
+    //   ],
+    // [
+    //   {"minu":"5 Minutes","calo":21},
+    // {"minu":"5 Minutes","calo":21},
+    //   ],
+    // [
+    // {"minu":"5 Minutes","calo":21},
+    // {"minu":"5 Minutes","calo":21},
+    //   ]
+    // ];
+
     this.exerciseTypes = [
       "Walking",
       "Running",
@@ -166,9 +216,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
   dynamic solids_result;
   dynamic selected_squantity;
   dynamic L_calories = 0;
-
+ dynamic sfat =0;
+ dynamic spro =0;
   dynamic liquid_result = 0;
- dynamic protein_s =0 , fat_s=0 , cal_s=0;
+ dynamic protein_s =0 , fat_s=0 , cal_s=0 , Scal =0;
 
   @override
   Widget build(BuildContext context) {
@@ -285,9 +336,23 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
                     },
                   ),
+
                   SizedBox(
                     height: Get.width * 0.05,
                   ),
+                  // SizedBox(height: Get.width * 0.05,),
+                  // selectCategory=='Other'?
+                  // TextFormField(
+                  //   keyboardType: TextInputType.number,
+                  //   decoration: InputDecoration(
+                  //       border: OutlineInputBorder(),
+                  //       hintText: 'enter calories..'
+                  //   ),
+                  //   onChanged: (val) {
+                  //     selectCategoryType = int.parse(val);
+                  //   },
+                  // ): SizedBox(),
+
                   Column(
 
                       children: <Widget>[
@@ -323,20 +388,21 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       ]
                   ),
                   SizedBox(height: Get.width * 0.05,),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildContainerSolids(
                           label: 'Calories',
-                          amount: cal_s,
+                          amount: Scal,
                           module: 'cal'
                       ), _buildContainerSolids(
                           label: 'Fat',
-                          amount: fat_s,
+                          amount: sfat,
                           module: 'g'
                       ), _buildContainerSolids(
                           label: 'Protein',
-                          amount: protein_s,
+                          amount: spro,
                           module: 'g'
                       ),
                     ],
@@ -354,10 +420,13 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                 //هون عرفي 3 متحولات واسندي القيمة الهن واعرضيهن عادي
                                 print(categoryType![i][j]["cal"]);
                                 cal_s=categoryType![i][j]["cal"];
+                                Scal= cal_s*selected_squantity;
                                 print(categoryType![i][j]["fat"]);
                                 fat_s=categoryType![i][j]["fat"];
+                                sfat =fat_s * selected_squantity;
                                 print(categoryType![i][j]["pro"]);
                                 protein_s=categoryType![i][j]["pro"];
+                                spro = protein_s*selected_squantity;
                                 setState(() {
 
                                 });
@@ -513,10 +582,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.camera_enhance),
-                      ),
+                      //suffixIcon: IconButton(
+                       // onPressed: () {},
+                       // icon: Icon(Icons.camera_enhance),
+                     // ),
                     ),
                   ),
                   SizedBox(height: Get.width * 0.1,),
@@ -620,7 +689,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       }).toList(),
                       onChanged: (val) {
                         selectExerciseType = val;
-                        indexType2 = exerciseTypes!.indexOf('$selectExerciseType');
+                       indexType2 = exerciseTypes!.indexOf('$selectExerciseType');
                         isLoading2 = true;
                         Timer(Duration(milliseconds: 500),(){
                           isLoading2 = false;
@@ -876,4 +945,19 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
     );
   }
+}
+
+
+cal_swimming(String val ,int w,int t){
+  dynamic calories;
+  if (val =="swimming")
+  calories = t * 4 * 3.5 * w / (200 * 60);
+  else
+    if (val =="walking")
+      calories = t * 3 * 3.5 * w / (200 * 60);
+else
+    if (val =="Running")
+      calories = t * 8 * 3.5 * w / (200 * 60);
+
+
 }
