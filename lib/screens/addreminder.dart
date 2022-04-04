@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,7 @@ class AddnewReminder extends StatelessWidget {
                         onPressed: () {
                           if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
                               && controller.selected_date != null && controller.selected_time.value != null){
-                            addReminder();
+                            addReminder(context);
                             Get.snackbar(
                                 "Reminder added successfully ! " ,
                                 ""
@@ -151,13 +152,13 @@ class AddnewReminder extends StatelessWidget {
   }
 
 
-  addReminder() async{
+  addReminder(context) async{
     CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders");
     newReminder.add(
         {
           "Reminder_Date" : controller.selected_date.value.toString(),
           "Remindnder_Description" : controller.description.value.toString(),
-          "Reminder_Time" : controller.selected_time.value.toString(),
+          "Reminder_Time" : controller.selected_time.value.format(context).toString(),
           "Reminder_Type" : controller.selectedType.value.toString(),
         }
     ) ;

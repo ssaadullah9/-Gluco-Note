@@ -10,6 +10,7 @@ class LogBookController extends GetxController{
   var currentSortColumn = 0.obs;
   var isAscending = true.obs;
   CollectionReference? Glucoref;
+  CollectionReference? Calref;
   List<String> Glucolumn = [
     'Result',
     'Test_preiod',
@@ -19,7 +20,14 @@ class LogBookController extends GetxController{
    List<List<String>> Glurow =[];
    List HighestGlu = [
    ] ;
-
+  List<String> Calcolumn = [
+    'Type',
+    'category',
+    'Quantity',
+    'Calories',
+  ].obs;
+  List<List<String>> Calrow  = [
+  ];
 
   Future<void> createPDF(List column,List rows) async {
     PdfDocument document =  PdfDocument();
@@ -71,7 +79,7 @@ class LogBookController extends GetxController{
     saveAndLaunchFile(bytes, 'Output.pdf');
   }
 
-  Future<void> getData() async{
+  Future<void> getGtableData() async{
     Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
     await Glucoref!.get().then((snapShot)
     {
@@ -102,10 +110,32 @@ class LogBookController extends GetxController{
     });
   }
 
+  Future<void> getCtableData() async{
+    Calref = FirebaseFirestore.instance.collection("intakes");
+    await Calref!.get().then((snapShot)
+    {
+      for(var i = 0 ; i < snapShot.docs.length ; i++ ){
+        Calrow.add([]);
+        for (var j = 0 ; j < 3 ; j++)
+        {
+
+          Calrow[i].add(snapShot.docs[i]['intakes_type']);
+          Calrow[i].add(snapShot.docs[i]['intakes_category']);
+          Calrow[i].add(snapShot.docs[i]['intakes_Quantity']);
+          Calrow[i].add(snapShot.docs[i]['intakes_Cal']);
+          break;
+        }
+
+      }
+    });
+    update();
+  }
+
   @override
   void onInit() {
    getGluData() ;
-     getData();
+   getGtableData();
+   getCtableData();
     super.onInit();
   }
 }

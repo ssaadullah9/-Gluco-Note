@@ -136,6 +136,35 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(onPressed: (){
+                            Get.defaultDialog(
+                                title: "Type your new Phone ",
+                                radius: 40,
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextField(
+                                      keyboardType: TextInputType.text,
+                                      maxLines: 1,
+                                      decoration: InputDecoration(
+
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.grey, width: 4.0))),
+                                    ),
+                                    SizedBox(
+                                      height: 30.0,
+                                    ),
+                                    RaisedButton(
+                                      onPressed: () {
+                                      },
+                                      child: Text(
+                                        'Save changes',
+                                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                                      ),
+                                      color: Colors.blueGrey,
+                                    )
+                                  ],
+                                )
+                            );
                             controller.readOnlyPhone.value = false;
                           }, child: Text('change phone number'))
                         ],
@@ -159,6 +188,35 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(onPressed: (){
+                            Get.defaultDialog(
+                              title: "Type your new password ",
+                              radius: 40,
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    keyboardType: TextInputType.text,
+                                    maxLines: 1,
+                                    decoration: InputDecoration(
+
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey, width: 4.0))),
+                                  ),
+                                  SizedBox(
+                                    height: 30.0,
+                                  ),
+                                  RaisedButton(
+                                    onPressed: () {
+                                    },
+                                    child: Text(
+                                      'Save changes',
+                                      style: TextStyle(color: Colors.white, fontSize: 16.0),
+                                    ),
+                                    color: Colors.blueGrey,
+                                  )
+                                ],
+                              )
+                            );
                             controller.readOnlyPassword.value = false;
                           }, child: Text('change Password'))
                         ],

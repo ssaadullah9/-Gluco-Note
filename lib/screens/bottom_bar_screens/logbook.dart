@@ -78,8 +78,8 @@ class LogBookScreen extends StatelessWidget {
                     );
                   }else{
                     controller.createPDF(
-                        Calcolumn,
-                        Calrow
+                        controller.Glucolumn,
+                        controller.Glurow
                     );
                   }
                 });
@@ -132,25 +132,27 @@ class LogBookScreen extends StatelessWidget {
                   children: [
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                          columnSpacing: size.width *0.08 ,
-                          sortColumnIndex: controller.currentSortColumn.value,
-                          sortAscending: controller.isAscending.value,
-                          headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
-                          columns:
-                          //send column List
-                          Calcolumn.map((e) => DataColumn(
+                      child:DataTable(
+                          headingRowColor:
+                          MaterialStateProperty
+                              .all(Colors
+                              .blueGrey),
+                          //ToDO Firebase
+                          columns:  controller.Calcolumn.map((e) => DataColumn(
                             label: Text(e),
                           )).toList(),
-                          rows:
-                          // get Rows List
-                          //fireBAse
-                          Calrow.map((e) => DataRow(
-                              cells: e.map((e) => DataCell(
-                                  Text(e)
-                              )).toList()
-                          )).toList()
-                      ),
+
+                          rows: controller.Calrow.map((e) {
+                            return DataRow(
+                                cells: e.map((e){
+                                  return DataCell(
+                                      Text('$e')
+                                  );
+                                }).toList()
+                            );
+                          }).toList()
+
+                      )
                     ),
                   ],
                 ),
@@ -248,28 +250,7 @@ class LogBookScreen extends StatelessWidget {
 
     );
   }
-  List<String> Calcolumn = [
-    'Type',
-    'Time',
-    'Date',
-    'Calories',
-    'Details',
-  ];
-  List<List<String>> Calrow  = [
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','10','${intl.DateFormat.yMd().format(DateTime.now())}','100 Cal','Egg'],
-    ['Solid','06','${intl.DateFormat.yMd().format(DateTime.now())}','120 Cal','Bread'],
-    ['Solid','12','${intl.DateFormat.yMd().format(DateTime.now())}','160 Cal','Oil'],
-    ['Solid','15','${intl.DateFormat.yMd().format(DateTime.now())}','10 Cal','Meat'],
-  ];
+
 
 
 }

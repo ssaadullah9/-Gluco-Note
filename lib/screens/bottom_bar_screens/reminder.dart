@@ -58,14 +58,6 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                     setState(() {
 
                     });
-            // for(var i = 0 ; i < controller.remindersDate.length; i++){
-            //   if(d.isAtSameMomentAs(DateTime
-            //       .parse(controller.remindersDate[i]))){
-            //     print('Yes');
-            //   }else{
-            //     print('Woow');
-            //   }
-            // }
                     print('============');
               },
             selectionColor: Color(0xffEA9363),
@@ -111,20 +103,22 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                           Card(
                             margin: EdgeInsets.all(20.0),
                             child: Container(
-                              padding: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.all(30.0),
                               color:  Colors.grey[200],
                               child: ListTile(
+                             minLeadingWidth: 10 ,
                                 leading: CircleAvatar(
-                                  radius : 20 ,
+                                radius: 30,
                                   backgroundColor : Colors.blueGrey ,
                                   child: Text(
                                     //   '${reminderList[index]['Reminder_Date']}'),
                                       '${
                                           (
                                           snapshot.data!.docs[index]['Reminder_Time']
-
                                           )
-                                      }'),
+                                      }' , style: TextStyle(
+                                    fontSize: 14 , color: Colors.white ,
+                                  ), textAlign: TextAlign.center, ),
                                   //  backgroundColor: Colors.grey[200],
                                 ),
                                 title: Row(
@@ -133,14 +127,17 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                       child: Text(
                                         // '${reminderList[index]['Reminder_Date']}'),
                                           '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}'),
+
                                     ),
 
                                   ],
                                 ),
 
                                 trailing: SizedBox(
-                                  width: 99,
-                                  child: Row(
+                                  width: 10,
+                                  child: Column(
+                                   // crossAxisAlignment : CrossAxisAlignment.start,
+                                    mainAxisAlignment : MainAxisAlignment.start,
                                     children: [
                                       IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
                                       IconButton(onPressed: () {}, icon: Icon(Icons.delete, color: Colors.red)),
