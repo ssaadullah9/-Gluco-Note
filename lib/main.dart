@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryColor,
       ),
-      home: InTaksScreen(),
+      home: SplashScreen(),
       // initialRoute: '/',
       //   routes: {
          //  '/': (context) => SplashScreen(),
