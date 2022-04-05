@@ -107,23 +107,6 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-/*
-BottomNavigationBar(
-        currentIndex: controller.currentIndex.value,
-        type: BottomNavigationBarType.shifting,
-        unselectedItemColor: Colors.blueGrey,
-        selectedItemColor: Colors.black87,
-        onTap: (index){
-          controller.currentIndex.value = index;
-        },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.add_chart_rounded),label: 'LogBook'),
-          BottomNavigationBarItem(icon: Icon(Icons.add_a_photo),label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate_outlined),label: 'Tests'),
-        ],
-      )
- */
 class GlucoseDate {
   final String GDay;
 

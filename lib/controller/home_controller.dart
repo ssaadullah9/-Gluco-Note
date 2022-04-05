@@ -7,10 +7,11 @@ class HomeController extends GetxController{
 
   List GlucoseVal = [
   ].obs ;
+  CollectionReference?  Glucose ;
 
   Future<void> getGluData() async {
-    CollectionReference  Glucose = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await Glucose.get().then((snapShot) {
+      Glucose = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await Glucose!.get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["Result"]);

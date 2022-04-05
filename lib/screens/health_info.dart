@@ -9,6 +9,7 @@ import 'package:test_saja/const/colors.dart';
 import 'package:test_saja/controller/healthinfo_controller.dart';
 
 import '../widgets/navbar.dart';
+import 'bottom_bar_screens/home.dart';
 
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
@@ -93,6 +94,17 @@ class HealthInfoScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: Get.width * 0.05,),
+              TextFormField(
+                keyboardType: TextInputType.numberWithOptions(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Height",
+                ),
+                onChanged: (val){
+                  controller.selectedHeight.value= val ;
+                },
+              ),
+              SizedBox(height: Get.width * 0.05,),
               DropdownButtonFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder()
@@ -122,12 +134,14 @@ class HealthInfoScreen extends StatelessWidget {
                   child: ElevatedButton.icon(
                       onPressed: () {
                         if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
-                            && controller.selectedBirthDate != null && controller.selectedType.value != null)){
+                         &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
                          addData() ;
                          Get.snackbar(
                              "Data Saved " ,
                              ""
-                         ); }
+                         );
+                        // Get.off(Home()) ;
+                        }
                         else
                           AwesomeDialog(
                             context: context,
@@ -195,6 +209,7 @@ class HealthInfoScreen extends StatelessWidget {
       {
         "Gender" : controller.radioButtonItem.value.toString(),
         "Weight" : controller.selectedWeight.value,
+        "Height" : controller.selectedHeight.value,
         "Diabetes_Type" : controller.selectedType.value,
         "DOB" :DateFormat('dd-MM-yyyy').format(DateTime.parse(controller.selectedBirthDate.value.toString())) ,
       }

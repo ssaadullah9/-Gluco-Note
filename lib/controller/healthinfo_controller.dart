@@ -5,6 +5,7 @@ class HealthInfoController extends GetxController{
   var keyForm = GlobalKey<FormState>().obs;
   var selectedGender = ''.obs;
   var selectedWeight = ''.obs;
+  var selectedHeight = ''.obs;
   var selectedType = 'ff'.obs;
   var selectedBirthDate = DateTime.now().obs;
   var selectedDate= DateTime.now().obs;

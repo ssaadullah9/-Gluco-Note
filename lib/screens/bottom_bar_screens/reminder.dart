@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -67,7 +68,9 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
             builder: (context,AsyncSnapshot snapshot){
               if(!snapshot.hasData){
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitCircle(
+                    color: Colors.amber,
+                  ),
                 );
               }
               else{

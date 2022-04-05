@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -47,18 +48,33 @@ class Home extends StatelessWidget {
               )
             ]
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Your glucose today' ,style: TextStyle(
-                  fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
-              ),),
-              SizedBox(height: Get.width * 0.015,),
-              Text(controller.GlucoseVal[controller.GlucoseVal.length-1].toString()+' mg/dl' ,style: TextStyle(
-                  fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
-              )),
-            ],
-          ),
+
+            child: FutureBuilder(
+              future: controller.Glucose!.get() ,
+              builder: ( context, AsyncSnapshot snapshot) {
+                if(!snapshot.hasData){
+                  return Center(
+                    child:SpinKitCircle(
+                      color: Colors.amber,
+                    ),
+                  );
+                }
+                else{
+                  return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text('Your glucose today' ,style: TextStyle(
+                fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+                ),),
+                SizedBox(height: Get.width * 0.015,),
+                Text(controller.GlucoseVal[controller.GlucoseVal.length-1].toString()+' mg/dl' ,style: TextStyle(
+                fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
+                )),
+                ],
+                );
+                }
+              },
+            ),
         ) ,
         Container(
           margin: EdgeInsets.symmetric(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import '../../widgets/build_section_calorises.dart';
 
 class LogBookScreen extends StatelessWidget {
   final controller = Get.put(LogBookController());
+
   final divider= Divider(
     color: Colors.blueGrey,
   );
@@ -78,7 +80,7 @@ class LogBookScreen extends StatelessWidget {
                     );
                   }else{
                     controller.createPDF(
-                        controller.Glucolumn,
+                        Glucolumn,
                         controller.Glurow
                     );
                   }
@@ -99,13 +101,13 @@ class LogBookScreen extends StatelessWidget {
                   children: [
                     BuildCaloriseAndClucoseWidget(
                       label: 'Lowest Caloriess',
-                      amount: '100 cal',
+                      amount: /*controller.HighestCal[controller.HighestCal.length-1].toString() + */' 12 Cal',
                       color: Colors.green,
                     ),
                     SizedBox(width: size.width *0.05,),
                     BuildCaloriseAndClucoseWidget(
                       label: 'Highest Caloriess',
-                      amount: '300 cal',
+                      amount: /*controller.HighestCal[0].toString() +*/ '20 Cal',
                       color: Colors.red,
                     ),
                   ],
@@ -138,7 +140,7 @@ class LogBookScreen extends StatelessWidget {
                               .all(Colors
                               .blueGrey),
                           //ToDO Firebase
-                          columns:  controller.Calcolumn.map((e) => DataColumn(
+                          columns:  Calcolumn.map((e) => DataColumn(
                             label: Text(e),
                           )).toList(),
 
@@ -179,20 +181,6 @@ class LogBookScreen extends StatelessWidget {
                 ),
               ),
 
-                  FutureBuilder(
-                future: controller.Glucoref!.get(),
-                builder: (context,AsyncSnapshot snapshot)
-                {
-                  if(!snapshot.hasData){
-                    return Center(
-                      child: CircularProgressIndicator(
-                        semanticsLabel: 'LOADING',
-                        backgroundColor: Colors.blueGrey,
-                        strokeWidth: 10,
-                      ),
-                    );
-
-                  } else return
                     Container(
                       margin: EdgeInsets.symmetric(
                           vertical: 10.0
@@ -221,7 +209,7 @@ class LogBookScreen extends StatelessWidget {
                                       .all(Colors
                                       .blueGrey),
                                   //ToDO Firebase
-                                  columns:  controller.Glucolumn.map((e) => DataColumn(
+                                  columns:  Glucolumn.map((e) => DataColumn(
                                     label: Text(e),
                                   )).toList(),
 
@@ -239,8 +227,7 @@ class LogBookScreen extends StatelessWidget {
                             ),
                           ),
                         ],),
-                    );
-                } , ) ,
+                    )
 
 
             ],
@@ -251,6 +238,17 @@ class LogBookScreen extends StatelessWidget {
     );
   }
 
-
+  List<String> Calcolumn = [
+    'Type',
+    'category',
+    'Quantity',
+    'Calories',
+  ].obs;
+  List<String> Glucolumn = [
+    'Result',
+    'Test_preiod',
+    'Time',
+    'Date'
+  ].obs;
 
 }
