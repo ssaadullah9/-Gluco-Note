@@ -1,6 +1,10 @@
 import 'dart:async';
 //import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:search_choices/search_choices.dart';
 //import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +87,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   late String dropdownValue;
 
+  int? _w;
+
   @override
   void initState() {
+    getDataFromFireBaseHealthInfo();
     timep = TimeOfDay.now();
     this.category = [
       "Fruits",
@@ -93,7 +100,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
       "Carbohydrates",
       "Sweets",
       "Ice-Cream",
-      //"Other",//add new
+      "Other",//add new
     ];
     this.categoryType = [
       [
@@ -230,6 +237,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
       ["60 Minutes"]
     ];
   }
+  var updated;
 
 
   String typeOthers = '';
@@ -247,8 +255,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
       timep = picked;
     }
   }
-
-
+  double circlePrograce = 0.0;
   String selected_Ltype = '';
   dynamic selected_Lquantity = 0;
   dynamic solids_result;
@@ -264,6 +271,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   dynamic tim = 0,
       h = 0,
       w = 0;
+Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -356,7 +364,16 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   ),
                   isLoading
                       ? Center(child: CircularProgressIndicator())
-                      : DropdownButtonFormField(
+                      : selectCategory == "Other"
+                      ?TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Enter the calories",
+                    ),
+                  )
+                  :
+
+                  DropdownButtonFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (val) {
                       if (val == null) {
@@ -764,28 +781,51 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   ),
                   isLoading2
                       ? Center(child: CircularProgressIndicator())
-                      : DropdownButtonFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      if (val == null) {
-                        return 'Error';
-                      }
-                    },
+                  :TextFormField(
+                    keyboardType: TextInputType.datetime,
+
                     decoration: InputDecoration(
-                        hintText: 'SelectTime', border: OutlineInputBorder()),
-                    items: exerciseTime![indexType2]
-                        .map((e) {
-                      return DropdownMenuItem(
-                        child: Text('$e'),
-                        value: e,
-                      );
-                    }).toList(),
-                    onChanged: selectExerciseType == null ? null
-                        : (val) {
+                      border: OutlineInputBorder(),
+                      hintText: 'time',
+                    ),
+                    onChanged: (val){
                       selectExerciseTime = val;
-                      tim = selectExerciseTime;
                     },
+                  onEditingComplete: (){
+                      print(selectExerciseTime);
+                      Timer.periodic(Duration(
+                      minutes: int.parse(selectExerciseTime)
+                    ), (timer) {
+                      print(timer.tick.toString());
+                      setState(() {
+
+                      });
+                    });
+                  },
                   ),
+
+                  //     : DropdownButtonFormField(
+                  //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  //   validator: (val) {
+                  //     if (val == null) {
+                  //       return 'Error';
+                  //     }
+                  //   },
+                  //   decoration: InputDecoration(
+                  //       hintText: 'SelectTime', border: OutlineInputBorder()),
+                  //   items: exerciseTime![indexType2]
+                  //       .map((e) {
+                  //     return DropdownMenuItem(
+                  //       child: Text('$e'),
+                  //       value: e,
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: selectExerciseType == null ? null
+                  //       : (val) {
+                  //     selectExerciseTime = val;
+                  //     tim = selectExerciseTime;
+                  //   },
+                  // ),
 
 
                   Container(
@@ -822,10 +862,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             radius: Get.width * 0.135,
                             lineWidth: 10.0,
                             //ToDo FireBase
-                            percent: 0.65,
+                            percent: 0.56,
                             animation: true,
-                            animationDuration: 4000,
-                            center: new Text('50.0%', style: TextStyle(
+                            animationDuration: 2000,
+                            center:  Text('50%', style: TextStyle(
                                 fontSize: 20
                             ),),
                             progressColor: Color(0xFFEA9363),
@@ -881,8 +921,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               lineHeight: 25.0,
                               animationDuration: 4000,
                               //ToDo FireBase
-                              percent: 0.64,
-                              center: Text("64.0%"),
+                              percent: circlePrograce/100,
+                              center: Text("${
+                              updated
+                              }%"),
                               barRadius: const Radius.circular(16),
                               progressColor: Colors.red,
                               trailing: Icon(Icons.directions_run),
@@ -950,6 +992,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
       ),
     ),
     );
+
   }
 
   Widget _buildContainerlequids({label, amount, module}) {
@@ -982,19 +1025,6 @@ class _InTaksScreenState extends State<InTaksScreen> {
     );
   }
 
-  // add_lequids() async {
-  //   CollectionReference liquid_ref = FirebaseFirestore.instance.collection(
-  //       "Liquids");
-  //   liquid_ref.add(
-  //       {
-  //         "Liquid_Cal": liquid_result.toString(),
-  //         "Liquid_Type": selected_Ltype.toString(),
-  //         "Liquid_Quantity": selected_Lquantity.toString(),
-  //       }
-  //
-  //   );
-  // }
-
   add_intakes(String type , int cal , int qu ,String cate) async {
     CollectionReference solieds_ref = FirebaseFirestore.instance.collection(
         "intakes");
@@ -1008,7 +1038,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
         }
     );
   }
-
+  void getDataFromFireBaseHealthInfo()async{
+    //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
+    // var user  =  FirebaseAuth.instance.currentUser;
+    CollectionReference? data;
+    data =  FirebaseFirestore.instance.collection("Health_Info");
+    await data.get().then((snapShot) {
+      _w =int.parse('${ snapShot.docs[1]['Weight']}');
+      snapShot.docs.forEach((element) {
+        // print(user!.uid);
+        //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد 
+        
+      });
+    });
+  }
 
   cal_swimming(String val, int w, int t) {
     dynamic calories;
