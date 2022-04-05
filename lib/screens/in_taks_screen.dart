@@ -1,6 +1,10 @@
 import 'dart:async';
 //import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:search_choices/search_choices.dart';
 //import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,13 +43,15 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic> time = [];
 
   List<dynamic> ex_cal = [];
+
   //************
 
   List<String>? category = [];
+  List<String>? exercise = [];
 
   List<List<dynamic>>? categoryType = [];
 
-  List<String>? exerciseTypes = [];
+  List<dynamic>? exerciseTypes = [];
 
   List<List<dynamic>>? exerciseTime = [];
 
@@ -55,6 +61,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   var selectExerciseType;
   var selectExerciseTime;
   var protein;
+
   //************
 
   String ? typesID;
@@ -80,8 +87,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   late String dropdownValue;
 
+  int? _w;
+
   @override
   void initState() {
+    getDataFromFireBaseHealthInfo();
     timep = TimeOfDay.now();
     this.category = [
       "Fruits",
@@ -89,48 +99,132 @@ class _InTaksScreenState extends State<InTaksScreen> {
       "Eggs",
       "Carbohydrates",
       "Sweets",
-      "Ice-Cream"
+      "Ice-Cream",
+      "Other",//add new
     ];
     this.categoryType = [
       [
-        {"name":"Apple","cal":95,"fat":0.3,"pro":0.5},
-        {"name":"Orange","cal":62,"fat":0.2,"pro":1.9},
-        {"name":"Banana","cal":105,"fat":0.4,"pro":1.3},
-        {"name":"dates","cal":20,"fat":0 ,"pro":0.2},
+        {"name": "Apple", "cal": 95, "fat": 0.3, "pro": 0.5},
+        {"name": "Apricot", "cal": 17, "fat": 0.14, "pro": 0.49},
+        {"name": "avocado ", "cal": 322, "fat": 29.47, "pro": 4.02},
+        {"name": "Banana", "cal": 105, "fat": 0.4, "pro": 1.3},
+        {
+          "name": "Black Olives (1 Greek olive)",
+          "cal": 16,
+          "fat": 1.43,
+          "pro": 0.13
+        },
+        {"name": "cherry", "cal": 4, "fat": 0.01, "pro": 0.07},
+        {"name": "dates", "cal": 20, "fat": 0, "pro": 0.2},
+        {"name": "grape", "cal": 3, "fat": 0.01, "pro": 0.04},
+        {"name": "Java Plum (3 fruits) ", "cal": 5, "fat": 0.02, "pro": 0.06},
+        {"name": "	Kiwifruit", "cal": 46, "fat": 0.4, "pro": 0.87},
+        {"name": "Lime", "cal": 20, "fat": 0.13, "pro": 0.47},
+        {"name": "mango", "cal": 135, "fat": 0.56, "pro": 1.06},
+        {"name": "Orange", "cal": 62, "fat": 0.2, "pro": 1.9},
+        {"name": "Pineapple (1 slice) ", "cal": 40, "fat": 0.1, "pro": 0.45},
+        {"name": "Pomegranate ", "cal": 105, "fat": 0.46, "pro": 1.46},
+        {"name": "Peach", "cal": 38, "fat": 0.24, "pro": 0.89},
+        {"name": "Pear", "cal": 96, "fat": 0.2, "pro": 0.63},
+        {"name": "strawberry", "cal": 4, "fat": 0.04, "pro": 0.08},
+        {
+          "name": "Watermelon (1 cup of diced)",
+          "cal": 46,
+          "fat": 0.23,
+          "pro": 0.93
+        },
+        {
+          "name": "Watermelon (1 melon) ",
+          "cal": 1355,
+          "fat": 6.78,
+          "pro": 27.56
+        },
+
       ],
       [
-        {"name":"Chicken (100 g)","cal":239,"fat":14,"pro":27},//done
-        {"name":"Fried Fish (10 g) ","cal":199,"fat":11.37,"pro":16.72},
-        {"name":"Grilled Fish (1 fillet) ","cal":123,"fat":1.33,"pro":25.53},//done
-        {"name":"Tuna (100 g) ","cal":108,"fat":0.95,"pro":23.38},//done
-        {"name":"meat (100 g) ","cal":143,"fat":3.5,"pro":26},//done
+        {"name": "Chicken (100 g)", "cal": 239, "fat": 14, "pro": 27}, //done
+        {"name": "Fried Fish (10 g) ", "cal": 199, "fat": 11.37, "pro": 16.72},
+        {
+          "name": "Grilled Fish (1 fillet) ",
+          "cal": 123,
+          "fat": 1.33,
+          "pro": 25.53
+        }, //done
+        {"name": "Tuna (100 g) ", "cal": 108, "fat": 0.95, "pro": 23.38}, //done
+        {"name": "meat (100 g) ", "cal": 143, "fat": 3.5, "pro": 26}, //done
       ],
       [
-        {"name":"Omelet","cal":98,"fat":7.14,"pro":6.81},//done (Fatsecret)
-        {"name":"Fried","cal":89,"fat":6.76,"pro":6.24},//done
-        {"name":"Boiled","cal":77,"fat":5.28,"pro":6.26},//done
+        {"name": "Omelet", "cal": 98, "fat": 7.14, "pro": 6.81},
+        //done (Fatsecret)
+        {"name": "Fried", "cal": 89, "fat": 6.76, "pro": 6.24},
+        //done
+        {"name": "Boiled", "cal": 77, "fat": 5.28, "pro": 6.26},
+        //done
       ],
       [
-        {"name":"White Bread (1 slice) ","cal":66,"fat":0.82,"pro":1.91},//done
-        {"name":"Pasta (100g)","cal":131,"fat":1.05,"pro":5.15},//done
-        {"name":"Spaghetti (100g)","cal":157,"fat":0.92,"pro":5.76},//done
-        {"name":"Chicken rice (100g)","cal":150,"fat":5.44,"pro":5.66},//done
-        {"name":"White Rice (100g)","cal":129,"fat":0.28,"pro":2.66},//done
-        {"name":"Brown Rice (100g)","cal":110,"fat":0.89,"pro":2.56},//done
+        {"name": "White Bread (1 slice) ", "cal": 66, "fat": 0.82, "pro": 1.91},
+        //done
+        {"name": "Pasta (100g)", "cal": 131, "fat": 1.05, "pro": 5.15},
+        //done
+        {"name": "Spaghetti (100g)", "cal": 157, "fat": 0.92, "pro": 5.76},
+        //done
+        {"name": "Chicken rice (100g)", "cal": 150, "fat": 5.44, "pro": 5.66},
+        //done
+        {"name": "White Rice (100g)", "cal": 129, "fat": 0.28, "pro": 2.66},
+        //done
+        {"name": "Brown Rice (100g)", "cal": 110, "fat": 0.89, "pro": 2.56},
+        //done
       ],
       [
-       // {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
-        {"name":"Snickers (15g)","cal":80,"fat":4,"pro":1.5},//done
-        {"name":"Maltesers (37g)","cal":180,"fat":9,"pro":3},//Done
+        // {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
+        {"name": "Snickers (15g)", "cal": 80, "fat": 4, "pro": 1.5},
+        //done
+        {"name": "Maltesers (37g)", "cal": 180, "fat": 9, "pro": 3},
+        //Done
+        {"name": "Milky Way Bar (52.2g)", "cal": 240, "fat": 9, "pro": 2},
+        //done
+        {"name": "Jellybeans (10 small)", "cal": 41, "fat": 0.01, "pro": 0},
+        //done
       ],
       [
-        {"name":"Vanilla","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Chocolate","cal":0.3,"fat":0.3,"pro":10},
-        {"name":"Strawberry","cal":0.4,"fat":0.3,"pro":10},
+        {"name": "Vanilla (1/2 cup) ", "cal": 145, "fat": 7.92, "pro": 2.52},
+        //done
+        {"name": "Chocolate", "cal": 125, "fat": 6.38, "pro": 2.2},
+        //done
+        {"name": "Strawberry", "cal": 111, "fat": 4.87, "pro": 1.86},
+        //done
+
       ],
 
 
     ];
+    this.exercise = [
+      "Walking",
+      "Running",
+      "Swimming"
+
+    ];
+    // this.exerciseTypes=[
+    //   [
+    //     {"minu":"5 Minutes","calo":21},
+    //     {"minu":"10 Minutes","calo":42},
+    //     {"minu":"15 Minutes","calo":63},
+    //     {"minu":"30 Minutes","calo":42},
+    //     {"minu":"10 Minutes","calo":42},
+    //     {"minu":"10 Minutes","calo":42},
+    //
+    //
+    //   ],
+    // [
+    //   {"minu":"5 Minutes","calo":21},
+    // {"minu":"5 Minutes","calo":21},
+    //   ],
+    // [
+    // {"minu":"5 Minutes","calo":21},
+    // {"minu":"5 Minutes","calo":21},
+    //   ]
+    // ];
+
     this.exerciseTypes = [
       "Walking",
       "Running",
@@ -138,18 +232,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
     ];
 
     this.exerciseTime = [
-      ["20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "75 Minutes", ],
+      ["20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "75 Minutes",],
       ["09 Minutes", "14 Minutes", "21 Minutes", "27 Minutes", "41 Minutes",],
       ["60 Minutes"]
     ];
   }
+  var updated;
 
 
   String typeOthers = '';
-  int indexType=0;
-  int indexType2=0;
+  int indexType = 0;
+  int indexType2 = 0;
   bool isLoading = false;
   bool isLoading2 = false;
+
   Future<void> selectTime(BuildContext context) async {
     picked = (await showTimePicker(
         context: context,
@@ -159,16 +255,23 @@ class _InTaksScreenState extends State<InTaksScreen> {
       timep = picked;
     }
   }
-
-
+  double circlePrograce = 0.0;
   String selected_Ltype = '';
   dynamic selected_Lquantity = 0;
   dynamic solids_result;
   dynamic selected_squantity;
   dynamic L_calories = 0;
-
+  dynamic sfat = 0;
+  dynamic spro = 0;
   dynamic liquid_result = 0;
- dynamic protein_s =0 , fat_s=0 , cal_s=0;
+  dynamic protein_s = 0,
+      fat_s = 0,
+      cal_s = 0,
+      Scal = 0;
+  dynamic tim = 0,
+      h = 0,
+      w = 0;
+Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -177,8 +280,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
-          title: Text('Intakes' , style: TextStyle(
-            color: Colors.white
+          title: Text('Intakes', style: TextStyle(
+              color: Colors.white
           ),),
           centerTitle: true,
           bottom: TabBar(
@@ -223,7 +326,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   ),
                   DropdownButtonFormField(
                       decoration: InputDecoration(
-                          hintText: 'selectCategory', border: OutlineInputBorder()),
+                          hintText: 'selectCategory',
+                          border: OutlineInputBorder()),
                       items: category!.map((e) {
                         return DropdownMenuItem(
                           child: Text('$e'),
@@ -234,12 +338,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         selectCategory = val;
                         indexType = category!.indexOf('$selectCategory');
                         isLoading = true;
-                        Timer(Duration(milliseconds: 500),(){
+                        Timer(Duration(milliseconds: 500), () {
                           isLoading = false;
                           setState(() {});
                         });
                         setState(() {});
-
                       }),
                   SizedBox(
                     height: 10.0,
@@ -260,11 +363,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     ),
                   ),
                   isLoading
-                      ?Center(child: CircularProgressIndicator())
-                      :DropdownButtonFormField(
+                      ? Center(child: CircularProgressIndicator())
+                      : selectCategory == "Other"
+                      ?TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Enter the calories",
+                    ),
+                  )
+                  :
+
+                  DropdownButtonFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val){
-                      if(val == null){
+                    validator: (val) {
+                      if (val == null) {
                         return 'Error';
                       }
                     },
@@ -276,18 +388,29 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         child: Text('${e['name']}'),
                         value: e['name'],
                       );
-
                     }).toList(),
-                    onChanged: selectCategory == null? null
-                        :(val) {
+                    onChanged: selectCategory == null ? null
+                        : (val) {
                       selectCategoryType = val;
-
-
                     },
                   ),
+
                   SizedBox(
                     height: Get.width * 0.05,
                   ),
+                  // SizedBox(height: Get.width * 0.05,),
+                  // selectCategory=='Other'?
+                  // TextFormField(
+                  //   keyboardType: TextInputType.number,
+                  //   decoration: InputDecoration(
+                  //       border: OutlineInputBorder(),
+                  //       hintText: 'enter calories..'
+                  //   ),
+                  //   onChanged: (val) {
+                  //     selectCategoryType = int.parse(val);
+                  //   },
+                  // ): SizedBox(),
+
                   Column(
 
                       children: <Widget>[
@@ -309,7 +432,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               selected_squantity = val;
                             },
                             onIncrement: (val) {
-                              selected_squantity= val;
+                              selected_squantity = val;
                             },
                             onChanged: (val) {
                               selected_squantity = val;
@@ -323,20 +446,21 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       ]
                   ),
                   SizedBox(height: Get.width * 0.05,),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildContainerSolids(
                           label: 'Calories',
-                          amount: cal_s,
+                          amount: Scal,
                           module: 'cal'
                       ), _buildContainerSolids(
                           label: 'Fat',
-                          amount: fat_s,
+                          amount: sfat,
                           module: 'g'
                       ), _buildContainerSolids(
                           label: 'Protein',
-                          amount: protein_s,
+                          amount: spro,
                           module: 'g'
                       ),
                     ],
@@ -348,16 +472,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     ),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          for(var i = 0 ; i < categoryType!.length;i++){
-                            for(var j = 0 ; j < categoryType![i].length;j++){
-                              if(selectCategoryType==categoryType![i][j]["name"]){
+                          for (var i = 0; i < categoryType!.length; i++) {
+                            for (var j = 0; j < categoryType![i].length; j++) {
+                              if (selectCategoryType ==
+                                  categoryType![i][j]["name"]) {
                                 //هون عرفي 3 متحولات واسندي القيمة الهن واعرضيهن عادي
                                 print(categoryType![i][j]["cal"]);
-                                cal_s=categoryType![i][j]["cal"];
+                                cal_s = categoryType![i][j]["cal"];
+                                Scal = cal_s * selected_squantity;
                                 print(categoryType![i][j]["fat"]);
-                                fat_s=categoryType![i][j]["fat"];
+                                fat_s = categoryType![i][j]["fat"];
+                                sfat = fat_s * selected_squantity;
                                 print(categoryType![i][j]["pro"]);
-                                protein_s=categoryType![i][j]["pro"];
+                                protein_s = categoryType![i][j]["pro"];
+                                spro = protein_s * selected_squantity;
                                 setState(() {
 
                                 });
@@ -373,7 +501,11 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               margin: EdgeInsets.zero,
                               mainButton: TextButton(
                                   onPressed: () {
-                                   // solids_result = cal_s * selected_squantity;
+                                    add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
+                                    Scal=0;
+                                    sfat=0;
+                                    spro=0;
+                                    // solids_result = cal_s * selected_squantity;
                                     print(solids_result);
                                     setState(() {});
                                   }, child: Text('Save',
@@ -485,8 +617,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             duration: Duration(milliseconds: 4500),
                             margin: EdgeInsets.zero,
                             mainButton: TextButton(onPressed: () {
-                              add_lequids();
-                              liquid_result=0;
+                              add_intakes("liquids",liquid_result,selected_Lquantity ,selected_Ltype);
+                              liquid_result = 0;
                               setState(() {});
                             },
                                 child: Text('Save', style: TextStyle(
@@ -513,10 +645,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.camera_enhance),
-                      ),
+                      //suffixIcon: IconButton(
+                      // onPressed: () {},
+                      // icon: Icon(Icons.camera_enhance),
+                      // ),
                     ),
                   ),
                   SizedBox(height: Get.width * 0.1,),
@@ -561,7 +693,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         child: NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           min: 0,
-                          max: 4,
+
                           onChanged: (val) {
 
                           },
@@ -620,14 +752,14 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       }).toList(),
                       onChanged: (val) {
                         selectExerciseType = val;
-                        indexType2 = exerciseTypes!.indexOf('$selectExerciseType');
+                        indexType2 =
+                            exerciseTypes!.indexOf('$selectExerciseType');
                         isLoading2 = true;
-                        Timer(Duration(milliseconds: 500),(){
+                        Timer(Duration(milliseconds: 500), () {
                           isLoading2 = false;
                           setState(() {});
                         });
                         setState(() {});
-
                       }),
                   SizedBox(
                     height: 10.0,
@@ -648,28 +780,52 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     ),
                   ),
                   isLoading2
-                      ?Center(child: CircularProgressIndicator())
-                      :DropdownButtonFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val){
-                      if(val == null){
-                        return 'Error';
-                      }
-                    },
+                      ? Center(child: CircularProgressIndicator())
+                  :TextFormField(
+                    keyboardType: TextInputType.datetime,
+
                     decoration: InputDecoration(
-                        hintText: 'SelectTime', border: OutlineInputBorder()),
-                    items: exerciseTime![indexType2]
-                        .map((e) {
-                      return DropdownMenuItem(
-                        child: Text('$e'),
-                        value: e,
-                      );
-                    }).toList(),
-                    onChanged: selectExerciseType == null? null
-                        :(val) {
+                      border: OutlineInputBorder(),
+                      hintText: 'time',
+                    ),
+                    onChanged: (val){
                       selectExerciseTime = val;
                     },
+                  onEditingComplete: (){
+                      print(selectExerciseTime);
+                      Timer.periodic(Duration(
+                      minutes: int.parse(selectExerciseTime)
+                    ), (timer) {
+                      print(timer.tick.toString());
+                      setState(() {
+
+                      });
+                    });
+                  },
                   ),
+
+                  //     : DropdownButtonFormField(
+                  //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  //   validator: (val) {
+                  //     if (val == null) {
+                  //       return 'Error';
+                  //     }
+                  //   },
+                  //   decoration: InputDecoration(
+                  //       hintText: 'SelectTime', border: OutlineInputBorder()),
+                  //   items: exerciseTime![indexType2]
+                  //       .map((e) {
+                  //     return DropdownMenuItem(
+                  //       child: Text('$e'),
+                  //       value: e,
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: selectExerciseType == null ? null
+                  //       : (val) {
+                  //     selectExerciseTime = val;
+                  //     tim = selectExerciseTime;
+                  //   },
+                  // ),
 
 
                   Container(
@@ -706,10 +862,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             radius: Get.width * 0.135,
                             lineWidth: 10.0,
                             //ToDo FireBase
-                            percent: 0.65,
+                            percent: 0.56,
                             animation: true,
-                            animationDuration: 4000,
-                            center: new Text('50.0%', style: TextStyle(
+                            animationDuration: 2000,
+                            center:  Text('50%', style: TextStyle(
                                 fontSize: 20
                             ),),
                             progressColor: Color(0xFFEA9363),
@@ -765,8 +921,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               lineHeight: 25.0,
                               animationDuration: 4000,
                               //ToDo FireBase
-                              percent: 0.64,
-                              center: Text("64.0%"),
+                              percent: circlePrograce/100,
+                              center: Text("${
+                              updated
+                              }%"),
                               barRadius: const Radius.circular(16),
                               progressColor: Colors.red,
                               trailing: Icon(Icons.directions_run),
@@ -786,6 +944,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           horizontal: Get.width * 0.08),
                       child: ElevatedButton.icon(
                           onPressed: () {
+                            cal_swimming(tim, h, w);
                             // Respond to button press
                           },
                           icon: Icon(Icons.add, size: 30),
@@ -814,7 +973,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
         children: [
           Text("$label", textAlign: TextAlign.center,
               style: new TextStyle(
-                  fontSize: 16 , fontWeight: FontWeight.bold)),
+                  fontSize: 16, fontWeight: FontWeight.bold)),
           Center(
             child: Text.rich(
               TextSpan(
@@ -833,7 +992,9 @@ class _InTaksScreenState extends State<InTaksScreen> {
       ),
     ),
     );
+
   }
+
   Widget _buildContainerlequids({label, amount, module}) {
     return Container(
       width: Get.width * 0.5,
@@ -843,7 +1004,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
         children: [
           Text("$label", textAlign: TextAlign.center,
               style: new TextStyle(
-                  fontSize: 16 , fontWeight: FontWeight.bold)),
+                  fontSize: 16, fontWeight: FontWeight.bold)),
           Center(
             child: Text.rich(
               TextSpan(
@@ -864,16 +1025,41 @@ class _InTaksScreenState extends State<InTaksScreen> {
     );
   }
 
-  add_lequids() async {
-    CollectionReference liquid_ref = FirebaseFirestore.instance.collection(
-        "Liquids");
-    liquid_ref.add(
+  add_intakes(String type , int cal , int qu ,String cate) async {
+    CollectionReference solieds_ref = FirebaseFirestore.instance.collection(
+        "intakes");
+    solieds_ref.add(
         {
-          "Liquid_Cal": liquid_result.toString(),
-          "Liquid_Type": selected_Ltype.toString(),
-          "Liquid_Quantity": selected_Lquantity.toString(),
-        }
+          "intakes_Cal": cal,
+          "intakes_category": cate.toString(),
+          "intakes_Quantity": qu,
+          "intakes_type":type,
 
+        }
     );
+  }
+  void getDataFromFireBaseHealthInfo()async{
+    //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
+    // var user  =  FirebaseAuth.instance.currentUser;
+    CollectionReference? data;
+    data =  FirebaseFirestore.instance.collection("Health_Info");
+    await data.get().then((snapShot) {
+      _w =int.parse('${ snapShot.docs[1]['Weight']}');
+      snapShot.docs.forEach((element) {
+        // print(user!.uid);
+        //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد 
+        
+      });
+    });
+  }
+
+  cal_swimming(String val, int w, int t) {
+    dynamic calories;
+    if (val == "swimming")
+      calories = t * 4 * 3.5 * w / (200 * 60);
+    else if (val == "walking")
+      calories = t * 3 * 3.5 * w / (200 * 60);
+    else if (val == "Running")
+      calories = t * 8 * 3.5 * w / (200 * 60);
   }
 }

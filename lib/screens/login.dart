@@ -9,7 +9,7 @@ import '/screens/signup.dart';
 import '../const/colors.dart';
 import '../controller/login_controller.dart';
 import '../widgets/textformfiled_widget.dart';
-
+//done
 
 class LoginScreen extends StatelessWidget {
   final controller = Get.put(LoginController());
@@ -120,7 +120,11 @@ class LoginScreen extends StatelessWidget {
                 onTap: () {
                   if(controller.keyForm.currentState!.validate()){
                     // print(controller.email.value + controller.passWord.value);
-                    Get.offAll(()=>MainScreen());
+                    controller.login(
+                      email: controller.email.value,
+                      password: controller.passWord.value
+                    );
+                 //   Get.offAll(()=>MainScreen());
                   }
                 },
                 child: Container(
