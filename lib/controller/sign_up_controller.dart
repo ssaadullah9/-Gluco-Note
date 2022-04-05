@@ -79,7 +79,7 @@ class SignUpController extends GetxController {
       return null;
     }
   }
-
+//d
   String? validationPassword(String val){
     if(val.trim().isEmpty || val.length < 8){
       return 'password is too short';
