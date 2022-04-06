@@ -18,6 +18,7 @@ var weightOfUser = 5.0.obs;
 var date;
 var time = TimeOfDay.now().obs;
 var Date = DateTime.now().obs;
+var Date1 = DateTime.now().obs;
 var selectedval = ''.obs;
 var valueHolder = 20.obs;
 var bmi1 = 0.0.obs;

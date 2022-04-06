@@ -87,7 +87,7 @@ import '../../widgets/build_section_calorises.dart';
             }
             });
             },
-            icon:  Icon(Icons.upload_file),
+            icon:  Icon(Icons.upload_file, color: Colors.white70,),
             tooltip: 'Export pdf',
             ),),
             ],
