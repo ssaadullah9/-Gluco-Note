@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:test_saja/controller/addnewreminder_controller.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../const/colors.dart';
+import 'bottom_bar_screens/reminder.dart';
 
 class AddnewReminder extends StatelessWidget {
   final controller = Get.put(AddNewReminderController());
@@ -123,7 +126,15 @@ class AddnewReminder extends StatelessWidget {
                             Get.snackbar(
                                 "Reminder added successfully ! " ,
                                 ""
-                            );
+                            );Timer(
+                                Duration(
+                                    seconds: 2
+                                ) ,
+                                    () {
+
+                                  Navigator.pop(context ,ReminderScreeen()) ;
+                                }
+                            ) ;
                           }else {
                             AwesomeDialog(
                               context: context,

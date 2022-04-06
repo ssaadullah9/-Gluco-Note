@@ -143,7 +143,10 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                     mainAxisAlignment : MainAxisAlignment.start,
                                     children: [
                                       IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                                      IconButton(onPressed: () {}, icon: Icon(Icons.delete, color: Colors.red)),
+                                      IconButton(onPressed: ()  {
+                                        FirebaseFirestore.instance.runTransaction((Transaction myTransaction) async {
+                                        await myTransaction.delete(snapshot.data.documents[index].reference);
+                                      });}, icon: Icon(Icons.delete, color: Colors.red)),
                                     ],
                                   ),
                                 ),

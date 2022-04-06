@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -139,8 +141,16 @@ class HealthInfoScreen extends StatelessWidget {
                          Get.snackbar(
                              "Data Saved " ,
                              ""
-                         );
-                        // Get.off(Home()) ;
+                         );Timer(
+                             Duration(
+                                 seconds: 2
+                             ) ,
+                                 () {
+
+                               Navigator.pop(context) ;
+                             }
+                         ) ;
+
                         }
                         else
                           AwesomeDialog(

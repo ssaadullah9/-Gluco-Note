@@ -12,18 +12,22 @@ class LogBookController extends GetxController{
   var isAscending = true.obs;
   CollectionReference? Glucoref;
   CollectionReference? Calref;
+  CollectionReference?  HGlucoref;
+  CollectionReference?  HCalref;
 
   List<List<String>> Calrow  = [
   ];
 
 
-   List<List<String>> Glurow =[];
-   List HighestGlu = [
-   ] ;
+  List<List<String>> Glurow =[
 
-   List HighestCal = [
+  ];
+  List HighestGlu = [
+  ] ;
 
-   ] ;
+  List HighestCal = [
+
+  ] ;
 
 
 
@@ -31,11 +35,11 @@ class LogBookController extends GetxController{
     PdfDocument document =  PdfDocument();
     PdfGrid pdfGrid1 = PdfGrid();
     pdfGrid1.style = PdfGridStyle(
-      cellPadding: PdfPaddings(
-        left: 5,
-        top: 2,
-        bottom: 2
-      )
+        cellPadding: PdfPaddings(
+            left: 5,
+            top: 2,
+            bottom: 2
+        )
     );
     pdfGrid1.columns.add(count: column.length);
     pdfGrid1.headers.add(1);
@@ -50,8 +54,8 @@ class LogBookController extends GetxController{
     for(int i = 0 ; i < rows.length ; i ++){
       row1 = pdfGrid1.rows.add();
       for(int j = 0 ; j < rows[i].length ; j++){
-       row1.cells[j].value = rows[i][j];
-     }
+        row1.cells[j].value = rows[i][j];
+      }
     }
     // PdfGridRow row = pdfGrid.rows.add();
     // row.cells[0].value =  'row1';
@@ -69,7 +73,7 @@ class LogBookController extends GetxController{
     // row.cells[2].value = 'row333';
 
     pdfGrid1.draw(page: document.pages.add(),
-      bounds:  Rect.fromLTWH( 0, 0, 0,0)
+        bounds:  Rect.fromLTWH( 0, 0, 0,0)
     );
     List<int> bytes = document.save();
     document.dispose();
@@ -77,38 +81,39 @@ class LogBookController extends GetxController{
     saveAndLaunchFile(bytes, 'Output.pdf');
   }
 
- Future<void> getGtableData() async {
-   Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
-   await Glucoref!.get().then((snapShot) {
-     for (var i = 0; i < snapShot.docs.length; i++) {
-       Glurow.add([]);
-       for (var j = 0; j < 3; j++) {
-         Glurow[i].add(DateFormat.yMd().format(DateTime.parse(snapShot.docs[i]['Date'])));
-         Glurow[i].add(snapShot.docs[i]['Result']);
-         Glurow[i].add(snapShot.docs[i]['Test_preiod']);
-         Glurow[i].add(snapShot.docs[i]['Time']);
-         break;
-       }
-     }
-   });
-   update();
- }
+  Future<void> getGtableData() async {
+    Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await Glucoref!.get().then((snapShot) {
+      for (var i = 0; i < snapShot.docs.length; i++) {
+        Glurow.add([]);
+        for (var j = 0; j < 3; j++) {
+          Glurow[i].add(snapShot.docs[i]['Result'].toString());
+          Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+          Glurow[i].add(snapShot.docs[i]['Time'].toString());
+          Glurow[i].add(DateFormat.yMd().format(DateTime.parse(snapShot.docs[i]['Date'])).toString());
+
+          break;
+        }
+      }
+    });
+    update();
+  }
 
   Future<void> getGluData() async {
-    CollectionReference  HGlucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await HGlucoref.orderBy("Result" ,descending: true).get().then((snapShot) {
+    HGlucoref  = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await HGlucoref!.orderBy("Result" ,descending: true).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["Result"]);
-       HighestGlu.add(element['Result']);
+        HighestGlu.add(element['Result']);
       });
 
     });
   }
 
   Future<void> getCalData() async {
-    CollectionReference  HCalref = FirebaseFirestore.instance.collection("intakes");
-    await HCalref.orderBy("intakes_Cal" ,descending: true).get().then((snapShot) {
+    HCalref = FirebaseFirestore.instance.collection("intakes");
+    await HCalref!.orderBy("intakes_Cal" ,descending: true).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["intakes_Cal"]);
@@ -117,25 +122,24 @@ class LogBookController extends GetxController{
 
     });
   }
-
   Future<void> getCtableData() async{
     Calref = FirebaseFirestore.instance.collection("intakes");
     await Calref!.get().then((snapShot)
     {
-      for(var i = 0 ; i < snapShot.docs.length ; i++ ){
+      for(var i = 0 ; i < snapShot.docs.length ; i++){
         Calrow.add([]);
-        for (var j = 0 ; j < 3 ; j++)
-        {
+        for(var j = 0 ; j<4;j++ ){
+          Calrow[i].add(snapShot.docs[i]['intakes_type'].toString());
+          Calrow[i].add(snapShot.docs[i]['intakes_category'].toString());
+          Calrow[i].add(snapShot.docs[i]['intakes_Quantity'].toString());
+          Calrow[i].add(snapShot.docs[i]['intakes_Cal'].toString());
 
-          Calrow[i].add(snapShot.docs[i]['intakes_type']);
-          Calrow[i].add(snapShot.docs[i]['intakes_category']);
-          Calrow[i].add(snapShot.docs[i]['intakes_Quantity']);
-          Calrow[i].add(snapShot.docs[i]['intakes_Cal']);
+
 
           break;
         }
-
       }
+      print(Glurow);
     });
     update();
   }
@@ -143,9 +147,9 @@ class LogBookController extends GetxController{
   @override
   void onInit() {
     getGtableData();
-   getGluData() ;
-   getCtableData();
-   getCalData() ;
+    getGluData();
+    getCalData();
+    getCtableData();
     super.onInit();
   }
 }
