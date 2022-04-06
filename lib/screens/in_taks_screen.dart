@@ -45,6 +45,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic> ex_cal = [];
 
   //************
+String med_name ='';
 
   List<String>? category = [];
   List<String>? exercise = [];
@@ -61,7 +62,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
   var selectExerciseType;
   var selectExerciseTime;
   var protein;
-
+  String med_type='';
+  dynamic med_q;
   //************
 
   String ? typesID;
@@ -667,12 +669,13 @@ Timer? _timer;
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
-                      //suffixIcon: IconButton(
-                      // onPressed: () {},
-                      // icon: Icon(Icons.camera_enhance),
-                      // ),
                     ),
+    onChanged: (val) {
+    med_name = val as String;
+    setState(() {
+    });}
                   ),
+
                   SizedBox(height: Get.width * 0.1,),
                   DropdownButtonFormField(
                       decoration: InputDecoration(
@@ -696,7 +699,9 @@ Timer? _timer;
                           child: Text('$e'),
                           value: e,
                         )).toList(),
-                    onChanged: (val) {},
+                    onChanged: (val) {
+                      med_type = val as String;
+                    },
                     hint: Text('Type'),
                   ),
                   SizedBox(height: Get.width * 0.05,),
@@ -715,10 +720,16 @@ Timer? _timer;
                         child: NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           min: 0,
-
-                          onChanged: (val) {
-
+                          onDecrement: (val) {
+                            med_q = val;
                           },
+                          onIncrement: (val) {
+                            med_q = val;
+                          },
+                          onChanged: (val) {
+                            med_q = val;
+                          },
+
                         ),
                       ),
                       Expanded(child: SizedBox()),
@@ -735,8 +746,9 @@ Timer? _timer;
                       //ToDo
                       Get.to(() =>
                           AddnewReminder(
+
                             //send parametr
-                          ));
+                          ) , arguments: [med_name, items,med_type,med_q]);
                     },
 
                     icon: Icon(Icons.add, size: 30),
