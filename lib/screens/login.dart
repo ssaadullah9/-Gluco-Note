@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test_saja/screens/reset_password.dart';
 import 'mainpage.dart';
 import '/screens/signup.dart';
 
@@ -109,6 +110,7 @@ class LoginScreen extends StatelessWidget {
                     TextButton(
                         onPressed: (){
                           //ToDo Go To ForgetPassword Scrren
+                          Get.to(()=>ResetPasswordScreen());
                         },
                         child: Text("Forget Password?",style: TextStyle(
                           color: Colors.black
@@ -124,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                       email: controller.email.value,
                       password: controller.passWord.value
                     );
-                 //   Get.offAll(()=>MainScreen());
+
                   }
                 },
                 child: Container(

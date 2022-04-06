@@ -505,27 +505,40 @@ Timer? _timer;
                               }
                             }
                           }
-                          Get.snackbar(
-                              'do you want save it?',
-                              'it will be show in the logbook',
-                              snackPosition: SnackPosition.BOTTOM,
-                              borderRadius: 0,
-                              duration: Duration(milliseconds: 4500),
-                              margin: EdgeInsets.zero,
-                              mainButton: TextButton(
-                                  onPressed: () {
-                                    add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
-                                    Scal=0;
-                                    sfat=0;
-                                    spro=0;
-                                    // solids_result = cal_s * selected_squantity;
-                                    print(solids_result);
-                                    setState(() {});
-                                  }, child: Text('Save',
-                                style: TextStyle(
-                                    color: Colors.blue
-                                ),))
-                          );
+                          if(categoryType!=null &&selectCategoryType!=null && selected_squantity!=0  ){
+                            Get.snackbar(
+                                'do you want save it?',
+                                'it will be show in the logbook',
+                                snackPosition: SnackPosition.BOTTOM,
+                                borderRadius: 0,
+                                duration: Duration(milliseconds: 4500),
+                                margin: EdgeInsets.zero,
+                                mainButton: TextButton(
+                                    onPressed: () {
+                                      add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
+                                      Scal=0;
+                                      sfat=0;
+                                      spro=0;
+                                      // solids_result = cal_s * selected_squantity;
+                                      print(solids_result);
+                                      setState(() {});
+                                    }, child: Text('Save',
+                                  style: TextStyle(
+                                      color: Colors.blue
+                                  ),))
+                            );
+                          }
+                           else {
+                          AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.ERROR,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Error',
+                          desc: 'You must fill all the information',
+                          btnOkOnPress: () {},
+                          )..show();
+                          }
+
                         },
                         icon: Icon(Icons.add, size: 30),
                         label: Text("Calculate"),
@@ -633,7 +646,40 @@ Timer? _timer;
                         liquid_result = L_calories * selected_Lquantity;
                         print(liquid_result);
                         setState(() {});
-                        Get.snackbar(
+                        if(L_calories!=null &&selected_Lquantity!=0  ){
+                          Get.snackbar(
+                              'do you want save it?',
+                              'it will be show in the logbook',
+                              snackPosition: SnackPosition.BOTTOM,
+                              borderRadius: 0,
+                              duration: Duration(milliseconds: 4500),
+                              margin: EdgeInsets.zero,
+                              mainButton: TextButton(
+                                  onPressed: () {
+                                    add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
+                                    Scal=0;
+                                    sfat=0;
+                                    spro=0;
+                                    // solids_result = cal_s * selected_squantity;
+                                    print(solids_result);
+                                    setState(() {});
+                                  }, child: Text('Save',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),))
+                          );
+                        }
+                        else {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.ERROR,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: 'Error',
+                            desc: 'You must fill all the information',
+                            btnOkOnPress: () {},
+                          )..show();
+                        }
+                  /*      Get.snackbar(
                             'do you want save it?',
                             'it will be show in the logbook',
                             snackPosition: SnackPosition.BOTTOM,
@@ -650,7 +696,7 @@ Timer? _timer;
                                 ),)
 
                             )
-                        );
+                        );*/
                       },
                       icon: Icon(Icons.add, size: 30),
                       label: Text("Calculate"),
@@ -975,7 +1021,7 @@ Timer? _timer;
                                   AwesomeDialog(
                                       context: context,
                                       dialogType: DialogType.SUCCES,
-                                      desc: 'Heloo Done Dear@',
+                                      desc: 'Timer is finish ',
                                       btnOkOnPress: () {
                                         selectExerciseTime = '0';
                                         milliseconds = 5000;

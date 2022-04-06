@@ -14,6 +14,7 @@ import 'bottom_bar_screens/reminder.dart';
 
 class AddnewReminder extends StatelessWidget {
   final controller = Get.put(AddNewReminderController());
+  dynamic argumentData = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,11 +65,15 @@ class AddnewReminder extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
+                 // initialValue : "Medication Name : ${argumentData[0]} " +" How often: ${argumentData[1]}" ,
                     decoration: InputDecoration(
                     label: Text('Reminder description'),
+
                     border: OutlineInputBorder(),
                     hintText: 'Reminder description',
+
                   ),
+
                   onChanged: (val){
                   controller.description.value=val ;
                   },
