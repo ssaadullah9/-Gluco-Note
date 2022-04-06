@@ -45,6 +45,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic> ex_cal = [];
 
   //************
+String med_name ='';
 
   List<String>? category = [];
   List<String>? exercise = [];
@@ -53,15 +54,16 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   List<dynamic>? exerciseTypes = [];
 
-  List<List<dynamic>>? exerciseTime = [];
-
+  List<List<dynamic>>? exercisemet = [];
+ dynamic calories;
   var selectCategory;
   var selectCategoryType;
 
   var selectExerciseType;
   var selectExerciseTime;
   var protein;
-
+  String med_type='';
+  dynamic med_q;
   //************
 
   String ? typesID;
@@ -198,54 +200,61 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
 
     ];
-    this.exercise = [
-      "Walking",
-      "Running",
-      "Swimming"
-
-    ];
-    // this.exerciseTypes=[
-    //   [
-    //     {"minu":"5 Minutes","calo":21},
-    //     {"minu":"10 Minutes","calo":42},
-    //     {"minu":"15 Minutes","calo":63},
-    //     {"minu":"30 Minutes","calo":42},
-    //     {"minu":"10 Minutes","calo":42},
-    //     {"minu":"10 Minutes","calo":42},
-    //
-    //
-    //   ],
-    // [
-    //   {"minu":"5 Minutes","calo":21},
-    // {"minu":"5 Minutes","calo":21},
-    //   ],
-    // [
-    // {"minu":"5 Minutes","calo":21},
-    // {"minu":"5 Minutes","calo":21},
-    //   ]
-    // ];
 
     this.exerciseTypes = [
+      "Aerobics",
+      "Baseball",
+      "Basketball",
+          "Billiards",
+      "Bowling",//3
+      "Cycling",
+      "Dancing",
+      "Fishing",
+      "Football",
+      "Hiking",//done
+      "Ice skating",//done
+      "Racquet sports",//done
+      "Running",//done
+      "Swimming",
       "Walking",
-      "Running",
-      "Swimming"
     ];
+    // this.exerciseTypes=[
+    //
+    //     {"name":"Aerobics","met":6.83},
+    //     {"name":"Baseball","met":5},
+    //     {"name":"Basketball","met":8},
+    //     {"name":"Billiards","met":2.5},//done
+    //     {"name":"Bowling","met":3},
+    //     {"name":"Cycling","met":9.5},
+    //     {"name":"Dancing","met":4.5},
+    //     {"name":"Fishing","met":4.5},
+    //     {"name":"Football","met":7},
+    //     {"name":"Hiking","met":6},
+    //     {"name":"Ice skating","met":7},
+    //     {"name":"Racquet sports","met":8.5},
+    //     {"name":"Running","met":9.8},
+    //     {"name":"Swimming","met":8},
+    //     {"name":"Walking","met":3.8},
+       // {"met":},
 
-    this.exerciseTime = [
-      ["20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "75 Minutes",],
-      ["09 Minutes", "14 Minutes", "21 Minutes", "27 Minutes", "41 Minutes",],
-      ["60 Minutes"]
-    ];
+
+
+    // ];
+
+
+
   }
   var updated;
 
-
+var other;
   String typeOthers = '';
   int indexType = 0;
   int indexType2 = 0;
   bool isLoading = false;
   bool isLoading2 = false;
 
+  String percent = '0';
+  int milliseconds = 5000;
   Future<void> selectTime(BuildContext context) async {
     picked = (await showTimePicker(
         context: context,
@@ -366,10 +375,15 @@ Timer? _timer;
                       ? Center(child: CircularProgressIndicator())
                       : selectCategory == "Other"
                       ?TextFormField(
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: "Enter the calories",
+
                     ),
+                    onChanged: (val) {
+                     other = int.parse(val);
+                    },
                   )
                   :
 
@@ -398,18 +412,6 @@ Timer? _timer;
                   SizedBox(
                     height: Get.width * 0.05,
                   ),
-                  // SizedBox(height: Get.width * 0.05,),
-                  // selectCategory=='Other'?
-                  // TextFormField(
-                  //   keyboardType: TextInputType.number,
-                  //   decoration: InputDecoration(
-                  //       border: OutlineInputBorder(),
-                  //       hintText: 'enter calories..'
-                  //   ),
-                  //   onChanged: (val) {
-                  //     selectCategoryType = int.parse(val);
-                  //   },
-                  // ): SizedBox(),
 
                   Column(
 
@@ -472,11 +474,20 @@ Timer? _timer;
                     ),
                     child: ElevatedButton.icon(
                         onPressed: () {
+                          if (selectCategory=="other"){
+                            Scal= other * selected_squantity;
+                            print(Scal);
+                          }
+
                           for (var i = 0; i < categoryType!.length; i++) {
+                            if (selectCategory == "Other"){
+                              Scal= other * selected_squantity;
+                              sfat=0;
+                              spro=0;
+                            }
                             for (var j = 0; j < categoryType![i].length; j++) {
                               if (selectCategoryType ==
                                   categoryType![i][j]["name"]) {
-                                //هون عرفي 3 متحولات واسندي القيمة الهن واعرضيهن عادي
                                 print(categoryType![i][j]["cal"]);
                                 cal_s = categoryType![i][j]["cal"];
                                 Scal = cal_s * selected_squantity;
@@ -486,6 +497,8 @@ Timer? _timer;
                                 print(categoryType![i][j]["pro"]);
                                 protein_s = categoryType![i][j]["pro"];
                                 spro = protein_s * selected_squantity;
+
+
                                 setState(() {
 
                                 });
@@ -555,11 +568,22 @@ Timer? _timer;
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'enter calories..'
+
                     ),
+                    validator: (val) {
+                      return val!.isEmpty
+                          ? 'can\'t be empty'
+                          : null;
+                    },
+
                     onChanged: (val) {
                       L_calories = int.parse(val);
                     },
-                  ), SizedBox(),
+
+                  ),
+
+
+                  SizedBox(),
                   Column(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -645,12 +669,13 @@ Timer? _timer;
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
-                      //suffixIcon: IconButton(
-                      // onPressed: () {},
-                      // icon: Icon(Icons.camera_enhance),
-                      // ),
                     ),
+    onChanged: (val) {
+    med_name = val as String;
+    setState(() {
+    });}
                   ),
+
                   SizedBox(height: Get.width * 0.1,),
                   DropdownButtonFormField(
                       decoration: InputDecoration(
@@ -674,7 +699,9 @@ Timer? _timer;
                           child: Text('$e'),
                           value: e,
                         )).toList(),
-                    onChanged: (val) {},
+                    onChanged: (val) {
+                      med_type = val as String;
+                    },
                     hint: Text('Type'),
                   ),
                   SizedBox(height: Get.width * 0.05,),
@@ -693,10 +720,16 @@ Timer? _timer;
                         child: NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           min: 0,
-
-                          onChanged: (val) {
-
+                          onDecrement: (val) {
+                            med_q = val;
                           },
+                          onIncrement: (val) {
+                            med_q = val;
+                          },
+                          onChanged: (val) {
+                            med_q = val;
+                          },
+
                         ),
                       ),
                       Expanded(child: SizedBox()),
@@ -713,8 +746,9 @@ Timer? _timer;
                       //ToDo
                       Get.to(() =>
                           AddnewReminder(
+
                             //send parametr
-                          ));
+                          ) , arguments: [med_name, items,med_type,med_q]);
                     },
 
                     icon: Icon(Icons.add, size: 30),
@@ -722,7 +756,7 @@ Timer? _timer;
 
                   )
                 ]),
-
+            //screen 4
             ListView(
                 padding: EdgeInsets.all(15.0),
                 children: <Widget>[
@@ -731,11 +765,11 @@ Timer? _timer;
                     child: Row(
                       children: [
                         Text(
-                          'Types: ',
+                          'All Exercises ',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.06,
+                            fontSize: Get.width * 0.05,
                           ),
                         )
                       ],
@@ -769,11 +803,11 @@ Timer? _timer;
                     child: Row(
                       children: [
                         Text(
-                          'Time: ',
+                          'Minutes Performed ',
                           style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.06,
+                            //fontWeight: FontWeight.bold,
+                            fontSize: Get.width * 0.05,
                           ),
                         )
                       ],
@@ -786,7 +820,7 @@ Timer? _timer;
 
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'time',
+                      hintText: 'e.g. 30',
                     ),
                     onChanged: (val){
                       selectExerciseTime = val;
@@ -912,25 +946,54 @@ Timer? _timer;
                           child: Container(
                             margin: EdgeInsets.only(top: 15),
 
-                            child: LinearPercentIndicator(
+                            child: (selectExerciseTime ==null
+                                ||selectExerciseTime == '0')?LinearPercentIndicator(
                               width: MediaQuery
                                   .of(context)
                                   .size
                                   .width - 150,
-                              animation: true,
                               lineHeight: 25.0,
-                              animationDuration: 4000,
-                              //ToDo FireBase
-                              percent: circlePrograce/100,
-                              center: Text("${
-                              updated
-                              }%"),
+                              animation: true,
+                              animationDuration: 0,
+                              percent: 0,
+                              center: Text('0%'),
+                              barRadius: const Radius.circular(16),
+                              progressColor: Colors.red,
+                              trailing: Icon(Icons.directions_run),
+                            ):LinearPercentIndicator(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width - 150,
+                              lineHeight: 25.0,
+                              animation: true,
+                              animationDuration: milliseconds,
+                              percent: (selectExerciseTime==null
+                                  ||selectExerciseTime == '0')?0:1,
+                              onAnimationEnd: (){
+                                if(selectExerciseTime !=null||selectExerciseTime != '0'){
+                                  AwesomeDialog(
+                                      context: context,
+                                      dialogType: DialogType.SUCCES,
+                                      desc: 'Heloo Done Dear@',
+                                      btnOkOnPress: () {
+                                        selectExerciseTime = '0';
+                                        milliseconds = 5000;
+                                        percent = '0';
+                                        (context as Element).reassemble();
+                                      }
+                                  )..show();
+
+                                }
+                              },
+                              center: Text('${percent}%'),
                               barRadius: const Radius.circular(16),
                               progressColor: Colors.red,
                               trailing: Icon(Icons.directions_run),
                             ),
                           ),
                         ),
+
 
 
                       ],
@@ -944,7 +1007,8 @@ Timer? _timer;
                           horizontal: Get.width * 0.08),
                       child: ElevatedButton.icon(
                           onPressed: () {
-                            cal_swimming(tim, h, w);
+                           calories=cal_swimming(tim, h, w);
+                           print(calories);
                             // Respond to button press
                           },
                           icon: Icon(Icons.add, size: 30),
@@ -1061,5 +1125,7 @@ Timer? _timer;
       calories = t * 3 * 3.5 * w / (200 * 60);
     else if (val == "Running")
       calories = t * 8 * 3.5 * w / (200 * 60);
+
+    return calories;
   }
 }
