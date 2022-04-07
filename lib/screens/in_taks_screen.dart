@@ -45,7 +45,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic> ex_cal = [];
 
   //************
-String med_name ='';
+ String med_name="" ;
+var selected_med_time ;
 
   List<String>? category = [];
   List<String>? exercise = [];
@@ -733,7 +734,9 @@ Timer? _timer;
                             value: e,
                           )).toList(),
                       hint: Text('How Often'),
-                      onChanged: (val) {}),
+                      onChanged: (val) {
+                      selected_med_time = val as String;
+                      }),
                   SizedBox(height: Get.width * 0.1,),
 
                   DropdownButtonFormField(
@@ -792,9 +795,12 @@ Timer? _timer;
                       //ToDo
                       Get.to(() =>
                           AddnewReminder(
-
-                            //send parametr
-                          ) , arguments: [med_name, items,med_type,med_q]);
+                            med_name : med_name,
+                            items :  selected_med_time ,
+                            med_type :med_type,
+                            med_q : med_q,
+                            showText: true ,
+                          ) )  ;
                     },
 
                     icon: Icon(Icons.add, size: 30),

@@ -63,7 +63,7 @@ dependencies:
   firebase_auth: ^3.3.12
   search_choices: ^2.0.19
   flutter_countdown_timer: ^4.1.0
-  firebase_messaging: ^11.2.12
+
 
 
 
