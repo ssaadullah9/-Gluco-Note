@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen>
 
 
   // body: Center(
-  child: Lottie.asset('assets/Animation/101103-hematology.json' , repeat: false ,width: 250 ,height: 250),
+  child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 250 ,height: 250),
 
   );
 

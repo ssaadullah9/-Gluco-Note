@@ -72,6 +72,8 @@ class ProfileScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: Get.width * 0.05
                     ),
+
+
                     children: <Widget>[
                       TextFormField(
                         readOnly: true,

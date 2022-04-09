@@ -57,11 +57,11 @@ class SignUpController extends GetxController {
       UserCredential user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       if(user != null){
-        Get.snackbar('SuccessFull', 'New User',backgroundColor: Colors.green);
+        Get.snackbar('SuccessFull', 'New User');
         Get.off(LoginScreen());
       }
     }on FirebaseAuthException catch(e){
-      Get.snackbar('Error', '${e.message}',backgroundColor: Colors.red);
+      Get.snackbar('Error', '${e.message}');
     }
   }
   String? validationUserName(String val){

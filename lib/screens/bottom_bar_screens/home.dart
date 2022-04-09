@@ -11,6 +11,8 @@ import '../mainpage.dart';
 class Home extends StatelessWidget {
   final controller = Get.put(HomeController());
 
+
+
   @override
 
   Widget build(BuildContext context) {
@@ -148,4 +150,6 @@ class Home extends StatelessWidget {
     );
 
   }
+
+
 }
