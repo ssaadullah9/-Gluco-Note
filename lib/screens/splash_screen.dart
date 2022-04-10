@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -37,16 +39,35 @@ class _SplashScreenState extends State<SplashScreen>
   body: GetBuilder<SplashController>(
          init: SplashController(),
            builder: (_){
-  return Container(
-    alignment: Alignment.center,
-    width: double.infinity,
-    height: MediaQuery.of(context).size.height,
-           // width: 250,
-            //height:250,
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+       /* Center(
+          child: DefaultTextStyle(
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
+            ),
+            child: AnimatedTextKit(
+              animatedTexts: [
+                FadeAnimatedText('GlucoNote'),
+
+              ],
+              onTap: () {
+                print("Tap Event");
+              },
+            ),
+          ),
+        ),*/
+        Text("GlucoNote " , textAlign: TextAlign.center,style: TextStyle(
+          fontSize: 30 , color: Colors.black ,
+        ),),
+ Center(child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 250 ,height: 250)),
 
 
-  // body: Center(
-  child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 250 ,height: 250),
+    ],
 
   );
 

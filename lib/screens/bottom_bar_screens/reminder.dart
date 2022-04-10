@@ -7,9 +7,13 @@
             import 'package:intl/intl.dart';
             import 'package:flutter_speed_dial/flutter_speed_dial.dart';
             import 'package:test_saja/const/colors.dart';
+import 'package:test_saja/widgets/notificationService.dart';
 
             import '../../controller/reminder_controller.dart';
             import '../addreminder.dart';
+
+            import 'package:timezone/timezone.dart' as tz;
+            import 'package:timezone/data/latest.dart' as tz;
 
 
 
@@ -20,7 +24,11 @@
 
             class _ReminderScreeenState extends State<ReminderScreeen> {
               final controller = Get.put(ReminderController());
+              void initState() {
+                super.initState();
 
+                tz.initializeTimeZones();
+              }
               @override
               Widget build(BuildContext context) {
                 return Scaffold(
@@ -153,6 +161,9 @@
                 }
                 });
                 });}, icon: Icon(Icons.delete, color: Colors.red)),
+                  IconButton(onPressed: () {
+                    NotificationService().showNotification(1, "title", "body", 10);
+                  }, icon: Icon(Icons.edit, color: Colors.black54)),
                 ],
                 )
                 ],
