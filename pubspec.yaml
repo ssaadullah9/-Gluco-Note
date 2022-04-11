@@ -44,7 +44,6 @@ dependencies:
   timezone: ^0.8.0
   snippet_coder_utils: ^1.0.8
   dropdown_button2: ^1.1.1
-  numberpicker: ^2.1.1
   number_inc_dec: ^0.8.0
   cloud_firestore: ^3.1.10
   firebase_core:
@@ -64,6 +63,8 @@ dependencies:
   flutter_countdown_timer: ^4.1.0
   animated_text_kit: ^4.1.1
   flutter_local_notifications: ^9.4.0
+  duration_picker: ^1.0.0
+  numberpicker: ^2.0.1
 
 
 

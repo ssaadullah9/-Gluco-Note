@@ -39,32 +39,21 @@ class _SplashScreenState extends State<SplashScreen>
   body: GetBuilder<SplashController>(
          init: SplashController(),
            builder: (_){
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+  return ListView(
       children: [
-       /* Center(
-          child: DefaultTextStyle(
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-            ),
-            child: AnimatedTextKit(
-              animatedTexts: [
-                FadeAnimatedText('GlucoNote'),
+       SizedBox( height: 40,) ,
+ Center(child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 150 ,height: 150)),
+        Center(
+          child: AnimatedTextKit(
+            animatedTexts: [
+              FadeAnimatedText('GlucoNote'),
 
-              ],
-              onTap: () {
-                print("Tap Event");
-              },
-            ),
+            ],
+            onTap: () {
+              print("Tap Event");
+            },
           ),
-        ),*/
-        Text("GlucoNote " , textAlign: TextAlign.center,style: TextStyle(
-          fontSize: 30 , color: Colors.black ,
-        ),),
- Center(child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 250 ,height: 250)),
+        )
 
 
     ],

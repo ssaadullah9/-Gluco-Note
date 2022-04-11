@@ -7,7 +7,7 @@ import '/screens/login.dart';
 class SplashController extends GetxController {
 
   void startTimer(){
-    Timer(Duration(seconds: 7), () {
+    Timer(Duration(seconds: 5), () {
       Get.off(()=>LoginScreen());
     });
 

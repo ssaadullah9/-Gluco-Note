@@ -7,6 +7,7 @@ class ReminderController extends GetxController {
   var d=DateTime.now().obs;
   dynamic data;
   var listReminderDate;
+
   CollectionReference? remindersref;
 
   List remindersDate = [
