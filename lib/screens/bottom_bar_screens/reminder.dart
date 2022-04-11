@@ -4,6 +4,7 @@
 import 'package:duration_picker/duration_picker.dart';
             import 'package:flutter/cupertino.dart';
             import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
             import 'package:get/get.dart';
             import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -24,6 +25,7 @@ import 'package:numberpicker/numberpicker.dart';
               final controller = Get.put(ReminderController());
               int SelectedMineuts=1  ;
               Duration _duration = Duration(hours: 0, minutes: 0);
+              bool isSwitched = false;
 
               void initState() {
                 super.initState();
@@ -76,7 +78,9 @@ import 'package:numberpicker/numberpicker.dart';
                 builder: (context,AsyncSnapshot snapshot){
                 if(!snapshot.hasData){
                 return Center(
-                child: CircularProgressIndicator(),
+                  child:SpinKitCircle(
+                    color: Colors.amber,
+                  ),
                 );
                 }
                 else{
@@ -184,8 +188,10 @@ import 'package:numberpicker/numberpicker.dart';
                         child: Container(
                             width: 100,
                             height: 50,
-                            child: Icon(Icons.toggle_off , color: Colors.green)),
+                            child: Icon(Icons.toggle_on_outlined , color: Colors.green)),
                       ))
+
+
                 ],
                 )
                 ],
