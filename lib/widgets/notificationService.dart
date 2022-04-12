@@ -22,24 +22,29 @@ class NotificationService{
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> showNotification(int id, String title, String body, int seconds) async {
+  Future<void> showNotification(int id, String title, String body, int x) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: seconds)),
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: x)),
       const NotificationDetails(
         android: AndroidNotificationDetails(
             'main_channel',
             'Main Channel',
             //'Main channel notifications',
+            fullScreenIntent: true ,
+            enableLights: true,
+            enableVibration: true,
             importance: Importance.max,
             priority: Priority.max,
+            showProgress : true ,
             icon: '@drawable/ic_flutternotifiction'
         ),
       ),
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
+
     );
   }
 

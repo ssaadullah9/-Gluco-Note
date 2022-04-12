@@ -1,17 +1,15 @@
             // TODO Implement this library.
             import 'package:cloud_firestore/cloud_firestore.dart';
             import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:duration_picker/duration_picker.dart';
             import 'package:flutter/cupertino.dart';
             import 'package:flutter/material.dart';
             import 'package:get/get.dart';
             import 'package:intl/intl.dart';
-            import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-            import 'package:test_saja/const/colors.dart';
-import 'package:test_saja/widgets/notificationService.dart';
-
+import 'package:numberpicker/numberpicker.dart';
+        import 'package:test_saja/widgets/notificationService.dart';
             import '../../controller/reminder_controller.dart';
             import '../addreminder.dart';
-
             import 'package:timezone/timezone.dart' as tz;
             import 'package:timezone/data/latest.dart' as tz;
 
@@ -24,6 +22,9 @@ import 'package:test_saja/widgets/notificationService.dart';
 
             class _ReminderScreeenState extends State<ReminderScreeen> {
               final controller = Get.put(ReminderController());
+              int SelectedMineuts=1  ;
+              Duration _duration = Duration(hours: 0, minutes: 0);
+
               void initState() {
                 super.initState();
 
@@ -161,9 +162,30 @@ import 'package:test_saja/widgets/notificationService.dart';
                 }
                 });
                 });}, icon: Icon(Icons.delete, color: Colors.red)),
-                  IconButton(onPressed: () {
-                    NotificationService().showNotification(1, "title", "body", 10);
-                  }, icon: Icon(Icons.edit, color: Colors.black54)),
+                  Builder(
+                      builder: (BuildContext context) => GestureDetector(
+                        onTap: () async {
+
+                          var resultingDuration = await showDurationPicker(
+                            context: context,
+                            initialTime: Duration(minutes: _duration.inMinutes),
+
+                          );
+                          _duration = resultingDuration!;
+                      SelectedMineuts = resultingDuration.inMinutes  ;
+                          print(SelectedMineuts) ;
+                          NotificationService().showNotification(
+                              2, '${snapshot.data!.docs[numReminder[index]]['Reminder_Type']} Reminder',
+                              '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}', SelectedMineuts  );
+                          setState(() {
+
+                          });
+                        },
+                        child: Container(
+                            width: 100,
+                            height: 50,
+                            child: Icon(Icons.toggle_off , color: Colors.green)),
+                      ))
                 ],
                 )
                 ],
