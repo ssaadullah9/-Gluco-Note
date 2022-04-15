@@ -18,7 +18,7 @@ import 'package:test_saja/widgets/notificationService.dart';
  Future main() async {
    WidgetsFlutterBinding.ensureInitialized();
    NotificationService().initNotification();
-   WidgetsFlutterBinding.ensureInitialized();
+   //WidgetsFlutterBinding.ensureInitialized();
    await  Firebase.initializeApp() ;
   runApp(MyApp());
 }

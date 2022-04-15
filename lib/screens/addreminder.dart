@@ -146,18 +146,28 @@ class AddnewReminder extends StatelessWidget {
                           if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
                               && controller.selected_date != null && controller.selected_time.value != null){
                             addReminder(context);
-                            Get.snackbar(
-                                "Reminder added successfully ! " ,
-                                ""
-                            );Timer(
-                                Duration(
-                                    seconds: 2
-                                ) ,
-                                    () {
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.SUCCES,
+                              animType: AnimType.TOPSLIDE,
+                              title: 'Reminder Added Successfully',
+                              desc: 'You have to set the reminder on',
+                              btnOkOnPress: () {Timer(
+                                  Duration(
+                                      seconds: 2
+                                  ) ,
+                                      () {
 
-                                  Navigator.pop(context ,ReminderScreeen()) ;
-                                }
-                            ) ;
+                                    Navigator.pop(context ,ReminderScreeen()) ;
+                                  }
+                              ) ;},
+                            )..show();
+                            /*Get.snackbar(
+                                "Reminder added successfully ! " ,
+                                "You have to set the reminder on " ,
+                              showProgressIndicator: true ,
+                                isDismissible : false ,
+                            );*/
                           }else {
                             AwesomeDialog(
                               context: context,

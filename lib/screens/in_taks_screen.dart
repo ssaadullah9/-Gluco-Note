@@ -45,8 +45,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic> ex_cal = [];
 
   //************
- String med_name="" ;
-var selected_med_time ;
+  String med_name ='';
 
   List<String>? category = [];
   List<String>? exercise = [];
@@ -56,7 +55,7 @@ var selected_med_time ;
   List<dynamic>? exerciseTypes = [];
 
   List<List<dynamic>>? exercisemet = [];
- dynamic calories;
+  dynamic calories;
   var selectCategory;
   var selectCategoryType;
 
@@ -121,7 +120,7 @@ var selected_med_time ;
         {"name": "dates", "cal": 20, "fat": 0, "pro": 0.2},
         {"name": "grape", "cal": 3, "fat": 0.01, "pro": 0.04},
         {"name": "Java Plum (3 fruits) ", "cal": 5, "fat": 0.02, "pro": 0.06},
-        {"name": "	Kiwifruit", "cal": 46, "fat": 0.4, "pro": 0.87},
+        {"name": " Kiwifruit", "cal": 46, "fat": 0.4, "pro": 0.87},
         {"name": "Lime", "cal": 20, "fat": 0.13, "pro": 0.47},
         {"name": "mango", "cal": 135, "fat": 0.56, "pro": 1.06},
         {"name": "Orange", "cal": 62, "fat": 0.2, "pro": 1.9},
@@ -200,54 +199,54 @@ var selected_med_time ;
       ],
 
 
+
+      //
+      // this.exerciseTypes = [
+      //   "Aerobics",
+      //   "Baseball",
+      //   "Basketball",
+      //       "Billiards",
+      //   "Bowling",//3
+      //   "Cycling",
+      //   "Dancing",
+      //   "Fishing",
+      //   "Football",
+      //   "Hiking",//done
+      //   "Ice skating",//done
+      //   "Racquet sports",//done
+      //   "Running",//done
+      //   "Swimming",
+      //   "Walking",
     ];
+    this.exerciseTypes=[
 
-    this.exerciseTypes = [
-      "Aerobics",
-      "Baseball",
-      "Basketball",
-          "Billiards",
-      "Bowling",//3
-      "Cycling",
-      "Dancing",
-      "Fishing",
-      "Football",
-      "Hiking",//done
-      "Ice skating",//done
-      "Racquet sports",//done
-      "Running",//done
-      "Swimming",
-      "Walking",
+      {"name":"Aerobics","met":6.83},
+      {"name":"Baseball","met":5},
+      {"name":"Basketball","met":8},
+      {"name":"Billiards","met":2.5},//done
+      {"name":"Bowling","met":3},
+      {"name":"Cycling","met":9.5},
+      {"name":"Dancing","met":4.5},
+      {"name":"Fishing","met":4.5},
+      {"name":"Football","met":7},
+      {"name":"Hiking","met":6},
+      {"name":"Ice skating","met":7},
+      {"name":"Racquet sports","met":8.5},
+      {"name":"Running","met":9.8},
+      {"name":"Swimming","met":8},
+      {"name":"Walking","met":3.8},
+
+
+
+
     ];
-    // this.exerciseTypes=[
-    //
-    //     {"name":"Aerobics","met":6.83},
-    //     {"name":"Baseball","met":5},
-    //     {"name":"Basketball","met":8},
-    //     {"name":"Billiards","met":2.5},//done
-    //     {"name":"Bowling","met":3},
-    //     {"name":"Cycling","met":9.5},
-    //     {"name":"Dancing","met":4.5},
-    //     {"name":"Fishing","met":4.5},
-    //     {"name":"Football","met":7},
-    //     {"name":"Hiking","met":6},
-    //     {"name":"Ice skating","met":7},
-    //     {"name":"Racquet sports","met":8.5},
-    //     {"name":"Running","met":9.8},
-    //     {"name":"Swimming","met":8},
-    //     {"name":"Walking","met":3.8},
-       // {"met":},
-
-
-
-    // ];
 
 
 
   }
   var updated;
 
-var other;
+  var other;
   String typeOthers = '';
   int indexType = 0;
   int indexType2 = 0;
@@ -281,7 +280,7 @@ var other;
   dynamic tim = 0,
       h = 0,
       w = 0;
-Timer? _timer;
+  Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -383,10 +382,10 @@ Timer? _timer;
 
                     ),
                     onChanged: (val) {
-                     other = int.parse(val);
+                      other = int.parse(val);
                     },
                   )
-                  :
+                      :
 
                   DropdownButtonFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -506,40 +505,27 @@ Timer? _timer;
                               }
                             }
                           }
-                          if(categoryType!=null &&selectCategoryType!=null && selected_squantity!=0  ){
-                            Get.snackbar(
-                                'do you want save it?',
-                                'it will be show in the logbook',
-                                snackPosition: SnackPosition.BOTTOM,
-                                borderRadius: 0,
-                                duration: Duration(milliseconds: 4500),
-                                margin: EdgeInsets.zero,
-                                mainButton: TextButton(
-                                    onPressed: () {
-                                      add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
-                                      Scal=0;
-                                      sfat=0;
-                                      spro=0;
-                                      // solids_result = cal_s * selected_squantity;
-                                      print(solids_result);
-                                      setState(() {});
-                                    }, child: Text('Save',
-                                  style: TextStyle(
-                                      color: Colors.blue
-                                  ),))
-                            );
-                          }
-                           else {
-                          AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.ERROR,
-                          animType: AnimType.BOTTOMSLIDE,
-                          title: 'Error',
-                          desc: 'You must fill all the information',
-                          btnOkOnPress: () {},
-                          )..show();
-                          }
-
+                          Get.snackbar(
+                              'do you want save it?',
+                              'it will be show in the logbook',
+                              snackPosition: SnackPosition.BOTTOM,
+                              borderRadius: 0,
+                              duration: Duration(milliseconds: 4500),
+                              margin: EdgeInsets.zero,
+                              mainButton: TextButton(
+                                  onPressed: () {
+                                    add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
+                                    Scal=0;
+                                    sfat=0;
+                                    spro=0;
+                                    // solids_result = cal_s * selected_squantity;
+                                    print(solids_result);
+                                    setState(() {});
+                                  }, child: Text('Save',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),))
+                          );
                         },
                         icon: Icon(Icons.add, size: 30),
                         label: Text("Calculate"),
@@ -647,40 +633,7 @@ Timer? _timer;
                         liquid_result = L_calories * selected_Lquantity;
                         print(liquid_result);
                         setState(() {});
-                        if(L_calories!=null &&selected_Lquantity!=0  ){
-                          Get.snackbar(
-                              'do you want save it?',
-                              'it will be show in the logbook',
-                              snackPosition: SnackPosition.BOTTOM,
-                              borderRadius: 0,
-                              duration: Duration(milliseconds: 4500),
-                              margin: EdgeInsets.zero,
-                              mainButton: TextButton(
-                                  onPressed: () {
-                                    add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
-                                    Scal=0;
-                                    sfat=0;
-                                    spro=0;
-                                    // solids_result = cal_s * selected_squantity;
-                                    print(solids_result);
-                                    setState(() {});
-                                  }, child: Text('Save',
-                                style: TextStyle(
-                                    color: Colors.blue
-                                ),))
-                          );
-                        }
-                        else {
-                          AwesomeDialog(
-                            context: context,
-                            dialogType: DialogType.ERROR,
-                            animType: AnimType.BOTTOMSLIDE,
-                            title: 'Error',
-                            desc: 'You must fill all the information',
-                            btnOkOnPress: () {},
-                          )..show();
-                        }
-                  /*      Get.snackbar(
+                        Get.snackbar(
                             'do you want save it?',
                             'it will be show in the logbook',
                             snackPosition: SnackPosition.BOTTOM,
@@ -697,7 +650,7 @@ Timer? _timer;
                                 ),)
 
                             )
-                        );*/
+                        );
                       },
                       icon: Icon(Icons.add, size: 30),
                       label: Text("Calculate"),
@@ -713,14 +666,14 @@ Timer? _timer;
                 ),
                 children: <Widget>[
                   TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
-                    ),
-    onChanged: (val) {
-    med_name = val as String;
-    setState(() {
-    });}
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Name',
+                      ),
+                      onChanged: (val) {
+                        med_name = val as String;
+                        setState(() {
+                        });}
                   ),
 
                   SizedBox(height: Get.width * 0.1,),
@@ -734,9 +687,7 @@ Timer? _timer;
                             value: e,
                           )).toList(),
                       hint: Text('How Often'),
-                      onChanged: (val) {
-                      selected_med_time = val as String;
-                      }),
+                      onChanged: (val) {}),
                   SizedBox(height: Get.width * 0.1,),
 
                   DropdownButtonFormField(
@@ -795,12 +746,9 @@ Timer? _timer;
                       //ToDo
                       Get.to(() =>
                           AddnewReminder(
-                            med_name : med_name,
-                            items :  selected_med_time ,
-                            med_type :med_type,
-                            med_q : med_q,
-                            showText: true ,
-                          ) )  ;
+
+                            //send parametr
+                          ) , arguments: [med_name, items,med_type,med_q]);
                     },
 
                     icon: Icon(Icons.add, size: 30),
@@ -867,7 +815,7 @@ Timer? _timer;
                   ),
                   isLoading2
                       ? Center(child: CircularProgressIndicator())
-                  :TextFormField(
+                      :TextFormField(
                     keyboardType: TextInputType.datetime,
 
                     decoration: InputDecoration(
@@ -877,17 +825,17 @@ Timer? _timer;
                     onChanged: (val){
                       selectExerciseTime = val;
                     },
-                  onEditingComplete: (){
+                    onEditingComplete: (){
                       print(selectExerciseTime);
                       Timer.periodic(Duration(
-                      minutes: int.parse(selectExerciseTime)
-                    ), (timer) {
-                      print(timer.tick.toString());
-                      setState(() {
+                          minutes: int.parse(selectExerciseTime)
+                      ), (timer) {
+                        print(timer.tick.toString());
+                        setState(() {
 
+                        });
                       });
-                    });
-                  },
+                    },
                   ),
 
                   //     : DropdownButtonFormField(
@@ -1027,7 +975,7 @@ Timer? _timer;
                                   AwesomeDialog(
                                       context: context,
                                       dialogType: DialogType.SUCCES,
-                                      desc: 'Timer is finish ',
+                                      desc: 'Heloo Done Dear@',
                                       btnOkOnPress: () {
                                         selectExerciseTime = '0';
                                         milliseconds = 5000;
@@ -1059,9 +1007,20 @@ Timer? _timer;
                           horizontal: Get.width * 0.08),
                       child: ElevatedButton.icon(
                           onPressed: () {
-                           calories=cal_swimming(tim, h, w);
-                           print(calories);
-                            // Respond to button press
+                            //
+                            // calories=cal_swimming(h ,selectExerciseTime);
+                            // print(calories);
+                            //  Respond to button press
+                                                   for (var j = 0; j < exerciseTypes![j].length; j++) {
+                                                     if (selectExerciseType ==
+                                                         exerciseTypes![j]["name"]) {
+                                                       print(
+                                                           selectExerciseTime * exerciseTypes![j]['met'] * 3.5 * 2 / (200 * 60));
+
+                                                       break;
+                                                     }
+                                                   }
+
                           },
                           icon: Icon(Icons.add, size: 30),
                           label: Text("Calculate"),
@@ -1156,15 +1115,15 @@ Timer? _timer;
   }
   void getDataFromFireBaseHealthInfo()async{
     //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
-    // var user  =  FirebaseAuth.instance.currentUser;
+    var user  =  FirebaseAuth.instance.currentUser;
     CollectionReference? data;
     data =  FirebaseFirestore.instance.collection("Health_Info");
     await data.get().then((snapShot) {
       _w =int.parse('${ snapShot.docs[1]['Weight']}');
       snapShot.docs.forEach((element) {
         // print(user!.uid);
-        //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد 
-        
+        //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد
+
       });
     });
   }
@@ -1181,3 +1140,4 @@ Timer? _timer;
     return calories;
   }
 }
+

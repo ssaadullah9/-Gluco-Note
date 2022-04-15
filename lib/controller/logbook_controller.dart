@@ -91,7 +91,6 @@ class LogBookController extends GetxController{
           Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
           Glurow[i].add(snapShot.docs[i]['Time'].toString());
           Glurow[i].add(DateFormat.yMd().format(DateTime.parse(snapShot.docs[i]['Date'])).toString());
-
           break;
         }
       }
@@ -122,6 +121,7 @@ class LogBookController extends GetxController{
 
     });
   }
+
   Future<void> getCtableData() async{
     Calref = FirebaseFirestore.instance.collection("intakes");
     await Calref!.get().then((snapShot)
@@ -133,13 +133,10 @@ class LogBookController extends GetxController{
           Calrow[i].add(snapShot.docs[i]['intakes_category'].toString());
           Calrow[i].add(snapShot.docs[i]['intakes_Quantity'].toString());
           Calrow[i].add(snapShot.docs[i]['intakes_Cal'].toString());
-
-
-
           break;
         }
       }
-      print(Glurow);
+      print(Calrow);
     });
     update();
   }

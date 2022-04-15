@@ -80,6 +80,10 @@ import '../../widgets/build_section_calorises.dart';
             )
             );
             }else{
+              var c;
+              for(var i = 0 ; i < controller.Glurow.length;i++){
+
+              }
             controller.createPDF(
             Glucolumn,
             controller.Glurow

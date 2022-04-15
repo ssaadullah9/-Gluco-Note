@@ -38,7 +38,6 @@ class NotificationService{
             enableVibration: true,
             importance: Importance.max,
             priority: Priority.max,
-            showProgress : true ,
             icon: '@drawable/ic_flutternotifiction'
         ),
       ),
