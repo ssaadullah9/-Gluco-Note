@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,20 +15,22 @@ import 'bottom_bar_screens/reminder.dart';
 
 class AddnewReminder extends StatelessWidget {
   final controller = Get.put(AddNewReminderController());
- final String? med_name ;
+   var user=FirebaseAuth.instance.currentUser ;
+
+  final String? med_name ;
   final String? items ;
   final String? med_type ;
   final int? med_q ;
   bool showText ;
   AddnewReminder(
-  {
- Key? key ,
-    this.med_name ,
-    this.items ,
-    this.med_type ,
-    this.med_q ,
-    this.showText=false ,
-}) : super (key : key) ;
+      {
+        Key? key ,
+        this.med_name ,
+        this.items ,
+        this.med_type ,
+        this.med_q ,
+        this.showText=false ,
+      }) : super (key : key) ;
 
 
 
@@ -53,16 +56,16 @@ class AddnewReminder extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(
-          ()=>Padding(
+              ()=>Padding(
             padding:  EdgeInsets.symmetric(
-                horizontal: Get.width*0.03,
-                vertical: Get.width*0.03,
+              horizontal: Get.width*0.03,
+              vertical: Get.width*0.03,
             ),
             child: ListView(
               children: [
                 Container(
                   child: TableCalendar(
-                //  controller.selected_date ,
+                    //  controller.selected_date ,
                     onDaySelected: (x, y) {
                       controller.selected_date.value = x;
                       controller.focsed_date.value = y;
@@ -82,9 +85,9 @@ class AddnewReminder extends StatelessWidget {
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
                   initialValue :showText? med_type:"" ,
-                 /* final String? med_type ;
+                  /* final String? med_type ;
                   final int? med_q ;,*/
-                    decoration: InputDecoration(
+                  decoration: InputDecoration(
                     label: Text('Reminder description'),
 
                     border: OutlineInputBorder(),
@@ -93,7 +96,7 @@ class AddnewReminder extends StatelessWidget {
                   ),
 
                   onChanged: (val){
-                  controller.description.value=val ;
+                    controller.description.value=val ;
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
@@ -103,9 +106,9 @@ class AddnewReminder extends StatelessWidget {
                   },
                   readOnly: true,
                   decoration: InputDecoration(
-                    label: Text('Reminder Time'),
-                    hintText: controller.selected_time.value.format(context),
-                    suffixIcon: Icon(Icons.access_time),
+                      label: Text('Reminder Time'),
+                      hintText: controller.selected_time.value.format(context),
+                      suffixIcon: Icon(Icons.access_time),
                       border: OutlineInputBorder()
                   ),
                   onChanged: (val){
@@ -146,28 +149,21 @@ class AddnewReminder extends StatelessWidget {
                           if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
                               && controller.selected_date != null && controller.selected_time.value != null){
                             addReminder(context);
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.SUCCES,
-                              animType: AnimType.TOPSLIDE,
-                              title: 'Reminder Added Successfully',
-                              desc: 'You have to set the reminder on',
-                              btnOkOnPress: () {Timer(
-                                  Duration(
-                                      seconds: 2
-                                  ) ,
-                                      () {
-
-                                    Navigator.pop(context ,ReminderScreeen()) ;
-                                  }
-                              ) ;},
-                            )..show();
-                            /*Get.snackbar(
+                            Get.snackbar(
                                 "Reminder added successfully ! " ,
                                 "You have to set the reminder on " ,
                               showProgressIndicator: true ,
                                 isDismissible : false ,
-                            );*/
+                            );
+                            Timer(
+                                Duration(
+                                    seconds: 2
+                                ) ,
+                                    () {
+
+                                  Navigator.pop(context ,ReminderScreeen()) ;
+                                }
+                            ) ;
                           }else {
                             AwesomeDialog(
                               context: context,
@@ -200,6 +196,7 @@ class AddnewReminder extends StatelessWidget {
     CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders");
     newReminder.add(
         {
+          "Email":user!.email.toString(),
           "Reminder_Date" : controller.selected_date.value.toString(),
           "Remindnder_Description" : controller.description.value.toString(),
           "Reminder_Time" : controller.selected_time.value.format(context).toString(),

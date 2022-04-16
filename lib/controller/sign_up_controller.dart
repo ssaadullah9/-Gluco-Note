@@ -55,7 +55,7 @@ class SignUpController extends GetxController {
   Future register({email,password,phone,name,context}) async{
     try{
       UserCredential user = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password ,);
       if(user != null){
         Get.snackbar('SuccessFull', 'New User');
         Get.off(LoginScreen());

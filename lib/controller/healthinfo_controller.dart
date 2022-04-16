@@ -14,7 +14,7 @@ class HealthInfoController extends GetxController{
   var id = 1.obs;
   var radioButtonItem = 'Male'.obs;
 
-  Future<void> selectBirthDate(BuildContext context) async {
+/*  Future<void> selectBirthDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -24,6 +24,6 @@ class HealthInfoController extends GetxController{
     if (picked != null) {
       selectedBirthDate.value = picked;
     }
-  }
+  }*/
 
 }

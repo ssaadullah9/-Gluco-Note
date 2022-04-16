@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ import 'package:day_night_time_picker/lib/constants.dart';
 
 class TestScreen extends StatelessWidget {
   final controller = Get.put(TestBMIController());
-
+  var user = FirebaseAuth.instance.currentUser ;
   //
   @override
   Widget build(BuildContext context) {
@@ -601,11 +602,12 @@ class TestScreen extends StatelessWidget {
   }
 
   add_glu(context) async {
-    CollectionReference glu_info =
+    CollectionReference glu_info = await
     FirebaseFirestore.instance.collection("Gluco_Measurment");
     glu_info.add({
+      "Email": user!.email.toString() ,
       "Date": controller.Date1.value.toString(),
-      "Result": controller.valueHolder.value,
+      "Result": controller.valueHolder.value.toString(),
       "Test_preiod": controller.selectedval.value.toString(),
       "Time": controller.time.value.format(context).toString(),
     });
