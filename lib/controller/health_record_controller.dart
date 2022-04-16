@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HealthRecordController extends GetxController{
+  var isEdit = false.obs;
   var selectedTGDates = TextEditingController();
   var selectedLDLDates = TextEditingController();
   var selectedAlbuminDates = TextEditingController();
