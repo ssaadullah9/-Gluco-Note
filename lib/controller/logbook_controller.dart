@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '/model.dart';
 class LogBookController extends GetxController{
-
+  var user = FirebaseAuth.instance.currentUser ;
   var currentSortColumn = 0.obs;
   var isAscending = true.obs;
   CollectionReference? Glucoref;
@@ -83,7 +84,7 @@ class LogBookController extends GetxController{
 
   Future<void> getGtableData() async {
     Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await Glucoref!.get().then((snapShot) {
+    await Glucoref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       for (var i = 0; i < snapShot.docs.length; i++) {
         Glurow.add([]);
         for (var j = 0; j < 3; j++) {
@@ -91,7 +92,6 @@ class LogBookController extends GetxController{
           Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
           Glurow[i].add(snapShot.docs[i]['Time'].toString());
           Glurow[i].add(DateFormat.yMd().format(DateTime.parse(snapShot.docs[i]['Date'])).toString());
-
           break;
         }
       }
@@ -122,6 +122,7 @@ class LogBookController extends GetxController{
 
     });
   }
+
   Future<void> getCtableData() async{
     Calref = FirebaseFirestore.instance.collection("intakes");
     await Calref!.get().then((snapShot)
@@ -133,13 +134,10 @@ class LogBookController extends GetxController{
           Calrow[i].add(snapShot.docs[i]['intakes_category'].toString());
           Calrow[i].add(snapShot.docs[i]['intakes_Quantity'].toString());
           Calrow[i].add(snapShot.docs[i]['intakes_Cal'].toString());
-
-
-
           break;
         }
       }
-      print(Glurow);
+      print(Calrow);
     });
     update();
   }

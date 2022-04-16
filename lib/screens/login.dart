@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import '../widgets/textformfiled_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   final controller = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -127,7 +129,7 @@ class LoginScreen extends StatelessWidget {
                       password: controller.passWord.value
                     );
 
-                  }
+                   }
                 },
                 child: Container(
                   alignment: Alignment.center,

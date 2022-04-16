@@ -883,9 +883,7 @@ Timer? _timer;
                       minutes: int.parse(selectExerciseTime)
                     ), (timer) {
                       print(timer.tick.toString());
-                      setState(() {
-
-                      });
+                     
                     });
                   },
                   ),

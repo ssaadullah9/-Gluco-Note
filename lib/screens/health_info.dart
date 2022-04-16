@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +17,7 @@ import 'bottom_bar_screens/home.dart';
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
 
-
+  List HDate = [] ;
 
 
   @override
@@ -57,6 +58,7 @@ class HealthInfoScreen extends StatelessWidget {
                     Text('Gender: ',style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),),
+
                     Radio(
                       activeColor: mainColor,
                       value: 1,
@@ -123,13 +125,13 @@ class HealthInfoScreen extends StatelessWidget {
                 hint: Text('Diabetes Type:'),
               ),
               SizedBox(height: Get.width * 0.05,),
-              _buildDateField(
+          /*    _buildDateField(
                 hintText: 'Date of birth ',
                 selectedFromDate: controller.selectedBirthDate.value,
                 onTap: () {
                   controller.selectBirthDate(context);
                 },
-              ),
+              ),*/
               SizedBox(height: Get.width * 0.05,),
               Container(
                   margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
@@ -138,8 +140,9 @@ class HealthInfoScreen extends StatelessWidget {
                         if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
                          &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
                          addData() ;
+                         getData() ;
                          Get.snackbar(
-                             "Data Saved " ,
+                             "Data Saved Succesfully" ,
                              ""
                          );Timer(
                              Duration(
@@ -214,17 +217,31 @@ class HealthInfoScreen extends StatelessWidget {
         onTap: onTap);
   }
   addData() async{
+    var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
     Health_info.add(
       {
+        "Email" : user!.email.toString() ,
         "Gender" : controller.radioButtonItem.value.toString(),
         "Weight" : controller.selectedWeight.value,
         "Height" : controller.selectedHeight.value,
         "Diabetes_Type" : controller.selectedType.value,
-        "DOB" :DateFormat('dd-MM-yyyy').format(DateTime.parse(controller.selectedBirthDate.value.toString())) ,
       }
     ) ;
 
+  }
+  getData() async {
+    var user = FirebaseAuth.instance.currentUser ;
+    CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
+    await Health_info.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+      print(snapShot.docs.length);
+
+      snapShot.docs.forEach((element) {
+        HDate.add(element['Gender'].toString());
+        HDate.add(element['Diabetes_Type'].toString());
+      });
+    });
+    print(HDate) ;
   }
 
 }

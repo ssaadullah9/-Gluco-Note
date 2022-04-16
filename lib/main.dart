@@ -7,8 +7,10 @@ import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
 import 'package:test_saja/screens/bottom_bar_screens/reminder.dart';
 import 'package:test_saja/screens/bottom_bar_screens/test.dart';
+import 'package:test_saja/screens/change_password.dart';
 import 'package:test_saja/screens/health_record.dart';
 import 'package:test_saja/screens/in_taks_screen.dart';
+import 'package:test_saja/screens/login.dart';
  import 'package:test_saja/screens/splash_screen.dart';
 import 'package:test_saja/widgets/notificationService.dart';
 
@@ -18,7 +20,7 @@ import 'package:test_saja/widgets/notificationService.dart';
  Future main() async {
    WidgetsFlutterBinding.ensureInitialized();
    NotificationService().initNotification();
-   WidgetsFlutterBinding.ensureInitialized();
+   //WidgetsFlutterBinding.ensureInitialized();
    await  Firebase.initializeApp() ;
   runApp(MyApp());
 }

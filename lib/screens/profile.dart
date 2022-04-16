@@ -1,15 +1,25 @@
 import 'dart:io';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:test_saja/const/colors.dart';
 import 'package:test_saja/controller/profile_controller.dart';
+import 'package:test_saja/screens/change_password.dart';
 
 class ProfileScreen extends StatelessWidget {
   final controller = Get.put(ProfileController());
+  var user = FirebaseAuth.instance.currentUser ;
+
+  var selectedBirthDate = DateTime.now() ;
+  var firstDate = DateTime(1970 , 1);
+  var lastDate = DateTime.now();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
       body: Obx(
           ()=>Column(
             children: [
-              GetBuilder<ProfileController>(
+         /*     GetBuilder<ProfileController>(
                   init: ProfileController(),
                   builder: (_){
                     return Stack(
@@ -63,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         )
                       ],
-                    );}),
+                    );}),*/
               SizedBox(height: 10,),
               Expanded(
                 child: Form(
@@ -97,7 +107,7 @@ class ProfileScreen extends StatelessWidget {
                       TextFormField(
                         readOnly: true,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: '${controller.email}',
+                        initialValue: user!.email.toString() ,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Email'),
@@ -114,11 +124,19 @@ class ProfileScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: Get.width*0.05,),
+                      _buildDateField(
+                        hintText: 'Date of birth ',
+                        selectedFromDate: selectedBirthDate,
+                        onTap: () {
+                         selectBirthDate(context);
+                        },
+                      ),
+                      SizedBox(height: Get.width*0.05,),
                       TextFormField(
                         readOnly: controller.readOnlyPhone.value,
                         keyboardType: TextInputType.phone,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: '${controller.phone}',
+                        initialValue: user!.phoneNumber.toString() ,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Phone'),
@@ -138,35 +156,7 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(onPressed: (){
-                            Get.defaultDialog(
-                                title: "Type your new Phone ",
-                                radius: 40,
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextField(
-                                      keyboardType: TextInputType.text,
-                                      maxLines: 1,
-                                      decoration: InputDecoration(
 
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.grey, width: 4.0))),
-                                    ),
-                                    SizedBox(
-                                      height: 30.0,
-                                    ),
-                                    RaisedButton(
-                                      onPressed: () {
-                                      },
-                                      child: Text(
-                                        'Save changes',
-                                        style: TextStyle(color: Colors.white, fontSize: 16.0),
-                                      ),
-                                      color: Colors.blueGrey,
-                                    )
-                                  ],
-                                )
-                            );
                             controller.readOnlyPhone.value = false;
                           }, child: Text('change phone number'))
                         ],
@@ -174,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
                       TextFormField(
                         readOnly: controller.readOnlyPassword.value,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: '${controller.password}',
+                        initialValue: "***********",
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Password'),
@@ -190,36 +180,7 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(onPressed: (){
-                            Get.defaultDialog(
-                              title: "Type your new password ",
-                              radius: 40,
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    keyboardType: TextInputType.text,
-                                    maxLines: 1,
-                                    decoration: InputDecoration(
-
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.grey, width: 4.0))),
-                                  ),
-                                  SizedBox(
-                                    height: 30.0,
-                                  ),
-                                  RaisedButton(
-                                    onPressed: () {
-                                    },
-                                    child: Text(
-                                      'Save changes',
-                                      style: TextStyle(color: Colors.white, fontSize: 16.0),
-                                    ),
-                                    color: Colors.blueGrey,
-                                  )
-                                ],
-                              )
-                            );
-                            controller.readOnlyPassword.value = false;
+                            Get.to(()=>ChangePassword());
                           }, child: Text('change Password'))
                         ],
                       ),
@@ -248,7 +209,53 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
+  Future<void> selectBirthDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: firstDate,
+        lastDate: lastDate);
+    if (picked != null) {
+      selectedBirthDate = picked;
+    }
+  }
+  Widget _buildDateField({required String hintText, DateTime? selectedFromDate, required VoidCallback onTap,}) {
+    return GestureDetector(
+        child: AbsorbPointer(
+          child: TextFormField(
+            readOnly: true,
+            decoration: InputDecoration(
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                ),
+              ),
+              // border: InputBorder.none,
+              hintText: selectedFromDate == null
+                  ? hintText
+                  : DateFormat('yyy-MM-dd').format(
+                selectedFromDate,
+              ),
+              hintStyle: const TextStyle(
+                color: Color.fromARGB(255, 138, 136, 136),
+              ),
+            ),
+            onChanged: (v) {
+              selectedFromDate = v as DateTime?;
+            },
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+        onTap: onTap);
+  }
 
 }
 
