@@ -14,6 +14,7 @@ import 'package:day_night_time_picker/lib/constants.dart';
 class TestScreen extends StatelessWidget {
   final controller = Get.put(TestBMIController());
 
+
   //
   @override
   Widget build(BuildContext context) {
@@ -618,7 +619,7 @@ class TestScreen extends StatelessWidget {
     CollectionReference glu_info = await
     FirebaseFirestore.instance.collection("Gluco_Measurment");
     glu_info.add({
-
+      "Email": controller.user!.email.toString(),
       "Date": controller.Date1.value.toString(),
       "Result": controller.valueHolder.value.toString(),
       "Test_preiod": controller.selectedval.value.toString(),

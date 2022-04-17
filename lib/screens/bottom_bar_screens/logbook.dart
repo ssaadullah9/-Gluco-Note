@@ -98,6 +98,7 @@ class LogBookScreen extends StatelessWidget {
         ),
         body: ListView(
           children: <Widget>[
+            // CAL Numbers لازم تعديل
             FutureBuilder(
               future: controller.HCalref!.get(),
               builder: (context,AsyncSnapshot snapshot)
@@ -134,6 +135,7 @@ class LogBookScreen extends StatelessWidget {
                   );
                 }
               } , ) ,
+           // Cal Table
             FutureBuilder(
               future: controller.Calref!.get(),
               builder: (context,AsyncSnapshot snapshot)
@@ -192,7 +194,7 @@ class LogBookScreen extends StatelessWidget {
                 }
               } , ) ,
 
-
+              // Glucose Number
             Container(
               padding:const EdgeInsets.all(12.0),
               height: Get.width * 0.3,
@@ -213,9 +215,9 @@ class LogBookScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            FutureBuilder(
-              future: controller.Calref!.get(),
+              // Glucose Table
+         /*   FutureBuilder(
+              future: controller.Glucoref!.get(),
               builder: (context,AsyncSnapshot snapshot)
               {
                 if(!snapshot.hasData){
@@ -275,8 +277,68 @@ class LogBookScreen extends StatelessWidget {
                       ],),
                   );
                 }
-              } , ) ,
+              } , ) ,*/
+    StreamBuilder(
+      stream: controller.Glucoref!.snapshots(),
+      builder: (context, snapshot) {
+    if(!snapshot.hasData){
+    return Center(
+    child: SpinKitCircle(
+    color: Colors.amber,
+    ),
+    );
+    } else{
+        return Container(
+        margin: EdgeInsets.symmetric(
+        vertical: 10.0
+        ),
+        decoration: BoxDecoration(
+        border: Border(
+        top: BorderSide(
+        color: Colors.blueGrey,
+        width: 2
+        ),
+        )
+        ),
 
+        child: ExpansionTile(
+        title: Text('Glucose'),
+        trailing: FlatButton.icon(
+        onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
+        children: [
+        SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+        color: Colors.white,
+        child: DataTable(
+        columnSpacing: size.width *0.08 ,
+        sortColumnIndex: controller.currentSortColumn.value,
+        sortAscending: controller.isAscending.value,
+        headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
+        columns:
+        //send column List
+        Glucolumn.map((e) => DataColumn(
+        label: Text('$e'),
+        )).toList(),
+        rows:
+        // get Rows List
+        //fireBAse
+        controller.Glurow.map((ee) {
+        return DataRow(
+        cells: ee.map((el){
+        return DataCell(
+        Text('$el')
+        );
+        }).toList()
+        );
+        }).toList()
+        ),
+        ),
+        ),
+        ],),
+        );
+      } }
+    ) ,
 
 
           ],
