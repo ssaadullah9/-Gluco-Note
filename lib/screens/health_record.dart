@@ -15,6 +15,14 @@ class HealthRecordScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        actions: [
+          Obx(
+                  ()=> IconButton(
+                onPressed: (){
+                  controller.isEdit.value = false;
+                }, icon: Icon(Icons.edit,),tooltip: '${controller.isEdit.toString().substring(0,0)}Edit',)
+          )
+        ],
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -36,172 +44,204 @@ class HealthRecordScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(Get.width * 0.05),
-          child: Form(
-            key: controller.keyForm,
-            child: Column(
-              children: [
-                DropDownFromFiled(
-                    hintText: 'AntiDiabtees',
-                    result: controller.anti_diabteees),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
-                DropDownFromFiled(
-                    hintText: 'Insulin', result: controller.insulin),
+          child: Obx(
+                  ()=>Form(
+                key: controller.keyForm,
+                child: Column(
+                  children: [
+                    DropDownFromFiled(
+                        isEdit: controller.isEdit.value,
 
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
+                        hintText: 'AntiDiabtees',
+                        result: controller.anti_diabteees),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
+                    DropDownFromFiled(
+                        isEdit: controller.isEdit.value,
+                        hintText: 'Insulin',
+                        result: controller.insulin),
 
-                DropDownFromFiled(
-                    hintText: 'Injectable', result: controller.injectable),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
 
-                DropDownFromFiled(
-                    hintText: 'Nutrition', result: controller.nutrition),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "LDL",
-                  ),
-                  validator: (val) {
-                    return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                  },
-                  onChanged: (val) {
-                    controller.ldl.text = val;
-                  },
-                ),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
-                _buildDateSelected(
-                    text: 'LDL Date',
-                    context: context,
-                    selectDate: controller.selectedLDLDates),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
+                    DropDownFromFiled(
+                        isEdit: controller.isEdit.value,
 
-                //SizedBox(width: 10),
+                        hintText: 'Injectable', result: controller.injectable),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
 
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "TG",
-                  ),
-                  validator: (val) {
-                    return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                  },
-                  onChanged: (val) {
-                    controller.tg.text = val;
-                    // print(controller.tg.value);
-                  },
-                ),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
+                    DropDownFromFiled(
 
-                /// 2
-                _buildDateSelected(
-                    text: 'TG Date',
-                    context: context,
-                    selectDate: controller.selectedTGDates),
+                        isEdit: controller.isEdit.value,
+                        hintText: 'Nutrition', result: controller.nutrition),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
+                    TextFormField(
+                      //initialValue: ,
+                      style: TextStyle(
+                          color: controller.isEdit.value?Colors.grey:Colors.black
+                      ) ,
+                      readOnly: controller.isEdit.value?true:false,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "LDL",
 
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
+                      ),
+                      validator: (val) {
+                        return val!.trim().isEmpty ? 'can\'t be empty' : null;
+                      },
+                      onChanged: (val) {
+                        controller.ldl.text = val;
+                      },
+                    ),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
+                    _buildDateSelected(
+                        isEdit: controller.isEdit.value,
+                        text: 'LDL Date',
+                        context: context,
+                        selectDate: controller.selectedLDLDates),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
+                    TextFormField(
+                      style: TextStyle(
+                          color: controller.isEdit.value?Colors.grey:Colors.black
+                      ) ,
+                      readOnly: controller.isEdit.value?true:false,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "TG",
+                      ),
+                      validator: (val) {
+                        return val!.trim().isEmpty ? 'can\'t be empty' : null;
+                      },
+                      onChanged: (val) {
+                        controller.tg.text = val;
+                        // print(controller.tg.value);
+                      },
+                    ),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
 
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Albumin",
-                  ),
-                  validator: (val) {
-                    return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                  },
-                  onChanged: (val) {
-                    controller.albumin.text = val;
-                    //  print(controller.albumin.value);
-                  },
-                ),
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
+                    /// 2
+                    _buildDateSelected(
 
-                /// 3
-                _buildDateSelected(
-                    text: 'Albumin Date',
-                    context: context,
-                    selectDate: controller.selectedAlbuminDates),
+                        isEdit: controller.isEdit.value,
+                        text: 'TG Date',
+                        context: context,
+                        selectDate: controller.selectedTGDates),
 
-                SizedBox(
-                  height: Get.width * 0.06,
-                ),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
-                    child: ElevatedButton.icon(
-                        onPressed: () {
-                          if (controller.keyForm.currentState!.validate()) {
-                            add_record();
-                            print(
-                                '${controller.anti_diabteees.text}' +
-                                '\n' +
-                                '${controller.insulin.text}' +
-                                '\n' +
-                                '${controller.injectable.text}' +
-                                '\n' +
-                                '${controller.nutrition.text}' +
-                                '\n' +
-                                '${controller.ldl.text}' +
-                                '\n' +
-                                '${controller.selectedLDLDates.text}' +
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
+                    TextFormField(
+                      style: TextStyle(
+                          color: controller.isEdit.value?Colors.grey:Colors.black
+                      ) ,
+                      readOnly: controller.isEdit.value?true:false,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Albumin",
+                      ),
+                      validator: (val) {
+                        return val!.trim().isEmpty ? 'can\'t be empty' : null;
+                      },
+                      onChanged: (val) {
+                        controller.albumin.text = val;
+                        //  print(controller.albumin.value);
+                      },
+                    ),
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
 
-                                '\n' +
-                                '${controller.tg.text}' +
-                                '\n' +
-                                '${controller.selectedTGDates.text}' +
-                                '\n' +
-                                    '${controller.albumin.text}'+
-                            '\n' +
-                                '${controller.selectedAlbuminDates.text}');
-                          }
-                        },
-                        icon: Icon(Icons.done, size: 30),
-                        label: Text("Save Information"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE5A9379),
-                        ))
+                    /// 3
+                    _buildDateSelected(
+                        isEdit: controller.isEdit.value,
+                        text: 'Albumin Date',
+                        context: context,
+                        selectDate: controller.selectedAlbuminDates),
 
-                    //  )
+                    SizedBox(
+                      height: Get.width * 0.06,
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                        child: ElevatedButton.icon(
+                            onPressed: () {
+                              if (controller.keyForm.currentState!.validate()) {
+                                add_record();
+                                controller.isEdit.value = true;
+                                print(
+                                    '${controller.anti_diabteees.text}' +
+                                        '\n' +
+                                        '${controller.insulin.text}' +
+                                        '\n' +
+                                        '${controller.injectable.text}' +
+                                        '\n' +
+                                        '${controller.nutrition.text}' +
+                                        '\n' +
+                                        '${controller.ldl.text}' +
+                                        '\n' +
+                                        '${controller.selectedLDLDates.text}' +
+
+                                        '\n' +
+                                        '${controller.tg.text}' +
+                                        '\n' +
+                                        '${controller.selectedTGDates.text}' +
+                                        '\n' +
+                                        '${controller.albumin.text}'+
+                                        '\n' +
+                                        '${controller.selectedAlbuminDates.text}');
+                              }
+                            },
+                            icon: Icon(Icons.done, size: 30),
+                            label: Text("Save Information"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFE5A9379),
+                            ))
+
+                      //  )
 
                     )
-              ],
-            ),
+                  ],
+                ),
+              )
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDateSelected({text, context, selectDate}) {
+  Widget _buildDateSelected({text, context, selectDate,isEdit}) {
     return TextFormField(
+      style:TextStyle(
+          color: isEdit?Colors.grey:Colors.black
+      ) ,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       readOnly: true,
       controller: selectDate,
       decoration:
-          InputDecoration(labelText: '$text', border: OutlineInputBorder()),
-      onTap: () async {
+      InputDecoration(
+        labelText: '$text', border: OutlineInputBorder(),
+
+
+      ),
+      onTap: isEdit?null:() async {
         await showDatePicker(
           context: context,
           initialDate: DateTime.now(),
@@ -224,8 +264,9 @@ class HealthRecordScreen extends StatelessWidget {
 
   Future<void> add_record() async {
     CollectionReference helth_record =
-         FirebaseFirestore.instance.collection("Health_Record");
-     helth_record.add({
+    FirebaseFirestore.instance.collection("Health_Record");
+    helth_record.add({
+      "Email": controller.user!.email.toString(),
       "AntiDiabtees": controller.anti_diabteees.text,
       "Insulin": controller.insulin.text,
       "Injectable": controller.injectable.text,
@@ -244,8 +285,9 @@ class HealthRecordScreen extends StatelessWidget {
 class DropDownFromFiled extends StatefulWidget {
   final String? hintText;
   var result;
+  var isEdit;
 
-  DropDownFromFiled({Key? key, this.hintText, this.result}) : super(key: key);
+  DropDownFromFiled({Key? key, this.hintText, this.result,this.isEdit}) : super(key: key);
 
   @override
   _DropDownFromFiledState createState() => _DropDownFromFiledState();
@@ -257,16 +299,18 @@ class _DropDownFromFiledState extends State<DropDownFromFiled> {
     return DropdownButtonFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       icon: Icon(Icons.keyboard_arrow_down),
+      onTap: null,
       decoration: InputDecoration(
-        label: Text('${widget.hintText}'),
+          label: Text('${widget.hintText}'),
+          //هنا يجب أن نجلب القيم من الفاير بيز ونضعها في مكانها
           hintText: '${widget.hintText}', border: OutlineInputBorder()),
       items: ["Yes", "No"]
           .map((e) => DropdownMenuItem(
-                child: Text("$e"),
-                value: e,
-              ))
+        child: Text("$e"),
+        value: e,
+      ))
           .toList(),
-      onChanged: (val) {
+      onChanged: widget.isEdit?null:(val) {
         widget.result.text = val.toString();
         setState(() {});
       },

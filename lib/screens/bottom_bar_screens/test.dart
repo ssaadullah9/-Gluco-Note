@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -14,7 +13,7 @@ import 'package:day_night_time_picker/lib/constants.dart';
 
 class TestScreen extends StatelessWidget {
   final controller = Get.put(TestBMIController());
-  var user = FirebaseAuth.instance.currentUser ;
+
   //
   @override
   Widget build(BuildContext context) {
@@ -184,8 +183,6 @@ class TestScreen extends StatelessWidget {
                                                    }*/
 
 
-
-
                                             if (controller.keyForm.value.currentState!.validate()) {
                                               controller.bmi1
                                                   .value = controller
@@ -268,6 +265,10 @@ class TestScreen extends StatelessWidget {
                                                               children: [
                                                                 TextButton(onPressed: (){
                                                                   add_bmi();
+                                                                  controller
+                                                                      .keyForm.value
+                                                                      .currentState
+                                                                  !.reset();
                                                                   Get.back();
                                                                 }, child: Text('ok',style: TextStyle(
                                                                     color: Colors.black
@@ -311,7 +312,16 @@ class TestScreen extends StatelessWidget {
                                               //   ),
                                               // );
                                             }
-                                            //end if ( )
+                                            else{
+                                                  AwesomeDialog(
+                                                    context: context,
+                                                    dialogType: DialogType.ERROR,
+                                                    animType: AnimType.BOTTOMSLIDE,
+                                                    title: 'Error',
+                                                    desc: 'You must fill all the information',
+                                                    btnOkOnPress: () {},
+                                                  )..show();
+                                            }
                                           }, // End OnPressesd
 
                                           label:
@@ -427,7 +437,7 @@ class TestScreen extends StatelessWidget {
                                 Slider(
                                     value: controller.valueHolder.value
                                         .toDouble(),
-                                    min: 1,
+                                    min: 0,
                                     max: 700,
                                     divisions: 100,
                                     activeColor: Colors.blueGrey,
@@ -552,7 +562,7 @@ class TestScreen extends StatelessWidget {
                                     {
                                       //add_glu(context);
 
-                                      if(controller.valueHolder.value != null && controller.selectedval.value.isNotEmpty && controller.time.value != null)
+                                      if(controller.valueHolder.value != null && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
                                       {
                                         add_glu(context);
                                         Get.snackbar(
@@ -566,7 +576,9 @@ class TestScreen extends StatelessWidget {
                                           animType: AnimType.BOTTOMSLIDE,
                                           title: 'Error',
                                           desc: 'You must fill all the information',
-                                          btnOkOnPress: () {},
+                                          btnOkOnPress: () {
+                                            Get.back();
+                                          },
                                         )..show();
                                       }
 
@@ -594,6 +606,7 @@ class TestScreen extends StatelessWidget {
     print("Status"+ controller.bmiModel.value.comments.toString());
     CollectionReference bmi_info = FirebaseFirestore.instance.collection("BMI");
     bmi_info.add({
+      "Email": controller.user!.email.toString(),
       "Date": controller.Date.value.toString(),
       "Result": controller.bmiModel.value.bmi.toStringAsFixed(2).toString(),
       "Status": controller.bmiModel.value.comments.toString(),
@@ -602,12 +615,12 @@ class TestScreen extends StatelessWidget {
   }
 
   add_glu(context) async {
-    CollectionReference glu_info = await
+    CollectionReference glu_info =
     FirebaseFirestore.instance.collection("Gluco_Measurment");
     glu_info.add({
-      "Email": user!.email.toString() ,
+
       "Date": controller.Date1.value.toString(),
-      "Result": controller.valueHolder.value.toString(),
+      "Result": controller.valueHolder.value,
       "Test_preiod": controller.selectedval.value.toString(),
       "Time": controller.time.value.format(context).toString(),
     });
