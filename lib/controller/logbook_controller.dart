@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'dart:convert';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '/model.dart';
 class LogBookController extends GetxController{
@@ -23,8 +25,8 @@ class LogBookController extends GetxController{
   List<List<String>> Glurow =[
 
   ];
-  List HighestGlu = [
-  ] ;
+  List  HighestGlu =[] ;
+
 
   List HighestCal = [
 
@@ -96,12 +98,13 @@ class LogBookController extends GetxController{
         }
       }
     });
+  
     update();
   }
 
   Future<void> getGluData() async {
     HGlucoref  = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await HGlucoref!.orderBy("Result" ,descending: true).get().then((snapShot) {
+    await HGlucoref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["Result"]);
@@ -109,7 +112,16 @@ class LogBookController extends GetxController{
       });
 
     });
+   print("^^^^^^^^^^^^^^^^") ;
+   print(HighestGlu);
+    HighestGlu=HighestGlu.map((e)=>int.parse(e)).toList();
+
+    print("Sorted") ;
+    HighestGlu.sort();
+    print(HighestGlu) ;
+
   }
+
 
   Future<void> getCalData() async {
     HCalref = FirebaseFirestore.instance.collection("intakes");

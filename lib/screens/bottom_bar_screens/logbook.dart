@@ -195,25 +195,30 @@ class LogBookScreen extends StatelessWidget {
               } , ) ,
 
               // Glucose Number
-            Container(
-              padding:const EdgeInsets.all(12.0),
-              height: Get.width * 0.3,
-              child: Row(
-                children: [
-                  BuildCaloriseAndClucoseWidget(
-                    label: 'Lowest Glucose Level',
-                    amount: controller.HighestGlu[0].toString() + ' mg/dl',
-                    color: Colors.green,
-                  ),
-                  SizedBox(width: size.width *0.05,),
-                  BuildCaloriseAndClucoseWidget(
-                    label: 'Highest Glucose Level' ,
-                    amount: controller.HighestGlu[controller.HighestGlu.length-1].toString() + ' mg/dl',
+            StreamBuilder(
+              stream: controller.HGlucoref!.snapshots(),
+              builder: (context, snapshot) {
+                return Container(
+                  padding:const EdgeInsets.all(12.0),
+                  height: Get.width * 0.3,
+                  child: Row(
+                    children: [
+                      BuildCaloriseAndClucoseWidget(
+                        label: 'Lowest Glucose Level',
+                        amount: controller.HighestGlu[0].toString() + ' mg/dl',
+                        color: Colors.green,
+                      ),
+                      SizedBox(width: size.width *0.05,),
+                      BuildCaloriseAndClucoseWidget(
+                        label: 'Highest Glucose Level' ,
+                        amount: controller.HighestGlu[controller.HighestGlu.length-1].toString()+  'mg/dl',
 
-                    color: Colors.red,
+                        color: Colors.red,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              }
             ),
               // Glucose Table
          /*   FutureBuilder(
@@ -339,7 +344,7 @@ class LogBookScreen extends StatelessWidget {
         );
       } }
     ) ,
-//ijjjjjjjj
+
 
           ],
 
