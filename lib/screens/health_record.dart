@@ -75,12 +75,14 @@ class HealthRecordScreen extends StatelessWidget {
                     ),
 
                     DropDownFromFiled(
+
                         isEdit: controller.isEdit.value,
                         hintText: 'Nutrition', result: controller.nutrition),
                     SizedBox(
                       height: Get.width * 0.06,
                     ),
                     TextFormField(
+                      //initialValue: ,
                       style: TextStyle(
                           color: controller.isEdit.value?Colors.grey:Colors.black
                       ) ,
@@ -90,6 +92,7 @@ class HealthRecordScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "LDL",
+
                       ),
                       validator: (val) {
                         return val!.trim().isEmpty ? 'can\'t be empty' : null;
@@ -134,6 +137,7 @@ class HealthRecordScreen extends StatelessWidget {
 
                     /// 2
                     _buildDateSelected(
+
                         isEdit: controller.isEdit.value,
                         text: 'TG Date',
                         context: context,
@@ -262,6 +266,7 @@ class HealthRecordScreen extends StatelessWidget {
     CollectionReference helth_record =
     FirebaseFirestore.instance.collection("Health_Record");
     helth_record.add({
+      "Email": controller.user!.email.toString(),
       "AntiDiabtees": controller.anti_diabteees.text,
       "Insulin": controller.insulin.text,
       "Injectable": controller.injectable.text,
