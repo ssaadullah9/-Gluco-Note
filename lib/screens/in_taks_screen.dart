@@ -29,7 +29,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   var timep;
   var t;
   var picked;
-
+ var user=FirebaseAuth.instance.currentUser;
   var selectedf, s2, selectedff;
 
   List<dynamic> types = [];
@@ -55,12 +55,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic>? exerciseTypes = [];
 
   List<List<dynamic>>? exercisemet = [];
-  dynamic calories;
+ double calories =0.0;
   var selectCategory;
   var selectCategoryType;
 
   var selectExerciseType;
-  var selectExerciseTime;
+  dynamic selectExerciseTime;
   var protein;
   String med_type='';
   dynamic med_q;
@@ -90,7 +90,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   late String dropdownValue;
 
   int? _w;
-
+dynamic calo;
   @override
   void initState() {
     getDataFromFireBaseHealthInfo();
@@ -197,27 +197,49 @@ class _InTaksScreenState extends State<InTaksScreen> {
         //done
 
       ],
-
-
-
-      //
-      // this.exerciseTypes = [
-      //   "Aerobics",
-      //   "Baseball",
-      //   "Basketball",
-      //       "Billiards",
-      //   "Bowling",//3
-      //   "Cycling",
-      //   "Dancing",
-      //   "Fishing",
-      //   "Football",
-      //   "Hiking",//done
-      //   "Ice skating",//done
-      //   "Racquet sports",//done
-      //   "Running",//done
-      //   "Swimming",
-      //   "Walking",
     ];
+
+
+    //
+    // this.exerciseTypes = [
+    //   "Aerobics",
+    //   "Baseball",
+    //   "Basketball",
+    //       "Billiards",
+    //   "Bowling",//3
+    //   "Cycling",
+    //   "Dancing",
+    //   "Fishing",
+    //   "Football",
+    //   "Hiking",//done
+    //   "Ice skating",//done
+    //   "Racquet sports",//done
+    //   "Running",//done
+    //   "Swimming",
+    //   "Walking",
+    // ];
+    // this.exerciseTypes=[
+    //
+    //   {"name":"Aerobics","met":6.83},
+    //   {"name":"Baseball","met":5},
+    //   {"name":"Basketball","met":8},
+    //   {"name":"Billiards","met":2.5},//done
+    //   {"name":"Bowling","met":3},
+    //   {"name":"Cycling","met":9.5},
+    //   {"name":"Dancing","met":4.5},
+    //   {"name":"Fishing","met":4.5},
+    //   {"name":"Football","met":7},
+    //   {"name":"Hiking","met":6},
+    //   {"name":"Ice skating","met":7},
+    //   {"name":"Racquet sports","met":8.5},
+    //   {"name":"Running","met":9.8},
+    //   {"name":"Swimming","met":8},
+    //   {"name":"Walking","met":3.8},
+    //
+    //
+    //
+    //
+    // ];
     this.exerciseTypes=[
 
       {"name":"Aerobics","met":6.83},
@@ -240,7 +262,6 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
 
     ];
-
 
 
   }
@@ -421,11 +442,13 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                 fontSize: Get.width * 0.05,
                                 fontWeight: FontWeight.bold
                             )),
+                        SizedBox(height: Get.width * 0.05,),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: Get.width * 0.3,
                               vertical: Get.width * 0.025
                           ),
+
                           child: NumberInputWithIncrementDecrement(
                             controller: TextEditingController(),
                             min: 0,
@@ -447,8 +470,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         )
                       ]
                   ),
-                  SizedBox(height: Get.width * 0.05,),
-
+                  // SizedBox(height: Get.width * 0.09,),
+                  SizedBox(height: Get.width * 0.1,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -780,16 +803,18 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           hintText: 'selectType', border: OutlineInputBorder()),
                       items: exerciseTypes!.map((e) {
                         return DropdownMenuItem(
-                          child: Text('$e'),
-                          value: e,
+                          child: Text('${e['name']}'),
+                          value: e['name']??e,
                         );
+
                       }).toList(),
                       onChanged: (val) {
+                        // print(val);
                         selectExerciseType = val;
                         indexType2 =
                             exerciseTypes!.indexOf('$selectExerciseType');
                         isLoading2 = true;
-                        Timer(Duration(milliseconds: 500), () {
+                        Timer(Duration(milliseconds: 200), () {
                           isLoading2 = false;
                           setState(() {});
                         });
@@ -827,14 +852,22 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     },
                     onEditingComplete: (){
                       print(selectExerciseTime);
+                      milliseconds = int.parse(selectExerciseTime)*60000;
+                      print(milliseconds);
+                      FocusScope.of(context).unfocus();
+                      int i = 0;
                       Timer.periodic(Duration(
-                          minutes: int.parse(selectExerciseTime)
+                          milliseconds: milliseconds~/100
                       ), (timer) {
-                        print(timer.tick.toString());
                         setState(() {
-
+                          percent = '$i';
+                          if(i == 100){
+                            timer.cancel();
+                          }
+                          i++;
                         });
                       });
+
                     },
                   ),
 
@@ -896,10 +929,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             radius: Get.width * 0.135,
                             lineWidth: 10.0,
                             //ToDo FireBase
-                            percent: 0.56,
+                            //percent:calo,
                             animation: true,
                             animationDuration: 2000,
-                            center:  Text('50%', style: TextStyle(
+                            center:  Text("${calories}", style: TextStyle(
                                 fontSize: 20
                             ),),
                             progressColor: Color(0xFFEA9363),
@@ -995,7 +1028,6 @@ class _InTaksScreenState extends State<InTaksScreen> {
                         ),
 
 
-
                       ],
                     ),
 
@@ -1011,15 +1043,26 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             // calories=cal_swimming(h ,selectExerciseTime);
                             // print(calories);
                             //  Respond to button press
-                                                   for (var j = 0; j < exerciseTypes![j].length; j++) {
-                                                     if (selectExerciseType ==
-                                                         exerciseTypes![j]["name"]) {
-                                                       print(
-                                                           selectExerciseTime * exerciseTypes![j]['met'] * 3.5 * 2 / (200 * 60));
+                            for (var j = 0; j < exerciseTypes!.length; j++) {
+                              if (selectExerciseType ==
+                                  exerciseTypes![j]["name"]){
+                                print(exerciseTypes![j]["name"]);
+                                print(exerciseTypes![j]["met"]);
+                                selectExerciseTime= double.parse(selectExerciseTime);
+                              //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
 
-                                                       break;
-                                                     }
-                                                   }
+                                calories= ((milliseconds/60000 )* exerciseTypes![j]["met"]*3.5*53/200);
+
+                               // calories= double.parse(calories);
+                                print("befor:");
+                                print( calories);
+                                calo= calories.toInt();
+                                calo= calo/100;
+                                print(calo);
+                               initState();
+                              }
+                              //   //هنا مفروض يضرب القيم بالمعادله اللي فوق في ال ميت اللي اختاره اليوزر حسب اللست
+                            }
 
                           },
                           icon: Icon(Icons.add, size: 30),
@@ -1105,6 +1148,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
         "intakes");
     solieds_ref.add(
         {
+          "Email": user!.email.toString(),
           "intakes_Cal": cal,
           "intakes_category": cate.toString(),
           "intakes_Quantity": qu,
@@ -1115,7 +1159,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
   }
   void getDataFromFireBaseHealthInfo()async{
     //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
-    var user  =  FirebaseAuth.instance.currentUser;
+    //var user  =  FirebaseAuth.instance.currentUser;
+
     CollectionReference? data;
     data =  FirebaseFirestore.instance.collection("Health_Info");
     await data.get().then((snapShot) {
