@@ -99,7 +99,7 @@ class LogBookScreen extends StatelessWidget {
         body: ListView(
           children: <Widget>[
             FutureBuilder(
-              future: controller.HGlucoref!.get(),
+              future: controller.HCalref!.get(),
               builder: (context,AsyncSnapshot snapshot)
               {
                 if(!snapshot.hasData){
@@ -134,51 +134,64 @@ class LogBookScreen extends StatelessWidget {
                   );
                 }
               } , ) ,
-
-            Container(
-              margin: EdgeInsets.symmetric(
-                  vertical: 10
-              ),
-              decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                        color: Colors.blueGrey,
-                        width: 2
+            FutureBuilder(
+              future: controller.Calref!.get(),
+              builder: (context,AsyncSnapshot snapshot)
+              {
+                if(!snapshot.hasData){
+                  return Center(
+                    child: SpinKitCircle(
+                      color: Colors.amber,
                     ),
-                  )
-              ),
-              child: ExpansionTile(
-                title: Text('Caloriess'),
-                trailing: FlatButton.icon(
-                    onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
-                children: [
-                  SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child:DataTable(
-                          headingRowColor:
-                          MaterialStateProperty
-                              .all(Colors
-                              .blueGrey),
-                          //ToDO Firebase
-                          columns:  Calcolumn.map((e) => DataColumn(
-                            label: Text(e),
-                          )).toList(),
+                  );
+                } else{
+                  return       Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical: 10
+                    ),
+                    decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              color: Colors.blueGrey,
+                              width: 2
+                          ),
+                        )
+                    ),
+                    child: ExpansionTile(
+                      title: Text('Caloriess'),
+                      trailing: FlatButton.icon(
+                          onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
+                      children: [
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child:DataTable(
+                                headingRowColor:
+                                MaterialStateProperty
+                                    .all(Colors
+                                    .blueGrey),
+                                //ToDO Firebase
+                                columns:  Calcolumn.map((e) => DataColumn(
+                                  label: Text(e),
+                                )).toList(),
 
-                          rows: controller.Calrow.map((e) {
-                            return DataRow(
-                                cells: e.map((e){
-                                  return DataCell(
-                                      Text('$e')
+                                rows: controller.Calrow.map((e) {
+                                  return DataRow(
+                                      cells: e.map((e){
+                                        return DataCell(
+                                            Text('$e')
+                                        );
+                                      }).toList()
                                   );
                                 }).toList()
-                            );
-                          }).toList()
 
-                      )
-                  ),
-                ],
-              ),
-            ),
+                            )
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              } , ) ,
+
 
             Container(
               padding:const EdgeInsets.all(12.0),

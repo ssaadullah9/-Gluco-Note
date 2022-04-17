@@ -125,7 +125,7 @@ class LogBookController extends GetxController{
 
   Future<void> getCtableData() async{
     Calref = FirebaseFirestore.instance.collection("intakes");
-    await Calref!.get().then((snapShot)
+    await Calref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot)
     {
       for(var i = 0 ; i < snapShot.docs.length ; i++){
         Calrow.add([]);
