@@ -41,17 +41,21 @@ class _SplashScreenState extends State<SplashScreen>
            builder: (_){
   return ListView(
       children: [
-       SizedBox( height: 40,) ,
+       SizedBox( height: 280,) ,
  Center(child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 150 ,height: 150)),
+
         Center(
           child: AnimatedTextKit(
             animatedTexts: [
-              FadeAnimatedText('GlucoNote'),
+              FadeAnimatedText('GlucoNote' , textStyle: const TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold ),)
 
             ],
             onTap: () {
               print("Tap Event");
             },
+
           ),
         )
 

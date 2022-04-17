@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,10 +21,11 @@ var time = TimeOfDay.now().obs;
 var Date = DateTime.now().obs;
 var Date1 = DateTime.now().obs;
 var selectedval = ''.obs;
-var valueHolder = 20.obs;
+var valueHolder = 0.obs;
 var bmi1 = 0.0.obs;
 var bmi = 0.0.obs;
 CollectionReference? Bmiref;
+var user = FirebaseAuth.instance.currentUser;
 List<List<String>> Bmirow =[];
 
 
@@ -45,7 +47,7 @@ void onTimeChanged(TimeOfDay newTime) {
 
 Future<void> getData() async{
   Bmiref = FirebaseFirestore.instance.collection("BMI");
-  await Bmiref!.get().then((snapShot)
+  await Bmiref!.where("Email", isEqualTo: user!.email.toString()).get().then((snapShot)
       {
         for(var i = 0 ; i < snapShot.docs.length ; i++ ){
           Bmirow.add([]);
