@@ -16,6 +16,7 @@ class Home extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
+    double perc = controller.CalVal.last;
     return ListView(
       padding: EdgeInsets.only(bottom: Get.width*0.05),
       children: <Widget>[
@@ -69,9 +70,10 @@ class Home extends StatelessWidget {
                 fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                 ),),
                 SizedBox(height: Get.width * 0.015,),
-                Text(controller.GlucoseVal[controller.GlucoseVal.length-1].toString()+' mg/dl' ,style: TextStyle(
+                Text(controller.GlucoseVal.last.toString()+' mg/dl' ,style: TextStyle(
                 fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
                 )),
+
                 ],
                 );
                 }
@@ -102,22 +104,36 @@ class Home extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Calories burnt ' ,style: TextStyle(
+              Text('Calories burned ' ,style: TextStyle(
                   fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
               )),
-              Expanded(
-                child: CircularPercentIndicator(
-                  radius: Get.width * 0.15,
-                  lineWidth: 10.0,
-                  percent: 0.55,                  //FireBase
-                  animation: true,
-                  animationDuration: 2000,
-                  center:  Text('15.0 %' , style: TextStyle(
-                      fontSize: 20
-                  ),),
-                  progressColor: Color(0xFFEA9363),
 
-                ), )
+              StreamBuilder(
+                stream: controller.IndecatorRef!.snapshots(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if(!snapshot.hasData){
+                    return Center(
+                      child:SpinKitCircle(
+                        color: Colors.amber,
+                      ),
+                    );
+                  }
+                  else
+                  return Expanded(
+                    child: CircularPercentIndicator(
+                      radius: Get.width * 0.15,
+                      lineWidth: 10.0,
+                     percent: double.parse(controller.CalPer[0].toString()),     //FireBase
+                      animation: true,
+                      animationDuration: 2000,
+                      center:  Text(perc.toStringAsFixed(2), style: TextStyle(
+                          fontSize: 20
+                      ),),
+                      progressColor: Color(0xFFEA9363),
+
+                    ), );
+                }
+              )
             ],
           ),
         ) ,
@@ -135,6 +151,7 @@ class Home extends StatelessWidget {
               series: <ChartSeries>[
                 LineSeries<GlucoseDate,String>(
                     color: Color(0xFF9F87BF),
+              xAxisName : "ssss",
                     dataSource: getCulomnData(),
                     xValueMapper: (GlucoseDate data,_)=> data.GDay ,
                     yValueMapper: (GlucoseDate data,_)=> data.Glevel,

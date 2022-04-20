@@ -14,7 +14,6 @@ import '../../widgets/build_section_calorises.dart';
 
 class LogBookScreen extends StatelessWidget {
   final controller = Get.put(LogBookController());
-
   final divider= Divider(
     color: Colors.blueGrey,
   );
@@ -98,7 +97,7 @@ class LogBookScreen extends StatelessWidget {
         ),
         body: ListView(
           children: <Widget>[
-            // CAL Numbers لازم تعديل
+
             FutureBuilder(
               future: controller.HCalref!.get(),
               builder: (context,AsyncSnapshot snapshot)
@@ -115,6 +114,7 @@ class LogBookScreen extends StatelessWidget {
                     height: Get.width * 0.3,
                     child: Row(
                       children: [
+
                         BuildCaloriseAndClucoseWidget(
                           label: 'Lowest Caloriess',
                           amount: '${
@@ -197,7 +197,7 @@ class LogBookScreen extends StatelessWidget {
               // Glucose Number
             StreamBuilder(
               stream: controller.HGlucoref!.snapshots(),
-              builder: (context, snapshot) {
+              builder: (context, AsyncSnapshot snapshot) {
                 return Container(
                   padding:const EdgeInsets.all(12.0),
                   height: Get.width * 0.3,
@@ -205,14 +205,13 @@ class LogBookScreen extends StatelessWidget {
                     children: [
                       BuildCaloriseAndClucoseWidget(
                         label: 'Lowest Glucose Level',
-                        amount: controller.HighestGlu[0].toString() + ' mg/dl',
+                        amount: controller.HighestGlu[0].toString()+  'mg/dl',
                         color: Colors.green,
                       ),
                       SizedBox(width: size.width *0.05,),
                       BuildCaloriseAndClucoseWidget(
                         label: 'Highest Glucose Level' ,
                         amount: controller.HighestGlu[controller.HighestGlu.length-1].toString()+  'mg/dl',
-
                         color: Colors.red,
                       ),
                     ],
@@ -285,7 +284,7 @@ class LogBookScreen extends StatelessWidget {
               } , ) ,*/
     StreamBuilder(
       stream: controller.Glucoref!.snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
     if(!snapshot.hasData){
     return Center(
     child: SpinKitCircle(

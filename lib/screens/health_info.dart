@@ -17,7 +17,7 @@ import 'bottom_bar_screens/home.dart';
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
 
-  List HDate = [] ;
+
 
 
   @override
@@ -87,26 +87,38 @@ class HealthInfoScreen extends StatelessWidget {
                     ),
                   ])),
               SizedBox(height: Get.width * 0.05,),
-              TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Weight",
-                ),
-                onChanged: (val){
-                  controller.selectedWeight.value= val ;
-                },
+              StreamBuilder(
+                stream:controller.Health_info!.snapshots(),
+                  builder: (context,  snapshot) {
+                  return TextFormField(
+                    initialValue: controller.w.toString(),
+                    keyboardType: TextInputType.numberWithOptions(),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Weight",
+                    ),
+                    onChanged: (val){
+                      controller.selectedWeight.value= val ;
+                    },
+                  );
+                }
               ),
               SizedBox(height: Get.width * 0.05,),
-              TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Height",
-                ),
-                onChanged: (val){
-                  controller.selectedHeight.value= val ;
-                },
+              StreamBuilder(
+                stream: controller.Health_info!.snapshots(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  return TextFormField(
+                    initialValue:  controller.h.toString(),
+                    keyboardType: TextInputType.numberWithOptions(),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Height",
+                    ),
+                    onChanged: (val){
+                      controller.selectedHeight.value= val ;
+                    },
+                  );
+                }
               ),
               SizedBox(height: Get.width * 0.05,),
               DropdownButtonFormField(
@@ -140,11 +152,10 @@ class HealthInfoScreen extends StatelessWidget {
                         if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
                          &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
                          addData() ;
-                         getData() ;
                          Get.snackbar(
                              "Data Saved Succesfully" ,
                              ""
-                         );Timer(
+                         );/*Timer(
                              Duration(
                                  seconds: 2
                              ) ,
@@ -152,7 +163,7 @@ class HealthInfoScreen extends StatelessWidget {
 
                                Navigator.pop(context) ;
                              }
-                         ) ;
+                         ) ;*/
 
                         }
                         else
@@ -219,7 +230,7 @@ class HealthInfoScreen extends StatelessWidget {
   addData() async{
     var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
-    Health_info.add(
+    Health_info.doc(user!.uid).set(
       {
         "Email" : user!.email.toString() ,
         "Gender" : controller.radioButtonItem.value.toString(),
@@ -230,18 +241,6 @@ class HealthInfoScreen extends StatelessWidget {
     ) ;
 
   }
-  getData() async {
-    var user = FirebaseAuth.instance.currentUser ;
-    CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
-    await Health_info.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
-      print(snapShot.docs.length);
 
-      snapShot.docs.forEach((element) {
-        HDate.add(element['Gender'].toString());
-        HDate.add(element['Diabetes_Type'].toString());
-      });
-    });
-    print(HDate) ;
-  }
 
 }

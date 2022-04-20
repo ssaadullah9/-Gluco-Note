@@ -125,7 +125,7 @@ class LogBookController extends GetxController{
 
   Future<void> getCalData() async {
     HCalref = FirebaseFirestore.instance.collection("intakes");
-    await HCalref!.orderBy("intakes_Cal" ,descending: true).get().then((snapShot) {
+    await HCalref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["intakes_Cal"]);
@@ -133,6 +133,15 @@ class LogBookController extends GetxController{
       });
 
     });
+    print("^^caal") ;
+    print(HighestCal.length);
+    print(HighestCal);
+    HighestCal=HighestCal.map((e)=>int.parse(e)).toList();
+
+    print("Sorted") ;
+    HighestCal.sort();
+    print(HighestCal) ;
+
   }
 
   Future<void> getCtableData() async{

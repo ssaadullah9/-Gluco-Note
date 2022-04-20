@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddNewReminderController extends GetxController{
-  var selectedType = 'type'.obs;
+  var selectedType = 'Reminder type'.obs;
   var selected_date = DateTime.now().obs;
   var focsed_date = DateTime.now().obs;
   var  selected_time = TimeOfDay.now().obs;

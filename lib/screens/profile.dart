@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:test_saja/const/colors.dart';
 import 'package:test_saja/controller/profile_controller.dart';
+import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 import 'package:test_saja/screens/change_password.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -136,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
                         readOnly: controller.readOnlyPhone.value,
                         keyboardType: TextInputType.phone,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: user!.phoneNumber.toString() ,
+                        initialValue: controller.phone.toString() ,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Phone'),
@@ -161,7 +162,7 @@ class ProfileScreen extends StatelessWidget {
                           }, child: Text('change phone number'))
                         ],
                       ),
-                      TextFormField(
+                  /*    TextFormField(
                         readOnly: controller.readOnlyPassword.value,
                         autovalidateMode: AutovalidateMode.always,
                         initialValue: "***********",
@@ -183,6 +184,21 @@ class ProfileScreen extends StatelessWidget {
                             Get.to(()=>ChangePassword());
                           }, child: Text('change Password'))
                         ],
+                      ),*/
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                          child: ElevatedButton.icon(
+                              onPressed: () {
+                                Get.to(()=>ChangePassword());
+                              },
+                              icon: Icon(Icons.settings, size: 30),
+                              label: Text("change Password"),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5A9379),)
+                          )
+
+                        //  )
+
                       ),
                       Container(
                           margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),

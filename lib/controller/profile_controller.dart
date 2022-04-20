@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:test_saja/const/colors.dart';
 
 class ProfileController extends GetxController{
-  var name = 'Saja Alhassar'.obs;
+  var name = 'Saja '.obs;
   var email = 'Saja1996@gmail.com'.obs;
   var phone = '+966 564207621'.obs;
   var password = '5878aAgghs'.obs;

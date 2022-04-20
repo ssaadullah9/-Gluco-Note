@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:test_saja/screens/login.dart';
+import 'package:test_saja/screens/profile.dart';
 class ChangePassword extends StatelessWidget {
 
 
@@ -15,40 +18,27 @@ class ChangePassword extends StatelessWidget {
     var user = FirebaseAuth.instance.currentUser ;
     String userEmail = user!.email.toString() ;
 
+    late String Email;
 
-
-    final keyForm = GlobalKey<FormState>();
-    late String oldpassword= "";
-   late String Newpassword="";
-    String CheckNewpassword;
-
-
-    RegExp numReg = RegExp(r".*[0-9].*");
-    RegExp letterReg = RegExp(r".*[A-Za-z].*");
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios ,color: Colors.black54,),
+          onPressed: (){
+            Get.to(ProfileScreen());
+          },
+        ),
+      ),
       body:  ListView(
           children: [
             SizedBox(height: 20,) ,
             Image.asset('assets/pass.png') ,
             SizedBox(height: 20,) ,
 
-           /* TextField(
 
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Old Password'),
-              ),
-
-              onChanged: (val){
-                oldpassword = val;
-              },
-              *//*validator: (val){
-                return val!.trim().isEmpty
-                    ? 'can\'t be empty'
-                    : null;
-              },*//*
-            ),*/
 
             TextField(
               decoration: InputDecoration(
@@ -57,49 +47,32 @@ class ChangePassword extends StatelessWidget {
               ),
 
               onChanged: (val){
-                oldpassword = val;
+                Email = val;
               }, ),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('New Password'),
-              ),
-
-              onChanged: (val){
-                Newpassword = val;
-              }, ),
-             /* validator: (val){
-                return validatePassword(val);
-              },
-            ),*/
-            /*TextFormField(
-
-              autovalidateMode: AutovalidateMode.always,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Confirm Password'),
-              ),
-
-              onChanged: (val){
-               CheckNewpassword = val;
-              },
-              validator: (val){
-                return val!.trim().isEmpty
-                    ? 'can\'t be empty'
-                    : null;
-              },
-            ),*/
+            SizedBox(height: 20) ,
 
             Container(
                 margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                 child: ElevatedButton.icon(
-                    onPressed: () {
-                   //   checkUserEmail(oldpassword ,userEmail, Newpassword ) ;
-                      user.reauthenticateWithCredential(
-                        EmailAuthProvider.credential(email: userEmail, password: Newpassword)
-
-                      );
-
+                    onPressed: () async{
+            if(Email== userEmail){
+                      await FirebaseAuth.instance.sendPasswordResetEmail(email:userEmail).then((value) {
+                     Get.snackbar("Chnging Password Succefully ", "Check your Email ");
+                        Timer(
+                            Duration(
+                                seconds: 2
+                            ) ,
+                                () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
+                            }
+                        ) ;
+                      }); }
+            else if(Email.isEmpty){
+              Get.snackbar("Wrong entry", "please Enter the Email ") ;
+            }
+            else {
+              Get.snackbar("Wrong entry", "please try again ") ;
+            }
                     },
                     icon: Icon(Icons.done, size: 30),
                     label: Text("Change Password"),
@@ -116,25 +89,27 @@ class ChangePassword extends StatelessWidget {
 
     );
   }
-  String? validatePassword(value){
-    if (value.isEmpty) {
-      return "* Required";
-    } else if (value.length < 8) {
-      return "Password should be at least 8 characters";
-    } else if (value.length > 15) {
-      return "Password should not be greater than 15 characters";
+/*  String? validatePassword (String email , String uE){
+    if (email.isEmpty) {
+      Get.snackbar("Wrong entry", "please Enter the Email ") ;
+    } else if (!email.isEmail) {
+      Get.snackbar("Wrong entry", "please try again ") ;
+    } else if (email==uE) async {
+     await FirebaseAuth.instance.sendPasswordResetEmail(email:userEmail).then((value) {
+        Timer(
+            Duration(
+                seconds: 2
+            ) ,
+                () {
+
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
+            }
+        ) ;
+
+      });
     } else
       return null;
-  }
-  String? checkUserEmail(String EnterdE , String E , String P){
-    var user = FirebaseAuth.instance.currentUser ;
-    if(E == EnterdE )
-      {
-        user!.updatePassword(P) ;
-        Get.to(LoginScreen()) ;
-      }
-      else
-    return " the Email is deffirnt" ;
-  }
+  }*/
+
 
 }

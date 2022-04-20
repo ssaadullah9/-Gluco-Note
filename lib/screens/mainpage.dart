@@ -14,15 +14,15 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Obx(
-        ()=>Scaffold(
+            ()=>Scaffold(
           resizeToAvoidBottomInset: false,
           drawer: NavBar(),
           appBar: controller.pages!
           [controller.currentIndex.value]['appBar']
-          ?AppBar(
+              ?AppBar(
             backgroundColor: Colors.blueGrey,
             title: Text(
-              'Hi  ,',
+              'Hi Saja ,',
               style: TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
             ),

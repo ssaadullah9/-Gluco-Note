@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class AddnewReminder extends StatelessWidget {
   final String? med_type ;
   final int? med_q ;
   bool showText ;
+  var user = FirebaseAuth.instance.currentUser ;
   AddnewReminder(
   {
  Key? key ,
@@ -34,6 +36,7 @@ class AddnewReminder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -81,7 +84,7 @@ class AddnewReminder extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  initialValue :showText? med_type:"" ,
+                  initialValue :showText? med_type:" " ,
                  /* final String? med_type ;
                   final int? med_q ;,*/
                     decoration: InputDecoration(
@@ -200,6 +203,7 @@ class AddnewReminder extends StatelessWidget {
     CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders");
     newReminder.add(
         {
+          "Email":user!.email.toString(),
           "Reminder_Date" : controller.selected_date.value.toString(),
           "Remindnder_Description" : controller.description.value.toString(),
           "Reminder_Time" : controller.selected_time.value.format(context).toString(),

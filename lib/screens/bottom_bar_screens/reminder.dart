@@ -93,7 +93,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                   )
                   ){
                     numReminder.add(i);
-                    // remiderData.add(snapshot.data!.docs[i]);
+
                   }
                 }
                 print(numReminder);
@@ -188,7 +188,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                           child: Container(
                                               width: 100,
                                               height: 50,
-                                              child: Icon(Icons.toggle_on_outlined , color: Colors.green)),
+                                              child: Icon(Icons.notifications , color: Colors.teal)),
                                         ))
 
 

@@ -24,7 +24,12 @@ class ReminderController extends GetxController {
         remindersDate.add(element['Reminder_Date']
             .toString()
             .substring(0, element['Reminder_Date'].toString().length - 1));
-        print(remindersDate) ;
+        remindersDate.add(element['Reminder_Time'].toString());
+        remindersDate.add(element['Reminder_Type'].toString());
+        remindersDate.add(element['Remindnder_Description'].toString());
+
+        print("###############") ;
+        print(remindersDate.length) ;
       });
     });
   }
