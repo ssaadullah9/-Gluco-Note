@@ -2,6 +2,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:day_night_time_picker/lib/constants.dart';
+import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,21 +17,23 @@ import 'bottom_bar_screens/reminder.dart';
 
 class AddnewReminder extends StatelessWidget {
   final controller = Get.put(AddNewReminderController());
- final String? med_name ;
+
+  bool _autovalidate = false;
+  final String? med_name ;
   final String? items ;
   final String? med_type ;
   final int? med_q ;
-  bool showText ;
+  bool showText;
   var user = FirebaseAuth.instance.currentUser ;
   AddnewReminder(
-  {
- Key? key ,
-    this.med_name ,
-    this.items ,
-    this.med_type ,
-    this.med_q ,
-    this.showText=false ,
-}) : super (key : key) ;
+      {
+        Key? key ,
+        this.med_name ,
+        this.items ,
+        this.med_type ,
+        this.med_q ,
+   this.showText=true,
+      }) : super (key : key) ;
 
 
 
@@ -56,16 +60,16 @@ class AddnewReminder extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(
-          ()=>Padding(
+              ()=>Padding(
             padding:  EdgeInsets.symmetric(
-                horizontal: Get.width*0.03,
-                vertical: Get.width*0.03,
+              horizontal: Get.width*0.03,
+              vertical: Get.width*0.03,
             ),
             child: ListView(
               children: [
                 Container(
                   child: TableCalendar(
-                //  controller.selected_date ,
+                    //  controller.selected_date ,
                     onDaySelected: (x, y) {
                       controller.selected_date.value = x;
                       controller.focsed_date.value = y;
@@ -84,10 +88,9 @@ class AddnewReminder extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  initialValue :showText? med_type:" " ,
-                 /* final String? med_type ;
-                  final int? med_q ;,*/
-                    decoration: InputDecoration(
+                  initialValue : showText? med_name   : " " ,
+
+                  decoration: InputDecoration(
                     label: Text('Reminder description'),
 
                     border: OutlineInputBorder(),
@@ -96,81 +99,95 @@ class AddnewReminder extends StatelessWidget {
                   ),
 
                   onChanged: (val){
-                  controller.description.value=val ;
+                    controller.description.value=val ;
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
-                TextFormField(
-                  onTap: (){
+                /*    TextFormField(
+                                    onTap: (){
                     controller.selectedTime(context);
                   },
                   readOnly: true,
                   decoration: InputDecoration(
                     label: Text('Reminder Time'),
-                    hintText: controller.selected_time.value.format(context),
+                    hintText: "${controller.selected_time.value.format(context)}",
                     suffixIcon: Icon(Icons.access_time),
                       border: OutlineInputBorder()
                   ),
                   onChanged: (val){
                     controller.selected_time.value=val as TimeOfDay ;
                   },
+                ),*/
+                TextFormField(
+                  readOnly: true,
+                  onTap: () {
+                    controller.date =
+                        Navigator.of(context).push(
+                          showPicker(
+                            context: context,
+                            value: controller.time.value,
+                            onChange: controller.onTimeChanged,
+                            minuteInterval: MinuteInterval.FIVE,
+                          ), // showpicker
+                        );
+                  },
+                  decoration: InputDecoration(
+                    //  label: Text('Select Reminder Time'),
+                      border: OutlineInputBorder(),
+                      suffixIcon: Icon(Icons.access_time),
+                      hintText:
+                      '${controller.time.value.format(context)}'),
                 ),
                 SizedBox(height: Get.width*0.05,),
 
                 DropdownButtonFormField(
-                  hint: Text(controller.selectedType.value,style: TextStyle(
-                      color: Colors.black
-                  ),),
-                  decoration: InputDecoration(
+                    hint: Text("Reminder type",style: TextStyle(
+                        color: Colors.black
+                    ),),
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
 
-                      border: OutlineInputBorder(
-
-                      )
-                  ),
-                  items: [
-                    "Medication",
-                    "Exercise",
-                    "Liquid",
-                    "Solid",
-                    "Appointments"
-                  ].map((e) => DropdownMenuItem(
-                    child: Text(e),
-                    value: e,
-                  )).toList(),
-                  onChanged: (val) {
-                    controller.selectedType.value = val as String;
-                  },
+                        )
+                    ),
+                    items: [
+                      "Medication",
+                      "Exercise",
+                      "Appointments"
+                    ].map((e) => DropdownMenuItem(
+                      child: Text(e),
+                      value: e,
+                    )).toList(),
+                    onChanged: (val) {
+                      controller.selectedType.value = val as String;
+                    },
+                    validator: (val){
+                      if (val == null) {
+                        return 'Selecting type is required';
+                      }
+                    }
                 ),
                 SizedBox(height: Get.width*0.05,),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          if(controller.selectedType.value.isNotEmpty  &&  controller.description.value.isNotEmpty
-                              && controller.selected_date != null && controller.selected_time.value != null){
+                          if(controller.description.value.isNotEmpty
+                              && controller.selected_date.value != DateTime.now() && controller.time.value !=  TimeOfDay.now()){
                             addReminder(context);
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.SUCCES,
-                              animType: AnimType.TOPSLIDE,
-                              title: 'Reminder Added Successfully',
-                              desc: 'You have to set the reminder on',
-                              btnOkOnPress: () {Timer(
-                                  Duration(
-                                      seconds: 2
-                                  ) ,
-                                      () {
+                            Get.snackbar(
+                              "Reminder added successfully ! " ,
+                              "You have to set the reminder on " ,
 
-                                    Navigator.pop(context ,ReminderScreeen()) ;
-                                  }
-                              ) ;},
-                            )..show();
-                            /*Get.snackbar(
-                                "Reminder added successfully ! " ,
-                                "You have to set the reminder on " ,
-                              showProgressIndicator: true ,
-                                isDismissible : false ,
-                            );*/
+                            );
+                            Timer(
+                                Duration(
+                                    seconds: 2
+                                ) ,
+                                    () {
+
+                                  Navigator.pop(context ,ReminderScreeen()) ;
+                                }
+                            ) ;
                           }else {
                             AwesomeDialog(
                               context: context,
@@ -206,11 +223,12 @@ class AddnewReminder extends StatelessWidget {
           "Email":user!.email.toString(),
           "Reminder_Date" : controller.selected_date.value.toString(),
           "Remindnder_Description" : controller.description.value.toString(),
-          "Reminder_Time" : controller.selected_time.value.format(context).toString(),
+          "Reminder_Time" : controller.time.value.format(context).toString(),
           "Reminder_Type" : controller.selectedType.value.toString(),
         }
     ) ;
 
   }
+
 
 } // end of the class

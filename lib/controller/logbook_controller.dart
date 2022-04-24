@@ -81,7 +81,12 @@ class LogBookController extends GetxController{
     List<int> bytes = document.save();
     document.dispose();
 
+
     saveAndLaunchFile(bytes, 'Output.pdf');
+    Get.snackbar("Downloading file", "message",
+       showProgressIndicator: true
+    ) ;
+
   }
 
   Future<void> getGtableData() async {

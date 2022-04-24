@@ -56,7 +56,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   List<dynamic>? exerciseTypes = [];
 
   List<List<dynamic>>? exercisemet = [];
- double calories =0.0;
+  double calories =0.0;
   var selectCategory;
   var selectCategoryType;
 
@@ -91,7 +91,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
   late String dropdownValue;
 
   int? _w;
-double calo =0;
+  double calo =0;
   @override
   void initState() {
     //getDataFromFireBaseHealthInfo();
@@ -733,7 +733,7 @@ double calo =0;
                   SizedBox(height: Get.width * 0.05,),
                   Row(
                     children: [
-                    //  Expanded(child: SizedBox()),
+                      //  Expanded(child: SizedBox()),
                       Expanded(
                         flex: 2,
                         child: NumberInputWithIncrementDecrement(
@@ -766,7 +766,8 @@ double calo =0;
                           AddnewReminder(
 
                             //send parametr
-                          ) , arguments: [med_name, items,med_type,med_q]);
+                          ) , arguments: [med_name, items,med_type,med_q , true ]);
+
                     },
 
                     icon: Icon(Icons.add, size: 30),
@@ -1021,18 +1022,18 @@ double calo =0;
                                 print(exerciseTypes![j]["name"]);
                                 print(exerciseTypes![j]["met"]);
                                 selectExerciseTime= double.parse(selectExerciseTime);
-                              //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
+                                //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
 
                                 calories= ((milliseconds/60000 )* exerciseTypes![j]["met"]*3.5*53/200);
 
-                               // calories= double.parse(calories);
+                                // calories= double.parse(calories);
                                 print("befor:");
                                 print( calories);
-                              //  calo= calories.toInt();
+                                //  calo= calories.toInt();
                                 calo= calories/500;
                                 print(calo);
                                 add_ex(selectExerciseType,calories, calo);
-                               initState();
+                                initState();
                               }
                               //   //هنا مفروض يضرب القيم بالمعادله اللي فوق في ال ميت اللي اختاره اليوزر حسب اللست
                             }
@@ -1130,41 +1131,41 @@ double calo =0;
         }
     );
 
-  void getDataFromFireBaseHealthInfo()async{
-    //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
-    //var user  =  FirebaseAuth.instance.currentUser;
+    void getDataFromFireBaseHealthInfo()async{
+      //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
+      //var user  =  FirebaseAuth.instance.currentUser;
 
-    CollectionReference? data;
-    data =  FirebaseFirestore.instance.collection("Health_Info");
-    await data.get().then((snapShot) {
-      _w =int.parse('${ snapShot.docs[1]['Weight']}');
-      snapShot.docs.forEach((element) {
-        // print(user!.uid);
-        //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد
+      CollectionReference? data;
+      data =  FirebaseFirestore.instance.collection("Health_Info");
+      await data.get().then((snapShot) {
+        _w =int.parse('${ snapShot.docs[1]['Weight']}');
+        snapShot.docs.forEach((element) {
+          // print(user!.uid);
+          //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد
 
+        });
       });
-    });
-  }
+    }
 
-  cal_swimming(String val, int w, int t) {
-    dynamic calories;
-    if (val == "swimming")
-      calories = t * 4 * 3.5 * w / (200 * 60);
-    else if (val == "walking")
-      calories = t * 3 * 3.5 * w / (200 * 60);
-    else if (val == "Running")
-      calories = t * 8 * 3.5 * w / (200 * 60);
+    cal_swimming(String val, int w, int t) {
+      dynamic calories;
+      if (val == "swimming")
+        calories = t * 4 * 3.5 * w / (200 * 60);
+      else if (val == "walking")
+        calories = t * 3 * 3.5 * w / (200 * 60);
+      else if (val == "Running")
+        calories = t * 8 * 3.5 * w / (200 * 60);
 
-    return calories;
+      return calories;
+    }
   }
-}
- add_ex( exerciseTypes, double calories, double calo) {
+  add_ex( exerciseTypes, double calories, double calo) {
     CollectionReference ex_ref = FirebaseFirestore.instance.collection("ex");
     ex_ref.add(
-    {
-        "Email": user!.email.toString(),
-        "ex_type":exerciseTypes,
-        "ex_cal":calories,
-        "ex_per":calo,
-    });}
+        {
+          "Email": user!.email.toString(),
+          "ex_type":exerciseTypes,
+          "ex_cal":calories,
+          "ex_per":calo,
+        });}
 }

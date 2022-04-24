@@ -43,119 +43,121 @@ class HealthInfoScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontSize: 20),
         ),
       ),
-      body: Obx(
-          ()=>ListView(
-            padding: EdgeInsets.all(
-              Get.width * 0.03
-            ),
-            children: [
-              Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Row(children: <Widget>[
-                    Text('Gender: ',style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),),
+      body: FutureBuilder(
+        future: controller.Health_info!.get(),
+        builder: (context,snapshot){
+          if(!snapshot.hasData){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }else{
+            return ListView(
+              padding: EdgeInsets.all(
+                  Get.width * 0.03
+              ),
+              children: [
+                Container(
+                    padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Row(children: <Widget>[
+                      Text('Gender: ',style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),),
 
-                    Radio(
-                      activeColor: mainColor,
-                      value: 1,
-                      groupValue: controller.id.value,
-                      onChanged: (val) {
-                          controller.radioButtonItem.value = 'Male';
+                      Radio(
+                        activeColor: mainColor,
+                        value: 1,
+                        groupValue: controller.id.value,
+                        onChanged: (val) {
+                          controller.radioButtonItem.value = "Male";
                           controller.id.value = 1;
-                      },
-                    ),
-                    Text(
-                      'Male',
-                      style: new TextStyle(fontSize: 15.0),
-                    ),
-                    Radio(
-                    activeColor: mainColor,
-                      value: 2,
-                      groupValue: controller.id.value,
-                      onChanged: (val) {
-                          controller.radioButtonItem.value = 'Female';
+                        },
+                      ),
+                      Text(
+                        'Male',
+                        style: new TextStyle(fontSize: 15.0),
+                      ),
+                      Radio(
+                        activeColor: mainColor,
+                        value: 2,
+                        groupValue: controller.id.value ,
+                        onChanged: (x) {
+                          controller.radioButtonItem.value = "Female";
                           controller.id.value = 2;
-                      },
-                    ),
-                    Text(
-                      'Female',
-                      style: new TextStyle(fontSize: 15.0),
-                    ),
-                  ])),
-              SizedBox(height: Get.width * 0.05,),
-              StreamBuilder(
-                stream:controller.Health_info!.snapshots(),
-                  builder: (context,  snapshot) {
-                  return TextFormField(
-                    initialValue: controller.w.toString(),
-                    keyboardType: TextInputType.numberWithOptions(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Weight",
-                    ),
-                    onChanged: (val){
-                      controller.selectedWeight.value= val ;
-                    },
-                  );
-                }
-              ),
-              SizedBox(height: Get.width * 0.05,),
-              StreamBuilder(
-                stream: controller.Health_info!.snapshots(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  return TextFormField(
-                    initialValue:  controller.h.toString(),
-                    keyboardType: TextInputType.numberWithOptions(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Height",
-                    ),
-                    onChanged: (val){
-                      controller.selectedHeight.value= val ;
-                    },
-                  );
-                }
-              ),
-              SizedBox(height: Get.width * 0.05,),
-              DropdownButtonFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder()
+                        },
+                      ),
+                      Text(
+                        'Female',
+                        style: new TextStyle(fontSize: 15.0),
+                      ),
+                    ])),
+                SizedBox(height: Get.width * 0.05,),
+                TextFormField(
+                  initialValue: controller.w == null?"": controller.w,
+                  keyboardType: TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Weight",
+                  ),
+                  onChanged: (val){
+                    controller.selectedWeight.value= val ;
+                  },
                 ),
-                items: ["Type 1", "Type 2", "Gestational"]
-                    .map((e) => DropdownMenuItem(
-                  child: Text("$e"),
-                  value: e,
-                ))
-                    .toList(),
-                onChanged: (val) {
+                SizedBox(height: Get.width * 0.05,),
+                TextFormField(
+                  initialValue:  controller.h.toString(),
+                  keyboardType: TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Height",
+                  ),
+                  onChanged: (val){
+                    controller.selectedHeight.value= val ;
+                  },
+                ),
+                SizedBox(height: Get.width * 0.05,),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder()
+                  ),
+                  items: ["Type 1", "Type 2", "Gestational"]
+                      .map((e) => DropdownMenuItem(
+                    child: Text("$e"),
+                    value: e,
+                  ))
+                      .toList(),
+                  onChanged: (val) {
                     controller.selectedType.value = val as String;
-                },
-                hint: Text('Diabetes Type:'),
-              ),
-              SizedBox(height: Get.width * 0.05,),
-          /*    _buildDateField(
+                  },
+                  hint: Text(
+
+                    controller.DT==null ?
+                    'Diabetes Type:':
+                  "${controller.DT}"
+                  ),
+                ),
+                SizedBox(height: Get.width * 0.05,),
+                /*    _buildDateField(
                 hintText: 'Date of birth ',
                 selectedFromDate: controller.selectedBirthDate.value,
                 onTap: () {
                   controller.selectBirthDate(context);
                 },
               ),*/
-              SizedBox(height: Get.width * 0.05,),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
-                  child: ElevatedButton.icon(
-                      onPressed: () {
-                        if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
-                         &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
-                         addData() ;
-                         Get.snackbar(
-                             "Data Saved Succesfully" ,
-                             ""
-                         );/*Timer(
+                SizedBox(height: Get.width * 0.05,),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
+                              &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
+                            addData() ;
+                            Get.snackbar(
+                                "Data Saved Succesfully" ,
+                                ""
+                            );/*Timer(
                              Duration(
                                  seconds: 2
                              ) ,
@@ -165,28 +167,30 @@ class HealthInfoScreen extends StatelessWidget {
                              }
                          ) ;*/
 
-                        }
-                        else
-                          AwesomeDialog(
-                            context: context,
-                            dialogType: DialogType.ERROR,
-                            animType: AnimType.BOTTOMSLIDE,
-                            title: 'Error',
-                            desc: 'You must fill all the information',
-                            btnOkOnPress: () {},
-                          )..show();
-                      },
-                      icon: Icon(Icons.done, size: 30),
-                      label: Text("Save Information"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE5A9379),)
-                  )
+                          }
+                          else
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'Error',
+                              desc: 'You must fill all the information',
+                              btnOkOnPress: () {},
+                            )..show();
+                        },
+                        icon: Icon(Icons.done, size: 30),
+                        label: Text("Save Information"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    )
 
-                //  )
+                  //  )
 
-              )
-            ],
-          )
+                )
+              ],
+            );
+          }
+        },
       ),
     );
   }
@@ -232,7 +236,7 @@ class HealthInfoScreen extends StatelessWidget {
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
     Health_info.doc(user!.uid).set(
       {
-        "Email" : user!.email.toString() ,
+        "Email" : user.email.toString() ,
         "Gender" : controller.radioButtonItem.value.toString(),
         "Weight" : controller.selectedWeight.value,
         "Height" : controller.selectedHeight.value,

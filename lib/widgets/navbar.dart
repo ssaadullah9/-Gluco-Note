@@ -9,7 +9,6 @@ import '../screens/health_info.dart';
 import '../screens/profile.dart';
 import '/screens/login.dart';
 import 'package:get/get.dart';
-
 import '../screens/health_record.dart';
 
 class NavBar extends StatelessWidget {
@@ -22,7 +21,7 @@ class NavBar extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             margin : const EdgeInsets.only(bottom: 8.0),
-            accountName: Text("Saja"),
+            accountName: Text(""),
             accountEmail: Text(user!.email.toString()),
           currentAccountPicture: CircleAvatar(
             child: ClipOval(
@@ -103,4 +102,5 @@ class NavBar extends StatelessWidget {
 
     );
   }
+
 }

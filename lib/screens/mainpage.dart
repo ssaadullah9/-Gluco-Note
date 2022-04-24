@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
@@ -107,25 +109,46 @@ class MainScreen extends StatelessWidget {
   }
 }
 
+/*
 class GlucoseDate {
-  final String GDay;
 
-  final double Glevel;
+  var GDay;
+
+  var  Glevel;
 
   GlucoseDate(this.GDay, this.Glevel);
 }
 
-dynamic getCulomnData() {
+ getCulomnData()  {
+  var user = FirebaseAuth.instance.currentUser ;
+  CollectionReference? GlucoChartRef;
   List<GlucoseDate> columnData = <GlucoseDate>[
-    GlucoseDate('Sun', 10.9),
+  */
+/*  GlucoseDate('Sun', 10.9),
     GlucoseDate('Mon', 9.1),
     GlucoseDate('Tue', 7.7),
     GlucoseDate('Wed', 7.0),
     GlucoseDate('Thu', 7.2),
     GlucoseDate('Fri', 8.0),
-    GlucoseDate('Sat', 5),
+    GlucoseDate('Sat', 5),*//*
+
+
   ];
+
+  GlucoChartRef = FirebaseFirestore.instance.collection("Gluco_Measurment");
+   GlucoChartRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+    print(snapShot.docs.length);
+    snapShot.docs.forEach((element) {
+      columnData.add(element['Time']);
+      columnData.add(element['Result']);
+
+
+      print("###############") ;
+      print(columnData.length) ;
+    });
+  });
 
   return columnData;
 }
+*/
 

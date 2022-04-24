@@ -74,7 +74,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
             selectionColor: Color(0xffEA9363),
           ),
           FutureBuilder(
-            future: controller.remindersref!.get() ,
+            future: controller.getData(),
             builder: (context,AsyncSnapshot snapshot){
               if(!snapshot.hasData){
                 return Center(
@@ -86,9 +86,9 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
               else{
                 bool dontFound = false;
                 List<int> numReminder=[];
-                for(int i=0;i<snapshot.data.docs.length;i++){
+                for(int i=0;i<controller.remindersref.docs.length;i++){
                   if(DateFormat.yMd().format(controller.d.value)==DateFormat.yMd().format(
-                      DateTime.parse(snapshot.data!.docs[i]
+                      DateTime.parse(controller.remindersref.docs[i]
                       ['Reminder_Date'])
                   )
                   ){
@@ -110,7 +110,9 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                   child: ListView.builder(
                     itemCount: numReminder.length,
                     itemBuilder: (context, index) {return ExpansionTile(
-                      title: Text('${snapshot.data!.docs[numReminder[index]]['Reminder_Type']}'),
+                      title: Text('${snapshot.data!.docs[numReminder[index]]['Reminder_Type']}' , style: TextStyle(
+                        color: Colors.black
+                      ),),
                       children: [
                         Card(
                           margin: EdgeInsets.all(10.0),
@@ -124,7 +126,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                     minLeadingWidth: 10 ,
                                     leading: CircleAvatar(
                                       radius: 30,
-                                      backgroundColor : Colors.blueGrey ,
+                                      backgroundColor :Color(0xffEA9363),
                                       child: Text(
                                         //   '${reminderList[index]['Reminder_Date']}'),
                                         '${

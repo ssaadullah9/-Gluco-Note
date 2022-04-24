@@ -36,6 +36,7 @@
 //     isShow.value = !isShow.value;
 //   }
 // }
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class SignUpController extends GetxController {
   var myUserName = ''.obs;
   var myEmail = ''.obs;
   var myPassWord = ''.obs;
-  var myNumberPhone = ''.obs;
+  var myPhoneNumber = ''.obs;
   final keyForm = GlobalKey<FormState>();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   // DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Users");
@@ -59,6 +60,7 @@ class SignUpController extends GetxController {
       if(user != null){
         Get.snackbar('SuccessFull', 'New User');
         Get.off(LoginScreen());
+        addData(name , phone ) ;
       }
     }on FirebaseAuthException catch(e){
       Get.snackbar('Error', '${e.message}');
@@ -98,5 +100,19 @@ class SignUpController extends GetxController {
 
   void stateShowPassword(){
     isShow.value = !isShow.value;
+  }
+
+  addData(name , phone ) async{
+    var user = FirebaseAuth.instance.currentUser ;
+    CollectionReference Health_info = FirebaseFirestore.instance.collection("Acounts") ;
+    Health_info.doc(user!.uid).set(
+        {
+          "Email" : user.email.toString() ,
+          "Name" : name.toString() ,
+          "Phone" : phone.toString() ,
+
+        }
+    ) ;
+
   }
 }

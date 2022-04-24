@@ -7,7 +7,7 @@ class BuildCaloriseAndClucoseWidget extends StatelessWidget {
 
   const BuildCaloriseAndClucoseWidget({Key? key,
     this.label = 'Label',
-    this.amount = '20',
+    this.amount = '',
     this.color = Colors.red})
       : super(key: key);
 

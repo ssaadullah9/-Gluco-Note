@@ -30,7 +30,8 @@ class LoginScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(90)),
-                  color:  Color(0xff0E5E5A)
+                  /*color:  Color(0xff0E5E5A)*/
+                  color: Colors.blueGrey
                 ),
                 child: Text(
                   "Login",
@@ -75,17 +76,18 @@ class LoginScreen extends StatelessWidget {
                                ?Icons.visibility_off_sharp
                                :Icons.visibility
                          ),
+                         color: Colors.grey,
                          onPressed: (){
                            controller.stateShowPassword();
                          },
                        ),
-                       prefixIcon: Icon(Icons.vpn_key,color: mainColor,),
+                       prefixIcon: Icon(Icons.vpn_key,color: mainColor,),/*
                        border: OutlineInputBorder(
                            borderRadius: BorderRadius.circular(50.0),
-                          /* borderSide: BorderSide(
+                           borderSide: BorderSide(
                                color: Color(0xff9F87BF)
-                           )*/
-                       ),
+                           )
+                       ),*/
                        filled: true,
                        fillColor: Colors.grey[200],
                        enabledBorder: OutlineInputBorder(
@@ -139,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                   height: size.width / 8,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [   Color(0xff0E5E5A), Color(0xff0E5E5A)],
+                        colors: [ Colors.blueGrey, Colors.blueGrey],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight
                     ),

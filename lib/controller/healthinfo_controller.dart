@@ -8,7 +8,7 @@ class HealthInfoController extends GetxController{
   var selectedGender = ''.obs;
   var selectedWeight = ''.obs;
   var selectedHeight = ''.obs;
-  var selectedType = 'ff'.obs;
+  var selectedType = ''.obs;
   var selectedBirthDate = DateTime.now().obs;
   var selectedDate= DateTime.now().obs;
   var firstDate = DateTime(1970 , 1).obs;
@@ -19,6 +19,7 @@ class HealthInfoController extends GetxController{
   CollectionReference? Health_info ;
    var w ;
  var h ;
+ var DT ;
   var user = FirebaseAuth.instance.currentUser ;
 
 /*  Future<void> selectBirthDate(BuildContext context) async {
@@ -40,10 +41,12 @@ class HealthInfoController extends GetxController{
       snapShot.docs.forEach((element) {
         w = element['Weight'];
         h = element['Height'];
+        DT = element['Diabetes_Type'].toString();
       });
     });
     print(w) ;
     print(h) ;
+    print(DT) ;
 
   }
  @override

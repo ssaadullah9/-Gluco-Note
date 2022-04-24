@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -10,20 +11,26 @@ import '../mainpage.dart';
 
 class Home extends StatelessWidget {
   final controller = Get.put(HomeController());
+  var user = FirebaseAuth.instance.currentUser ;
+  CollectionReference? GlucoChartRef;
+  List<GlucoseDate> columnData = <GlucoseDate>[
+    GlucoseDate('Thu', 7.2),
+    GlucoseDate('Fri', 8.0),
+  ] ;
 
 
 
   @override
 
   Widget build(BuildContext context) {
-    double perc = controller.CalVal.last;
+
     return ListView(
       padding: EdgeInsets.only(bottom: Get.width*0.05),
       children: <Widget>[
         Container(
           margin: EdgeInsets.symmetric(
-            horizontal: Get.width * 0.02,
-            vertical: Get.width * 0.05
+              horizontal: Get.width * 0.02,
+              vertical: Get.width * 0.05
           ),
           child: Text('Daily Progress' , style: TextStyle(
             color: Colors.black,
@@ -34,56 +41,56 @@ class Home extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           margin: EdgeInsets.symmetric(
-              horizontal: Get.width * 0.1,
+            horizontal: Get.width * 0.1,
           ),
           padding: EdgeInsets.symmetric(
               horizontal: Get.width * 0.05,
               vertical: Get.width * 0.05
           ),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(.23),
-                offset: Offset(0,8),
-                blurRadius: 5.0
-              )
-            ]
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(.23),
+                    offset: Offset(0,8),
+                    blurRadius: 5.0
+                )
+              ]
           ),
 
-            child: FutureBuilder(
-              future: controller.Glucose!.get() ,
-              builder: ( context, AsyncSnapshot snapshot) {
-                if(!snapshot.hasData){
-                  return Center(
-                    child:SpinKitCircle(
-                      color: Colors.amber,
-                    ),
-                  );
-                }
-                else{
-                  return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Text('Your glucose today' ,style: TextStyle(
-                fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
-                ),),
-                SizedBox(height: Get.width * 0.015,),
-                Text(controller.GlucoseVal.last.toString()+' mg/dl' ,style: TextStyle(
-                fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
-                )),
-
-                ],
+          child: FutureBuilder(
+            future: controller.Glucose!.get() ,
+            builder: ( context, AsyncSnapshot snapshot) {
+              if(!snapshot.hasData){
+                return Center(
+                  child:SpinKitCircle(
+                    color: Colors.amber,
+                  ),
                 );
-                }
-              },
-            ),
+              }
+              else{
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Your glucose today' ,style: TextStyle(
+                        fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
+                    ),),
+                    SizedBox(height: Get.width * 0.015,),
+                    Text('${controller.GlucoseVal.last} mg/dl' ,style: TextStyle(
+                        fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
+                    )),
+
+                  ],
+                );
+              }
+            },
+          ),
         ) ,
         Container(
           margin: EdgeInsets.symmetric(
-            horizontal: Get.width * 0.1,
-            vertical: Get.width * 0.05
+              horizontal: Get.width * 0.1,
+              vertical: Get.width * 0.05
           ),
           padding: EdgeInsets.symmetric(
               horizontal: Get.width * 0.05,
@@ -107,32 +114,33 @@ class Home extends StatelessWidget {
               Text('Calories burned ' ,style: TextStyle(
                   fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
               )),
+              FutureBuilder(
+                  future: controller.IndecatorRef!.get(),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if(!snapshot.hasData){
+                      return Center(
+                        child:SpinKitCircle(
+                          color: Colors.amber,
+                        ),
+                      );
+                    }
+                    else{
+                      print(snapshot);
+                      return Expanded(
+                        child: CircularPercentIndicator(
+                          radius: Get.width * 0.15,
+                          lineWidth: 10.0,
+                          percent: double.parse(controller.CalPer[0].toString()),     //FireBase
+                          animation: true,
+                          animationDuration: 2000,
+                          center:  Text(controller.CalVal.last.toStringAsFixed(2), style: TextStyle(
+                              fontSize: 20
+                          ),),
+                          progressColor: Color(0xFFEA9363),
 
-              StreamBuilder(
-                stream: controller.IndecatorRef!.snapshots(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if(!snapshot.hasData){
-                    return Center(
-                      child:SpinKitCircle(
-                        color: Colors.amber,
-                      ),
-                    );
+                        ), );
+                    }
                   }
-                  else
-                  return Expanded(
-                    child: CircularPercentIndicator(
-                      radius: Get.width * 0.15,
-                      lineWidth: 10.0,
-                     percent: double.parse(controller.CalPer[0].toString()),     //FireBase
-                      animation: true,
-                      animationDuration: 2000,
-                      center:  Text(perc.toStringAsFixed(2), style: TextStyle(
-                          fontSize: 20
-                      ),),
-                      progressColor: Color(0xFFEA9363),
-
-                    ), );
-                }
               )
             ],
           ),
@@ -143,6 +151,7 @@ class Home extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ), ),
+
         Container(
           height: Get.width * 0.8,
           child: SfCartesianChart(
@@ -151,7 +160,7 @@ class Home extends StatelessWidget {
               series: <ChartSeries>[
                 LineSeries<GlucoseDate,String>(
                     color: Color(0xFF9F87BF),
-              xAxisName : "ssss",
+                    xAxisName : "ssss",
                     dataSource: getCulomnData(),
                     xValueMapper: (GlucoseDate data,_)=> data.GDay ,
                     yValueMapper: (GlucoseDate data,_)=> data.Glevel,
@@ -162,11 +171,38 @@ class Home extends StatelessWidget {
                 )
               ]
           ),
-        ),
+        )
+
       ],
     );
 
   }
 
 
+}
+class GlucoseDate {
+
+  var GDay;
+
+  var  Glevel;
+
+  GlucoseDate(this.GDay, this.Glevel);
+}
+
+dynamic getCulomnData()   {
+
+  List<GlucoseDate> columnData = <GlucoseDate>[
+    GlucoseDate('Sun', 10.9),
+    GlucoseDate('Mon', 9.1),
+    GlucoseDate('Tue', 7.7),
+    GlucoseDate('Wed', 7.0),
+    GlucoseDate('Thu', 7.2),
+    GlucoseDate('Fri', 8.0),
+    GlucoseDate('Sat', 5),
+
+  ];
+
+
+
+  return columnData;
 }

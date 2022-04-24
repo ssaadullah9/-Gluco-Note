@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +14,12 @@ class ProfileController extends GetxController{
   var readOnlyPhone = true.obs;
   final formKey = GlobalKey<FormState>();
   var imageFile = null;
-  void openCamera(BuildContext context)  async{
+  CollectionReference? ProfileRef ;
+  var Name ;
+  var DOB ;
+  var Phone ;
+  var user = FirebaseAuth.instance.currentUser ;
+/*  void openCamera(BuildContext context)  async{
     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera ,);
           imageFile = pickedFile!;
           Navigator.pop(context);
@@ -67,16 +74,29 @@ class ProfileController extends GetxController{
           ),
         ),
       ));
+  }*/
+
+  Future<void>  getData() async {
+
+    ProfileRef = FirebaseFirestore.instance.collection("Acounts") ;
+    await ProfileRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+      print(snapShot.docs.length);
+      snapShot.docs.forEach((element) {
+        Name = element['Name'];
+        Phone = element['Phone'];
+      });
+    });
+    print(Name) ;
+    print(Phone) ;
+
+
+  }
+  @override
+  void onInit() {
+    getData() ;
+    super.onInit();
   }
 
-  String? validatePassword(value){
-    if (value.isEmpty) {
-      return "* Required";
-    } else if (value.length < 6) {
-      return "Password should be atleast 6 characters";
-    } else if (value.length > 15) {
-      return "Password should not be greater than 15 characters";
-    } else
-      return null;
-  }
+
+
 }

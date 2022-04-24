@@ -9,29 +9,29 @@ class ReminderController extends GetxController {
   dynamic data;
   var listReminderDate;
   var user = FirebaseAuth.instance.currentUser ;
-  CollectionReference? remindersref;
-
-  List remindersDate = [
+  var remindersref;
+    List remindersDate = [
 
   ].obs;
 
   getData() async {
-    remindersref = FirebaseFirestore.instance.collection("Reminders");
-    await remindersref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
-      print(snapShot.docs.length);
-      print('=====>' + snapShot.docs[0]['Reminder_Date']);
-      snapShot.docs.forEach((element) {
+  final  snapshot = await FirebaseFirestore.instance.collection("Reminders").where("Email" , isEqualTo: user!.email).get();
+    if(snapshot.docs.isNotEmpty){
+      print(snapshot.docs.length);
+      print('=====>' + snapshot.docs[0]['Reminder_Date']);
+      snapshot.docs.forEach((element) {
         remindersDate.add(element['Reminder_Date']
             .toString()
             .substring(0, element['Reminder_Date'].toString().length - 1));
         remindersDate.add(element['Reminder_Time'].toString());
         remindersDate.add(element['Reminder_Type'].toString());
         remindersDate.add(element['Remindnder_Description'].toString());
-
-        print("###############") ;
-        print(remindersDate.length) ;
       });
-    });
+      print("###############") ;
+      // print(remindersDate.length) ;
+      remindersref = snapshot;
+      return remindersref;
+    };
   }
 
   @override

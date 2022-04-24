@@ -40,196 +40,159 @@ class ProfileScreen extends StatelessWidget {
         ),),
 
       ),
-      body: Obx(
-          ()=>Column(
-            children: [
-         /*     GetBuilder<ProfileController>(
-                  init: ProfileController(),
-                  builder: (_){
-                    return Stack(
-                      children: [
-                        ClipOval(
-                          child: Container(
-                              width: Get.width * 0.35,
-                              height: Get.width * 0.35,
-                              child: controller.imageFile == null
-                                  ?Image.asset(
-                                  'assets/person.jpg',
-                                fit: BoxFit.cover,
-                              )
-                                  : Image.file(
-                                  File('${controller.imageFile.path}'),
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: GestureDetector(
-                            onTap: (){
-                              controller.showChoiceDialog(context);
-                            },
-                            child: CircleAvatar(
-                                child: Icon(Icons.add_a_photo,size: Get.width * 0.05,)),
-                          ),
-                        )
-                      ],
-                    );}),*/
-              SizedBox(height: 10,),
-              Expanded(
-                child: Form(
-                  key: controller.formKey,
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.05
-                    ),
-
-
-                    children: <Widget>[
-                      TextFormField(
-                        readOnly: true,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: '${controller.name}',
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text('Name'),
-                        ),
-                        maxLength: 30,
-                        onChanged: (val){
-                          controller.name.value = val;
-                        },
-                        validator: (val){
-                          return val!.trim().isEmpty
-                              ? 'can\'t be empty'
-                              : null;
-                        },
-                      ),
-                      SizedBox(height: Get.width*0.05,),
-                      TextFormField(
-                        readOnly: true,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: user!.email.toString() ,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text('Email'),
-                        ),
-                        onChanged: (val){
-                          controller.email.value = val;
-                        },
-                        validator: (val){
-                          return (val!.trim().isEmpty)
-                              ? 'can\'t be empty'
-                          :!val.isEmail?
-                              'email no\'t correct'
-                              : null;
-                        },
-                      ),
-                      SizedBox(height: Get.width*0.05,),
-                      _buildDateField(
-                        hintText: 'Date of birth ',
-                        selectedFromDate: selectedBirthDate,
-                        onTap: () {
-                         selectBirthDate(context);
-                        },
-                      ),
-                      SizedBox(height: Get.width*0.05,),
-                      TextFormField(
-                        readOnly: controller.readOnlyPhone.value,
-                        keyboardType: TextInputType.phone,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: controller.phone.toString() ,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text('Phone'),
-                        ),
-                        onChanged: (val){
-                          controller.phone.value = val;
-                        },
-                        validator: (val){
-                          return (val!.trim().isEmpty)
-                              ? 'can\'t be empty'
-                          :!val.isPhoneNumber?
-                              'email no\'t correct'
-                              : null;
-                        },
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(onPressed: (){
-
-                            controller.readOnlyPhone.value = false;
-                          }, child: Text('change phone number'))
-                        ],
-                      ),
-                  /*    TextFormField(
-                        readOnly: controller.readOnlyPassword.value,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: "***********",
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text('Password'),
-                        ),
-                        onChanged: (val){
-                          controller.password.value = val;
-                        },
-                        validator: (val){
-                          return controller.validatePassword(val);
-                        },
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(onPressed: (){
-                            Get.to(()=>ChangePassword());
-                          }, child: Text('change Password'))
-                        ],
-                      ),*/
-                      Container(
-                          margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
-                          child: ElevatedButton.icon(
-                              onPressed: () {
-                                Get.to(()=>ChangePassword());
-                              },
-                              icon: Icon(Icons.settings, size: 30),
-                              label: Text("change Password"),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379),)
-                          )
-
-                        //  )
-
-                      ),
-                      Container(
-                          margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
-                          child: ElevatedButton.icon(
-                              onPressed: () {
-                                // Respond to button press
-                              },
-                              icon: Icon(Icons.done, size: 30),
-                              label: Text("Save Information"),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379),)
-                          )
-
-                        //  )
-
-                      )
-
-                    ],
+      body: FutureBuilder(
+        future: controller.ProfileRef!.get(),
+    builder: (context,snapshot){
+    if(!snapshot.hasData){
+    return Center(
+    child: CircularProgressIndicator(),
+    );
+    }else {
+      return ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.05
+              ),
+              children: [
+                SizedBox(height: 20,),
+                TextFormField(
+                  readOnly: true,
+                  autovalidateMode: AutovalidateMode.always,
+                  initialValue: controller.Name == null ? "" : controller
+                      .Name,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Name'),
+                  ),
+                  maxLength: 30,
+                  onChanged: (val) {
+                    controller.name.value = val;
+                  },
+                  validator: (val) {
+                    return val!.trim().isEmpty
+                        ? 'can\'t be empty'
+                        : null;
+                  },
+                ),
+                SizedBox(height: Get.width * 0.05,),
+                TextFormField(
+                  readOnly: true,
+                  autovalidateMode: AutovalidateMode.always,
+                  initialValue: user!.email.toString(),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Email'),
+                  ),
+                  onChanged: (val) {
+                    controller.email.value = val;
+                  },
+                  validator: (val) {
+                    return (val!.trim().isEmpty)
+                        ? 'can\'t be empty'
+                        : !val.isEmail ?
+                    'email no\'t correct'
+                        : null;
+                  },
+                ),
+                SizedBox(height: Get.width * 0.05,),
+                /* _buildDateField(
+                      hintText: "",
+                      selectedFromDate: selectedBirthDate,
+                      onTap: () {
+                       selectBirthDate(context);
+                      },
+                    ),*/
+                TextFormField(
+                  readOnly: true,
+                  autovalidateMode: AutovalidateMode.always,
+                  initialValue: "1999-04-17",
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Date of Birth'),
                   ),
                 ),
-              )
-            ],
-          )
-      ),
+                SizedBox(height: Get.width * 0.05,),
+                TextFormField(
+                  readOnly: controller.readOnlyPhone.value,
+                  keyboardType: TextInputType.phone,
+                  autovalidateMode: AutovalidateMode.always,
+                  initialValue: controller.Phone == null ? "" : controller
+                      .Phone,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Phone'),
+                  ),
+                  onChanged: (val) {
+                    controller.phone.value = val;
+                  },
+                  validator: (val) {
+                    return (val!.trim().isEmpty)
+                        ? 'can\'t be empty'
+                        : !val.isPhoneNumber ?
+                    'email no\'t correct'
+                        : null;
+                  },
+                ),
+
+                SizedBox(height: 60,),
+                /*  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(onPressed: (){
+
+                          controller.readOnlyPhone.value = false;
+                        }, child: Text('change phone number' ,style: TextStyle(
+                          color: Colors.black
+                        ),))
+                      ],
+                    ),*/
+
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: Get.width *
+                        0.08),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          Get.to(() => ChangePassword());
+                        },
+                        icon: Icon(Icons.settings, size: 30),
+                        label: Text("change Password"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    )
+
+                  //  )
+
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: Get.width *
+                        0.08),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          // Respond to button press
+                        },
+                        icon: Icon(Icons.done, size: 30),
+                        label: Text("Save Information"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    )
+
+                  //  )
+
+                )
+    ]
+
+            );
+
+
+
+    }   })
     );
   }
   Future<void> selectBirthDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        initialDatePickerMode: DatePickerMode.day,
+        initialDatePickerMode: DatePickerMode.year,
+        helpText: "Date of Birth" ,
         firstDate: firstDate,
         lastDate: lastDate);
     if (picked != null) {
@@ -242,11 +205,9 @@ class ProfileScreen extends StatelessWidget {
           child: TextFormField(
             readOnly: true,
             decoration: InputDecoration(
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey,
-                ),
-              ),
+
+          border: OutlineInputBorder(),
+
               focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.black,
@@ -258,6 +219,7 @@ class ProfileScreen extends StatelessWidget {
                   : DateFormat('yyy-MM-dd').format(
                 selectedFromDate,
               ),
+
               hintStyle: const TextStyle(
                 color: Color.fromARGB(255, 138, 136, 136),
               ),

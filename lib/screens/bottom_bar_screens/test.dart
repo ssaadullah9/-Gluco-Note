@@ -469,13 +469,13 @@ class TestScreen extends StatelessWidget {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder()),
                               items: [
-                                "before breakfast",
-                                "after breakfast",
-                                "before lunch",
-                                "after lunch",
-                                "before dinner",
-                                "after dinner",
-                                "before sleep"
+                                "Before Breakfast",
+                                "After Breakfast",
+                                "Before Lunch",
+                                "After Lunch",
+                                "Before Dinner",
+                                "After Dinner",
+                                "Before Sleep"
                               ]
                                   .map((e) => DropdownMenuItem(
                                 child: Text("$e"),
@@ -565,10 +565,21 @@ class TestScreen extends StatelessWidget {
 
                                       if(controller.valueHolder.value != null && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
                                       {
-                                        add_glu(context);
+
                                         Get.snackbar(
-                                            " added successfully ! " ,
-                                            ""
+                                            'do you want save it?',
+                                            'it will be show in the logbook',
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            borderRadius: 0,
+                                            duration: Duration(milliseconds: 4500),
+                                            margin: EdgeInsets.zero,
+                                            mainButton: TextButton(
+                                                onPressed: () {
+                                                  add_glu(context);
+                                                }, child: Text('Save',
+                                              style: TextStyle(
+                                                  color: Colors.blue
+                                              ),))
                                         );
                                       }else {
                                         AwesomeDialog(

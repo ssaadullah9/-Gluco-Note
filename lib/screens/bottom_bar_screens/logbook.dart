@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:intl/intl.dart';
 import 'package:test_saja/controller/logbook_controller.dart';
 import 'package:test_saja/model.dart';
 
@@ -14,6 +15,8 @@ import '../../widgets/build_section_calorises.dart';
 
 class LogBookScreen extends StatelessWidget {
   final controller = Get.put(LogBookController());
+  List<List<String>>  Finish_PDF_LIST = [];
+
   final divider= Divider(
     color: Colors.blueGrey,
   );
@@ -38,7 +41,7 @@ class LogBookScreen extends StatelessWidget {
                   showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
+                      firstDate: DateTime(2020),
                       lastDate: DateTime(2050)).then((value){
                     if(value==null){
                       Get.dialog(
@@ -80,12 +83,19 @@ class LogBookScreen extends StatelessWidget {
                       );
                     }else{
                       var c;
-                      for(var i = 0 ; i < controller.Glurow.length;i++){
+                      print(value);
 
-                      }
+               controller.Glurow.forEach((element) {
+                 for(var i =0 ; i < element.length ; i++){
+                   if(DateFormat.yMd().format(value)==DateTime.parse(element[3])){
+                    Finish_PDF_LIST.add(controller.Glurow[i]) ;
+                   }
+                 }
+               }) ;
                       controller.createPDF(
                           Glucolumn,
-                          controller.Glurow
+                          /*controller.Glurow*/
+                        Finish_PDF_LIST
                       );
                     }
                   });
@@ -117,17 +127,17 @@ class LogBookScreen extends StatelessWidget {
 
                         BuildCaloriseAndClucoseWidget(
                           label: 'Lowest Caloriess',
-                          amount: '${
-                              controller.HighestCal[controller.HighestCal.length-1].toString()
-                          } Cal',
+                         /* amount:  controller.HighestCal.last.toString().isEmpty ?"" :'${
+                              controller.HighestCal.last.toString()
+                          } Cal',*/
                           color: Colors.green,
                         ),
                         SizedBox(width: size.width *0.05,),
                         BuildCaloriseAndClucoseWidget(
                           label: 'Highest Caloriess',
-                          amount: '${
+                         /* amount: controller.HighestCal[0].toString().isEmpty ?"" :'${
                               controller.HighestCal[0].toString()
-                          } Cal',
+                          } Cal',*/
                           color: Colors.red,
                         ),
                       ],
@@ -160,7 +170,9 @@ class LogBookScreen extends StatelessWidget {
                         )
                     ),
                     child: ExpansionTile(
-                      title: Text('Caloriess'),
+                      title: Text('Calories', style: TextStyle(
+                          color: Colors.black
+                      )),
                       trailing: FlatButton.icon(
                           onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
                       children: [
@@ -205,13 +217,14 @@ class LogBookScreen extends StatelessWidget {
                     children: [
                       BuildCaloriseAndClucoseWidget(
                         label: 'Lowest Glucose Level',
-                        amount: controller.HighestGlu[0].toString()+  'mg/dl',
+                    /*    amount:controller.HighestGlu[0].toString().isEmpty ?"" :controller.HighestGlu[0].toString()+  'mg/dl',*/
                         color: Colors.green,
                       ),
                       SizedBox(width: size.width *0.05,),
                       BuildCaloriseAndClucoseWidget(
                         label: 'Highest Glucose Level' ,
-                        amount: controller.HighestGlu[controller.HighestGlu.length-1].toString()+  'mg/dl',
+                       /* amount:controller.HighestGlu.last.toString().isEmpty ?""
+                            :controller.HighestGlu.last.toString()+  'mg/dl',*/
                         color: Colors.red,
                       ),
                     ],
@@ -306,7 +319,9 @@ class LogBookScreen extends StatelessWidget {
         ),
 
         child: ExpansionTile(
-        title: Text('Glucose'),
+        title: Text('Glucose' , style: TextStyle(
+          color: Colors.black
+        ),),
         trailing: FlatButton.icon(
         onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
         children: [

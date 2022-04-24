@@ -23,7 +23,7 @@ class SignUpScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(90)),
-                    color: Color(0xff0E5E5A)
+                    color: Colors.blueGrey
                 ),
                 child: Text(
                   "Register",
@@ -62,6 +62,12 @@ class SignUpScreen extends StatelessWidget {
                 size: size,
                 top: 15.0,
                 hintText: 'Phone Number',
+                onChanged: (val){
+                  controller.myPhoneNumber.value = val;
+                },
+                validation: (val){
+                  return controller.validationNumberPhone(val);
+                },
 
               ),
               Obx(
@@ -88,6 +94,7 @@ class SignUpScreen extends StatelessWidget {
                                   ?Icons.visibility_off_sharp
                                   :Icons.visibility
                           ),
+                          color: Colors.grey,
                           onPressed: (){
                             controller.stateShowPassword();
                           },
@@ -125,7 +132,7 @@ class SignUpScreen extends StatelessWidget {
                         email: controller.myEmail.value,
                         password: controller.myPassWord.value,
                         name: controller.myUserName.value,
-                        phone: controller.myNumberPhone.value,
+                        phone: controller.myPhoneNumber.value,
                         context: context
                     );
                   }
@@ -137,7 +144,7 @@ class SignUpScreen extends StatelessWidget {
                   height: 54,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [  Color(0xff0E5E5A), Color(0xff0E5E5A)],
+                        colors: [  Colors.blueGrey, Colors.blueGrey],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight
                     ),
