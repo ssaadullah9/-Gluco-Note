@@ -10,13 +10,14 @@ class TextFormFiledWidget extends StatelessWidget {
   var onChanged;
   var validation;
 
+
    TextFormFiledWidget({Key? key,
      this.size,
      this.hintText,
      this.icon,
      this.onChanged,
      this.validation,
-     this.top = 70.0
+     this.top = 70.0,
    }) : super(key: key);
 
 
@@ -28,6 +29,7 @@ class TextFormFiledWidget extends StatelessWidget {
           right: 20,
           top: top),
       child: TextFormField(
+
         onChanged: onChanged,
         validator: validation,
         cursorColor: mainColor,

@@ -52,7 +52,6 @@ class SignUpController extends GetxController {
   var myPhoneNumber = ''.obs;
   final keyForm = GlobalKey<FormState>();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  // DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Users");
   Future register({email,password,phone,name,context}) async{
     try{
       UserCredential user = await FirebaseAuth.instance
@@ -90,12 +89,18 @@ class SignUpController extends GetxController {
     }
   }
 
-  String? validationNumberPhone(String val){
-    if(val.trim().isEmpty || (!val.isPhoneNumber)){
-      return 'NumberPhone is not correct';
-    }else{
-      return null;
+
+  String? validationNumberPhone(String value){
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return 'Please enter mobile number';
     }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+
+    return null;
   }
 
   void stateShowPassword(){

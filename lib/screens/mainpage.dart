@@ -13,18 +13,24 @@ import '/screens/in_taks_screen.dart';
 class MainScreen extends StatelessWidget {
   final controller = Get.put(MainController());
 
+
   @override
   Widget build(BuildContext context) {
     return  Obx(
             ()=>Scaffold(
           resizeToAvoidBottomInset: false,
-          drawer: NavBar(),
+          drawer: StreamBuilder(
+            stream: controller.ProfileRef!.snapshots(),
+            builder: (context, snapshot) {
+              return NavBar();
+            }
+          ),
           appBar: controller.pages!
           [controller.currentIndex.value]['appBar']
               ?AppBar(
             backgroundColor: Colors.blueGrey,
             title: Text(
-              'Hi Saja ,',
+              'Hi  ${controller.Name.toString()} ,',
               style: TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
             ),
@@ -107,48 +113,6 @@ class MainScreen extends StatelessWidget {
       ],
     );
   }
+
 }
-
-/*
-class GlucoseDate {
-
-  var GDay;
-
-  var  Glevel;
-
-  GlucoseDate(this.GDay, this.Glevel);
-}
-
- getCulomnData()  {
-  var user = FirebaseAuth.instance.currentUser ;
-  CollectionReference? GlucoChartRef;
-  List<GlucoseDate> columnData = <GlucoseDate>[
-  */
-/*  GlucoseDate('Sun', 10.9),
-    GlucoseDate('Mon', 9.1),
-    GlucoseDate('Tue', 7.7),
-    GlucoseDate('Wed', 7.0),
-    GlucoseDate('Thu', 7.2),
-    GlucoseDate('Fri', 8.0),
-    GlucoseDate('Sat', 5),*//*
-
-
-  ];
-
-  GlucoChartRef = FirebaseFirestore.instance.collection("Gluco_Measurment");
-   GlucoChartRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
-    print(snapShot.docs.length);
-    snapShot.docs.forEach((element) {
-      columnData.add(element['Time']);
-      columnData.add(element['Result']);
-
-
-      print("###############") ;
-      print(columnData.length) ;
-    });
-  });
-
-  return columnData;
-}
-*/
 

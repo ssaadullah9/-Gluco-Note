@@ -49,7 +49,7 @@ class SignUpScreen extends StatelessWidget {
                 icon: Icons.email,
                 size: size,
                 top: 15.0,
-                hintText: 'Email',
+                hintText: 'xx@xxx.com',
                 onChanged: (val){
                   controller.myEmail.value = val;
                 },
@@ -61,7 +61,7 @@ class SignUpScreen extends StatelessWidget {
                 icon: Icons.phone,
                 size: size,
                 top: 15.0,
-                hintText: 'Phone Number',
+                hintText: '05xxxxxxxx',
                 onChanged: (val){
                   controller.myPhoneNumber.value = val;
                 },

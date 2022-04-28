@@ -71,6 +71,6 @@ class MyApp extends StatelessWidget {
      900: Color(0xFF0D47A1),
    },
  );
- const int _primaryColor = 0xffc5cda9;
+ const int _primaryColor = 0xff000000;
 
 

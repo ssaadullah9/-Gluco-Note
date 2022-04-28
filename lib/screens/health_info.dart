@@ -133,9 +133,9 @@ class HealthInfoScreen extends StatelessWidget {
                   },
                   hint: Text(
 
-                    controller.DT==null ?
-                    'Diabetes Type:':
-                  "${controller.DT}"
+                      controller.DT==null ?
+                      'Diabetes Type:':
+                      "${controller.DT}"
                   ),
                 ),
                 SizedBox(height: Get.width * 0.05,),
@@ -215,14 +215,14 @@ class HealthInfoScreen extends StatelessWidget {
               hintText: selectedFromDate == null
                   ? hintText
                   : DateFormat('yyy-MM-dd').format(
-                      selectedFromDate,
-                    ),
+                selectedFromDate,
+              ),
               hintStyle: const TextStyle(
                 color: Color.fromARGB(255, 138, 136, 136),
               ),
             ),
             onChanged: (v) {
-                selectedFromDate = v as DateTime?;
+              selectedFromDate = v as DateTime?;
             },
             style: const TextStyle(
               color: Colors.black,
@@ -235,13 +235,13 @@ class HealthInfoScreen extends StatelessWidget {
     var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
     Health_info.doc(user!.uid).set(
-      {
-        "Email" : user.email.toString() ,
-        "Gender" : controller.radioButtonItem.value.toString(),
-        "Weight" : controller.selectedWeight.value,
-        "Height" : controller.selectedHeight.value,
-        "Diabetes_Type" : controller.selectedType.value,
-      }
+        {
+          "Email" : user.email.toString() ,
+          "Gender" : controller.radioButtonItem.value.toString(),
+          "Weight" : controller.selectedWeight.value,
+          "Height" : controller.selectedHeight.value,
+          "Diabetes_Type" : controller.selectedType.value,
+        }
     ) ;
 
   }

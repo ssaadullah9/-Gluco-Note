@@ -140,7 +140,9 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                     ),
                                     title: Text(
                                       // '${reminderList[index]['Reminder_Date']}'),
-                                        '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}'),
+                                        '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}' , style: TextStyle(
+                                      fontSize: 13 ,
+                                    ) , textAlign: TextAlign.left,),
 
                                   ),
                                 ),

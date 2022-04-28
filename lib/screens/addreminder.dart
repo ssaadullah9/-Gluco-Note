@@ -17,24 +17,13 @@ import 'bottom_bar_screens/reminder.dart';
 
 class AddnewReminder extends StatelessWidget {
   final controller = Get.put(AddNewReminderController());
-
+  var data = Get.arguments;
   bool _autovalidate = false;
-  final String? med_name ;
-  final String? items ;
-  final String? med_type ;
-  final int? med_q ;
-  bool showText;
+  late String? med_name ;
+  late String? items ;
+  late String? med_type ;
+  late int? med_q ;
   var user = FirebaseAuth.instance.currentUser ;
-  AddnewReminder(
-      {
-        Key? key ,
-        this.med_name ,
-        this.items ,
-        this.med_type ,
-        this.med_q ,
-   this.showText=true,
-      }) : super (key : key) ;
-
 
 
   @override
@@ -88,8 +77,8 @@ class AddnewReminder extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  initialValue : showText? med_name   : " " ,
-
+                  maxLines: null,
+                  initialValue :data==null? "" : "Medicine Name: ${data[0]} \nHow often: ${data[1]} \nType: ${data[2]} \nAmount: ${data[3]} " ,
                   decoration: InputDecoration(
                     label: Text('Reminder description'),
 

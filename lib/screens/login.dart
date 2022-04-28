@@ -24,14 +24,14 @@ class LoginScreen extends StatelessWidget {
           key: controller.keyForm,
           child: ListView(
             children: [
-               Container(
+              Container(
                 alignment: Alignment.center,
                 height: size.width / 4,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(90)),
-                  /*color:  Color(0xff0E5E5A)*/
-                  color: Colors.blueGrey
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(90)),
+                    /*color:  Color(0xff0E5E5A)*/
+                    color: Colors.blueGrey
                 ),
                 child: Text(
                   "Login",
@@ -52,60 +52,61 @@ class LoginScreen extends StatelessWidget {
                   return controller.validationEmail(val);
                 },
               ),
-             Obx(
-                 ()=> Container(
-                   margin: EdgeInsets.only(
-                       left: 20,
-                       right: 20,
-                     top: 15
-                       ),
-                   child: TextFormField(
-                     onChanged: (val){
-                       controller.passWord.value = val;
-                     },
-                     validator: (val){
-                       return controller.validationPassword(val!);
-                     },
-                     obscureText: controller.isShow.value,
-                     cursorColor: mainColor,
-                     decoration: InputDecoration(
-                       hintText: "Enter Password",
-                       suffixIcon: IconButton(
-                         icon: Icon(
-                           controller.isShow.value
-                               ?Icons.visibility_off_sharp
-                               :Icons.visibility
-                         ),
-                         color: Colors.grey,
-                         onPressed: (){
-                           controller.stateShowPassword();
-                         },
-                       ),
-                       prefixIcon: Icon(Icons.vpn_key,color: mainColor,),/*
-                       border: OutlineInputBorder(
-                           borderRadius: BorderRadius.circular(50.0),
-                           borderSide: BorderSide(
-                               color: Color(0xff9F87BF)
-                           )
-                       ),*/
-                       filled: true,
-                       fillColor: Colors.grey[200],
-                       enabledBorder: OutlineInputBorder(
-                           borderRadius: BorderRadius.circular(50.0),
-                           borderSide: BorderSide(
-                               // color:  Color(0xff0E5E5A)
-                           )
-                       ),
-                       focusedBorder: OutlineInputBorder(
-                           borderRadius: BorderRadius.circular(50.0),
-                           borderSide: BorderSide(
-                               // color:  Color(0xff0E5E5A)
-                           )
-                       ),
-                     ),
-                   ),
-                 )
-             ),
+              Obx(
+                      ()=> Container(
+                    margin: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 15
+                    ),
+                    child: TextFormField(
+
+                      onChanged: (val){
+                        controller.passWord.value = val;
+                      },
+                      validator: (val){
+                        return controller.validationPassword(val!);
+                      },
+                      obscureText: controller.isShow.value,
+                      cursorColor: mainColor,
+                      decoration: InputDecoration(
+                        hintText: "Enter Password",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                              controller.isShow.value
+                                  ?Icons.visibility_off_sharp
+                                  :Icons.visibility
+                          ),
+                          color: Colors.grey,
+                          onPressed: (){
+                            controller.stateShowPassword();
+                          },
+                        ),
+                        prefixIcon: Icon(Icons.vpn_key,color: mainColor,),
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            borderSide: BorderSide(
+                                color: Colors.transparent
+                            )
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            borderSide: BorderSide(
+                                color: Colors.transparent
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            borderSide: BorderSide(
+                                color: Colors.transparent
+                            )
+                        ),
+                      ),
+                    ),
+                  )
+              ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Row(
@@ -117,21 +118,21 @@ class LoginScreen extends StatelessWidget {
                           Get.to(()=>ResetPasswordScreen());
                         },
                         child: Text("Forget Password?",style: TextStyle(
-                          color: Colors.black
+                            color: Colors.black
                         ),)),
                   ],
                 ),
               ),
               GestureDetector(
-                onTap: () {
+                onTap: () async{
                   if(controller.keyForm.currentState!.validate()){
                     // print(controller.email.value + controller.passWord.value);
-                    controller.login(
-                      email: controller.email.value,
-                      password: controller.passWord.value
+                    await controller.login(
+                        email: controller.email.value,
+                        password: controller.passWord.value
                     );
 
-                   }
+                  }
                 },
                 child: Container(
                   alignment: Alignment.center,
