@@ -42,9 +42,9 @@ class HealthRecordScreen extends StatelessWidget {
       ),
 
       // start body
-      body: StreamBuilder(
-        stream: controller.HealthRef!.snapshots(),
-        builder: (context, snapshot) {
+      body:FutureBuilder(
+        future: controller.HealthRef!.get(),
+        builder: (context, AsyncSnapshot snapshot) {
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.all(Get.width * 0.05),
@@ -55,7 +55,6 @@ class HealthRecordScreen extends StatelessWidget {
                       children: [
                         DropDownFromFiled(
                             isEdit: controller.isEdit.value,
-
                             hintText: 'AntiDiabtees',
                             result: controller.anti_diabteees),
                         SizedBox(
@@ -72,7 +71,6 @@ class HealthRecordScreen extends StatelessWidget {
 
                         DropDownFromFiled(
                             isEdit: controller.isEdit.value,
-
                             hintText: 'Injectable', result: controller.injectable),
                         SizedBox(
                           height: Get.width * 0.06,
@@ -85,7 +83,7 @@ class HealthRecordScreen extends StatelessWidget {
                           height: Get.width * 0.06,
                         ),
                         TextFormField(
-                          initialValue: controller.user_LDL==null ? " ": controller.user_LDL ,
+                          initialValue: controller.user_LDL.toString()==null ? "": controller.user_LDL.toString() ,
                           style: TextStyle(
                               color: controller.isEdit.value?Colors.grey:Colors.black
                           ) ,
@@ -109,14 +107,14 @@ class HealthRecordScreen extends StatelessWidget {
                         ),
                         _buildDateSelected(
                             isEdit: controller.isEdit.value,
-                            text: 'LDL Date',
+                            text: controller.user_LDLDate == null ?'LDL Date' :  controller.user_LDLDate,
                             context: context,
                             selectDate: controller.selectedLDLDates),
                         SizedBox(
                           height: Get.width * 0.06,
                         ),
                         TextFormField(
-                          initialValue: controller.user_TG==null ? " ": controller.user_TG,
+                          initialValue: controller.user_TG.toString()==null ? " ": controller.user_TG.toString(),
                           style: TextStyle(
                               color: controller.isEdit.value?Colors.grey:Colors.black
                           ) ,
@@ -143,7 +141,7 @@ class HealthRecordScreen extends StatelessWidget {
                         _buildDateSelected(
 
                             isEdit: controller.isEdit.value,
-                            text: 'TG Date',
+                            text: controller.user_TGDate == null ?'TG Date' :  controller.user_TGDate,
                             context: context,
                             selectDate: controller.selectedTGDates),
 
@@ -151,7 +149,7 @@ class HealthRecordScreen extends StatelessWidget {
                           height: Get.width * 0.06,
                         ),
                         TextFormField(
-                          initialValue: controller.user_ALBUMIN==null ? " ": controller.user_ALBUMIN,
+                          initialValue: controller.user_ALBUMIN.toString()==null ? " ": controller.user_ALBUMIN.toString(),
                           style: TextStyle(
                               color: controller.isEdit.value?Colors.grey:Colors.black
                           ) ,
@@ -177,7 +175,7 @@ class HealthRecordScreen extends StatelessWidget {
                         /// 3
                         _buildDateSelected(
                             isEdit: controller.isEdit.value,
-                            text: 'Albumin Date',
+                            text: controller.user_ALBUMINDate == null ?'Albumin Date' :  controller.user_ALBUMINDate,
                             context: context,
                             selectDate: controller.selectedAlbuminDates),
 
@@ -310,7 +308,8 @@ class _DropDownFromFiledState extends State<DropDownFromFiled> {
       decoration: InputDecoration(
           label: Text('${widget.hintText}'),
           //هنا يجب أن نجلب القيم من الفاير بيز ونضعها في مكانها
-          hintText: '${widget.hintText}', border: OutlineInputBorder()),
+          hintText: '${widget.hintText}',
+          border: OutlineInputBorder()),
       items: ["Yes", "No"]
           .map((e) => DropdownMenuItem(
         child: Text("$e"),

@@ -8,7 +8,7 @@ class HealthInfoController extends GetxController{
   var selectedGender = ''.obs;
   var selectedWeight = ''.obs;
   var selectedHeight = ''.obs;
-  var selectedType = ''.obs;
+  var selectedType = 'Type 1'.obs;
   var selectedBirthDate = DateTime.now().obs;
   var selectedDate= DateTime.now().obs;
   var firstDate = DateTime(1970 , 1).obs;

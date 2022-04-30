@@ -32,7 +32,8 @@ class ProfileScreen extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios ,color: Colors.black54,),
             onPressed: (){
-              Get.back();
+            //  Get.back();
+              Navigator.pop(context) ;
             },
           ),
           title: Text('Profile', style: TextStyle(
@@ -42,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
             future: controller.ProfileRef!.get(),
-            builder: (context,snapshot){
+            builder: (context, AsyncSnapshot snapshot){
               if(!snapshot.hasData){
                 return Center(
                   child: CircularProgressIndicator(),
@@ -57,8 +58,8 @@ class ProfileScreen extends StatelessWidget {
                       TextFormField(
                       //readOnly: true,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: controller.Name == null ? "" : controller
-                            .Name,
+                        initialValue: controller.Name.toString() == null ? "" : controller
+                            .Name.toString(),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Name'),
@@ -94,21 +95,34 @@ class ProfileScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: Get.width * 0.05,),
-                      /* _buildDateField(
-                      hintText: "",
-                      selectedFromDate: selectedBirthDate,
-                      onTap: () {
-                       selectBirthDate(context);
-                      },
-                    ),*/
+
                       TextFormField(
+                        style: TextStyle(
+                          color: Colors.black
+                        ),
                         readOnly: true,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: "1999-04-17",
+                       // initialValue: "1999-04-17",
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          label: Text('Date of Birth'),
+                       //   label: Text('Date of Birth'),
                         ),
+                        onTap: () async{
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context, //context of current state
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                              lastDate: DateTime(2101)
+                          );
+
+                          if(pickedDate != null ){
+                            print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
+                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                          }else{
+                            print("Date is not selected");
+                          }
+                        },
                       ),
                       SizedBox(height: Get.width * 0.05,),
                       TextFormField(
@@ -187,52 +201,39 @@ class ProfileScreen extends StatelessWidget {
               }   })
     );
   }
-  Future<void> selectBirthDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        initialDatePickerMode: DatePickerMode.year,
-        helpText: "Date of Birth" ,
-        firstDate: firstDate,
-        lastDate: lastDate);
-    if (picked != null) {
-      selectedBirthDate = picked;
-    }
-  }
-  Widget _buildDateField({required String hintText, DateTime? selectedFromDate, required VoidCallback onTap,}) {
-    return GestureDetector(
-        child: AbsorbPointer(
-          child: TextFormField(
-            readOnly: true,
-            decoration: InputDecoration(
+  Widget _buildDateSelected({text, context, selectDate,isEdit}) {
+    return TextFormField(
+      style:TextStyle(
+          color: isEdit?Colors.grey:Colors.black
+      ) ,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      readOnly: true,
+      controller: selectDate,
+      decoration:
+      InputDecoration(
+        labelText: '$text', border: OutlineInputBorder(),
 
-              border: OutlineInputBorder(),
 
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                ),
-              ),
-              // border: InputBorder.none,
-              hintText: selectedFromDate == null
-                  ? hintText
-                  : DateFormat('yyy-MM-dd').format(
-                selectedFromDate,
-              ),
-
-              hintStyle: const TextStyle(
-                color: Color.fromARGB(255, 138, 136, 136),
-              ),
-            ),
-            onChanged: (v) {
-              selectedFromDate = v as DateTime?;
-            },
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-        ),
-        onTap: onTap);
+      ),
+      onTap: isEdit?null:() async {
+        await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(2015),
+          lastDate: DateTime(2025),
+        ).then((selectedDate) {
+          if (selectedDate != null) {
+            selectDate.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+          }
+        });
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter date.';
+        }
+        return null;
+      },
+    );
   }
 
 }

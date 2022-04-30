@@ -19,6 +19,10 @@ class HealthRecordController extends GetxController{
   final keyForm = GlobalKey<FormState>();
   var user = FirebaseAuth.instance.currentUser;
   CollectionReference? HealthRef;
+  var user_AntiD;
+  var user_insulin ;
+  var user_nutrition ;
+  var user_injectable ;
   var user_LDL ;
   var user_LDLDate ;
   var user_TG ;
@@ -39,11 +43,14 @@ class HealthRecordController extends GetxController{
         user_TGDate = DateFormat.yMd().format(DateTime.parse(element['TG Date '])).toString();
         user_ALBUMIN = element['Albumin '];
         user_ALBUMINDate = DateFormat.yMd().format(DateTime.parse(element['Albumin Date '])).toString();
-
+         user_AntiD = element['AntiDiabtees'] ;
+         user_insulin =element['Insulin'] ;
+         user_nutrition = element['Nutrition '] ;
+         user_injectable = element['Injectable'] ;
       });
     });
-    print(user_ALBUMINDate) ;
-    print(user_ALBUMIN) ;
+    print(user_LDL) ;
+    print(user_LDLDate) ;
 
   }
   @override

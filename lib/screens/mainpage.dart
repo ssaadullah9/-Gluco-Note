@@ -14,10 +14,12 @@ class MainScreen extends StatelessWidget {
   final controller = Get.put(MainController());
 
 
+
   @override
   Widget build(BuildContext context) {
     return  Obx(
             ()=>Scaffold(
+
           resizeToAvoidBottomInset: false,
           drawer: StreamBuilder(
             stream: controller.ProfileRef!.snapshots(),
@@ -30,7 +32,7 @@ class MainScreen extends StatelessWidget {
               ?AppBar(
             backgroundColor: Colors.blueGrey,
             title: Text(
-              'Hi  ${controller.Name.toString()} ,',
+              'Hi  ${controller.Name.toString() == null ? "" : controller.Name} ,',
               style: TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
             ),

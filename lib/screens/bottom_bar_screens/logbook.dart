@@ -138,17 +138,18 @@ class LogBookScreen extends StatelessWidget {
 
                   BuildCaloriseAndClucoseWidget(
                     label: 'Lowest Caloriess',
-                    amount: '${
-                        controller.HighestCal[controller.HighestCal.length-1].toString()
+                    amount:  controller.HighestCal.length== 0 ? " 0 Cal" :'${
+                        controller.HighestCal[0].toString()
                     } Cal',
                     color: Colors.green,
                   ),
                   SizedBox(width: size.width *0.05,),
                   BuildCaloriseAndClucoseWidget(
                     label: 'Highest Caloriess',
-                    amount: '${
-                        controller.HighestCal[0].toString()
+                    amount:  controller.HighestCal.length== 0 ? " 0 Cal" :'${
+                        controller.HighestCal[controller.HighestCal.length-1].toString()
                     } Cal',
+
                     color: Colors.red,
                   ),
                 ],
@@ -227,13 +228,13 @@ class LogBookScreen extends StatelessWidget {
                 children: [
                   BuildCaloriseAndClucoseWidget(
                     label: 'Lowest Glucose Level',
-                    amount: controller.HighestGlu[0].toString()+  'mg/dl',
+                    amount: controller.HighestGlu.length==0 ? "0 mg/dl" : controller.HighestGlu[0].toString()+  'mg/dl',
                     color: Colors.green,
                   ),
                   SizedBox(width: size.width *0.05,),
                   BuildCaloriseAndClucoseWidget(
                     label: 'Highest Glucose Level' ,
-                    amount: controller.HighestGlu[controller.HighestGlu.length-1].toString()+  'mg/dl',
+                    amount:controller.HighestGlu.length==0 ? "0 mg/dl" : controller.HighestGlu[controller.HighestGlu.length-1].toString()+  'mg/dl',
                     color: Colors.red,
                   ),
                 ],

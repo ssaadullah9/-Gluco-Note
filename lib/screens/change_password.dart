@@ -18,7 +18,7 @@ class ChangePassword extends StatelessWidget {
     var user = FirebaseAuth.instance.currentUser ;
     String userEmail = user!.email.toString() ;
 
-    late String Email;
+     String? Email;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -28,7 +28,8 @@ class ChangePassword extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios ,color: Colors.black54,),
           onPressed: (){
-            Get.to(ProfileScreen());
+           // Get.to(ProfileScreen());
+            Navigator.pop(context) ;
           },
         ),
       ),
@@ -55,9 +56,10 @@ class ChangePassword extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                 child: ElevatedButton.icon(
                     onPressed: () async{
+                      print(Email) ;
             if(Email== userEmail){
                       await FirebaseAuth.instance.sendPasswordResetEmail(email:userEmail).then((value) {
-                     Get.snackbar("Chnging Password Succefully ", "Check your Email ");
+                     Get.snackbar("Changing Password Succefully ", "Check your Email ");
                         Timer(
                             Duration(
                                 seconds: 2
@@ -66,12 +68,16 @@ class ChangePassword extends StatelessWidget {
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
                             }
                         ) ;
-                      }); }
-            else if(Email.isEmpty){
+                      });
+          }
+            else if(Email!.isEmpty){
               Get.snackbar("Wrong entry", "please Enter the Email ") ;
             }
-            else {
+            else if(Email== null ) {
               Get.snackbar("Wrong entry", "please try again ") ;
+            }
+            else {
+              Get.snackbar("wrong", "message") ;
             }
                     },
                     icon: Icon(Icons.done, size: 30),

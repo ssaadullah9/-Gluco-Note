@@ -9,7 +9,7 @@ class ProfileController extends GetxController{
   var name ;
   var email ;
   var phone;
-  var password ;
+  var DateOfBitrth ;
   var readOnlyPassword = true.obs;
   var readOnlyPhone = true.obs;
   final formKey = GlobalKey<FormState>();

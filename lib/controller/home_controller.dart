@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 
 class HomeController extends GetxController{
 
@@ -13,7 +14,12 @@ class HomeController extends GetxController{
   List CalVal = [
   ].obs ;
 
+List<GlucoseData> ChartList = [
+
+].obs as List<GlucoseData> ;
+
   CollectionReference?  Glucose ;
+  CollectionReference?  Chartref ;
   CollectionReference?  IndecatorRef ;
   var user = FirebaseAuth.instance.currentUser ;
   String date = DateFormat.yMd().format(DateTime.now()) ;
@@ -47,11 +53,28 @@ class HomeController extends GetxController{
     print(CalVal) ;
 
   }
+  Future<void>  getChartData() async {
+
+    Chartref = FirebaseFirestore.instance.collection("Gluco_Measurment") ;
+    await Chartref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+      print(snapShot.docs.length);
+      snapShot.docs.forEach((element) {
+     ChartList.add(GlucoseData(element['Date'] , element['Result'])) ;
+
+      });
+    });
+    print(ChartList) ;
+
+
+
+  }
+
 
   @override
   void onInit() {
     getGluData() ;
     getIndecator () ;
+    getChartData() ;
     super.onInit();
   }
 }

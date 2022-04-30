@@ -47,7 +47,8 @@ class NavBar extends StatelessWidget {
             leading: Icon(Icons.home),
             title: Text('Home'),
             onTap:  (){
-              Get.to(()=>Home());
+           //  Get.to(()=>Home());
+              Navigator.pop(context) ;
             },
           ),
           Spacer() ,

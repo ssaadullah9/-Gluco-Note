@@ -12,18 +12,12 @@ import '../mainpage.dart';
 class Home extends StatelessWidget {
   final controller = Get.put(HomeController());
   var user = FirebaseAuth.instance.currentUser ;
-  CollectionReference? GlucoChartRef;
-  List<GlucoseDate> columnData = <GlucoseDate>[
-    GlucoseDate('Thu', 7.2),
-    GlucoseDate('Fri', 8.0),
-  ] ;
 
 
 
   @override
 
   Widget build(BuildContext context) {
-
     return ListView(
       padding: EdgeInsets.only(bottom: Get.width*0.05),
       children: <Widget>[
@@ -77,7 +71,7 @@ class Home extends StatelessWidget {
                         fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                     ),),
                     SizedBox(height: Get.width * 0.015,),
-                    Text('${controller.GlucoseVal.last} mg/dl' ,style: TextStyle(
+                    Text(controller.GlucoseVal== null ? "0 mg/dl" : "${controller.GlucoseVal.last} mg/dl"   ,style: TextStyle(
                         fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
                     )),
 
@@ -130,10 +124,10 @@ class Home extends StatelessWidget {
                         child: CircularPercentIndicator(
                           radius: Get.width * 0.15,
                           lineWidth: 10.0,
-                          percent: double.parse(controller.CalPer[0].toString()),     //FireBase
+                          //percent: double.parse(controller.CalPer[0].toString()),     //FireBase
                           animation: true,
                           animationDuration: 2000,
-                          center:  Text(controller.CalVal.last.toStringAsFixed(2), style: TextStyle(
+                          center:  Text(controller.CalVal.length==0 ? "" : controller.CalVal.last.toStringAsFixed(2), style: TextStyle(
                               fontSize: 20
                           ),),
                           progressColor: Color(0xFFEA9363),
@@ -154,55 +148,43 @@ class Home extends StatelessWidget {
 
         Container(
           height: Get.width * 0.8,
-          child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(),
-              series: <ChartSeries>[
-                LineSeries<GlucoseDate,String>(
-                    color: Color(0xFF9F87BF),
-                    xAxisName : "ssss",
-                    dataSource: getCulomnData(),
-                    xValueMapper: (GlucoseDate data,_)=> data.GDay ,
-                    yValueMapper: (GlucoseDate data,_)=> data.Glevel,
-                    dataLabelSettings: DataLabelSettings(
-                        isVisible: true,
-                        labelPosition: ChartDataLabelPosition.inside
-                    )
-                )
-              ]
-          ),
-        )
-
-      ],
-    );
-
-  }
-
-
+          child: FutureBuilder(
+            builder: (context, AsyncSnapshot snapshot) {
+              return SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  primaryYAxis: NumericAxis(),
+                  series: <ChartSeries>[
+                    LineSeries<GlucoseData,String>(
+                        color: Color(0xFF9F87BF),
+                        xAxisName : "ssss",
+                        dataSource: getCulomnData(),
+                        xValueMapper: (GlucoseData data,_)=> data.GDay ,
+                        yValueMapper: (GlucoseData data,_)=> data.Glevel,
+                        dataLabelSettings: DataLabelSettings(
+                            isVisible: true,
+                            labelPosition: ChartDataLabelPosition.inside
+                        ))]);
+            }
+          ),)],);}
 }
-class GlucoseDate {
-
+class GlucoseData {
   var GDay;
-
   var  Glevel;
-
-  GlucoseDate(this.GDay, this.Glevel);
+  GlucoseData(this.GDay, this.Glevel);
 }
 
-dynamic getCulomnData()   {
-
-  List<GlucoseDate> columnData = <GlucoseDate>[
-    GlucoseDate('Sun', 10.9),
-    GlucoseDate('Mon', 9.1),
-    GlucoseDate('Tue', 7.7),
-    GlucoseDate('Wed', 7.0),
-    GlucoseDate('Thu', 7.2),
-    GlucoseDate('Fri', 8.0),
-    GlucoseDate('Sat', 5),
-
+ getCulomnData() async  {
+  CollectionReference  Chartref ;
+  var user = FirebaseAuth.instance.currentUser ;
+  List<GlucoseData> columnData = <GlucoseData>[
   ];
-
-
-
+  Chartref = FirebaseFirestore.instance.collection("Gluco_Measurment") ;
+   await Chartref.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+  snapShot.docs.forEach((element) {
+    columnData.add(GlucoseData(element['Date'] , element['Result'])) ;
+  });});
+  print("IIIIIIIIIIII");
+   print(columnData.length);
+  print("IIIIIIIIIIII");
   return columnData;
 }

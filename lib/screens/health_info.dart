@@ -16,7 +16,9 @@ import 'bottom_bar_screens/home.dart';
 
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
-
+  final _formKey = GlobalKey<FormState>();
+  bool _autovalidate = false;
+  late String selectedSalutation ;
 
 
 
@@ -120,6 +122,7 @@ class HealthInfoScreen extends StatelessWidget {
                 SizedBox(height: Get.width * 0.05,),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
+                    labelText: "Diabetes Type:",
                       border: OutlineInputBorder()
                   ),
                   items: ["Type 1", "Type 2", "Gestational"]
@@ -131,6 +134,7 @@ class HealthInfoScreen extends StatelessWidget {
                   onChanged: (val) {
                     controller.selectedType.value = val as String;
                   },
+
                   hint: Text(
 
                       controller.DT==null ?
