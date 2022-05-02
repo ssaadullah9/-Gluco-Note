@@ -114,6 +114,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     TextButton(
                         onPressed: (){
+
                           //ToDo Go To ForgetPassword Scrren
                           Get.to(()=>ResetPasswordScreen());
                         },
@@ -125,8 +126,11 @@ class LoginScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () async{
+
                   if(controller.keyForm.currentState!.validate()){
-                    // print(controller.email.value + controller.passWord.value);
+                    Get.snackbar("Logged in Successfully", "",
+                        showProgressIndicator: true
+                    ) ;
                     await controller.login(
                         email: controller.email.value,
                         password: controller.passWord.value
@@ -172,6 +176,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text("Don't Have Any Account? "),
                   TextButton(onPressed: (){
+
                     Get.off(()=>SignUpScreen());
                   }, child: Text(
                     "Register Now",

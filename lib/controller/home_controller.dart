@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 
 class HomeController extends GetxController{
 
 
+  late  TooltipBehavior tooltipBehavior;
   List GlucoseVal = [
   ].obs ;
   List CalPer = [
@@ -16,7 +18,7 @@ class HomeController extends GetxController{
 
 List<GlucoseData> ChartList = [
 
-].obs as List<GlucoseData> ;
+];
 
   CollectionReference?  Glucose ;
   CollectionReference?  Chartref ;
@@ -53,28 +55,33 @@ List<GlucoseData> ChartList = [
     print(CalVal) ;
 
   }
-  Future<void>  getChartData() async {
-
-    Chartref = FirebaseFirestore.instance.collection("Gluco_Measurment") ;
-    await Chartref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+   getChartData() async {
+    Chartref = await FirebaseFirestore.instance.collection("Gluco_Measurment") ;
+     Chartref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
-     ChartList.add(GlucoseData(element['Date'] , element['Result'])) ;
+        print('helllllo Charts');
+        print('${element['Date']}');
+        print('${element['Result']}');
+        ChartList.add(GlucoseData(
+            element['Date'],
+            element['Result']
+        ));
+        print('helllllo End Charts');
+     // ChartList.add(GlucoseData(element['Date'] , element['Result'])) ;
 
       });
     });
+     print("dlokkkkkkkk") ;
     print(ChartList) ;
-
-
-
   }
-
 
   @override
   void onInit() {
     getGluData() ;
     getIndecator () ;
     getChartData() ;
+    tooltipBehavior =  TooltipBehavior(enable: true);
     super.onInit();
   }
 }

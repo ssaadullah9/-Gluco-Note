@@ -511,7 +511,7 @@ class TestScreen extends StatelessWidget {
                                     );
                               },
                               decoration: InputDecoration(
-                                  label: Text('Select Time'),
+                                  //label: Text('Select Time'),
                                   border: OutlineInputBorder(),
                                   suffixIcon: Icon(Icons.access_time),
                                   hintText:

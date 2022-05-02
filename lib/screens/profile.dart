@@ -19,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
   var selectedBirthDate = DateTime.now() ;
   var firstDate = DateTime(1970 , 1);
   var lastDate = DateTime.now();
+  DateTime? pickedDate ;
 
 
   @override
@@ -58,11 +59,12 @@ class ProfileScreen extends StatelessWidget {
                       TextFormField(
                       //readOnly: true,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: controller.Name.toString() == null ? "" : controller
+                        initialValue: controller.Name.toString() == null
+                            ? "" : controller
                             .Name.toString(),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          label: Text('Name'),
+
                         ),
                         maxLength: 30,
                         onChanged: (val) {
@@ -100,24 +102,23 @@ class ProfileScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black
                         ),
-                        readOnly: true,
-                        autovalidateMode: AutovalidateMode.always,
-                       // initialValue: "1999-04-17",
+                       initialValue: ": ${pickedDate}",
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                       //   label: Text('Date of Birth'),
+                       //  label: Text('Date of Birth '),
                         ),
                         onTap: () async{
-                          DateTime? pickedDate = await showDatePicker(
+                          pickedDate = await showDatePicker(
                               context: context, //context of current state
                               initialDate: DateTime.now(),
                               firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
                               lastDate: DateTime(2101)
+
                           );
 
                           if(pickedDate != null ){
                             print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
-                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
                             print(formattedDate); //formatted date output using intl package =>  2021-03-16
                           }else{
                             print("Date is not selected");
@@ -126,11 +127,10 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Get.width * 0.05,),
                       TextFormField(
-                        readOnly: controller.readOnlyPhone.value,
+                        readOnly: false,
                         keyboardType: TextInputType.phone,
                         autovalidateMode: AutovalidateMode.always,
-                        initialValue: controller.Phone == null ? "" : controller
-                            .Phone,
+                        initialValue: controller.Phone??"jjj",
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Phone'),
@@ -148,17 +148,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
 
                       SizedBox(height: 60,),
-                      /*  Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(onPressed: (){
 
-                          controller.readOnlyPhone.value = false;
-                        }, child: Text('change phone number' ,style: TextStyle(
-                          color: Colors.black
-                        ),))
-                      ],
-                    ),*/
 
                       Container(
                           margin: EdgeInsets.symmetric(horizontal: Get.width *
@@ -201,40 +191,7 @@ class ProfileScreen extends StatelessWidget {
               }   })
     );
   }
-  Widget _buildDateSelected({text, context, selectDate,isEdit}) {
-    return TextFormField(
-      style:TextStyle(
-          color: isEdit?Colors.grey:Colors.black
-      ) ,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      readOnly: true,
-      controller: selectDate,
-      decoration:
-      InputDecoration(
-        labelText: '$text', border: OutlineInputBorder(),
 
-
-      ),
-      onTap: isEdit?null:() async {
-        await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(2015),
-          lastDate: DateTime(2025),
-        ).then((selectedDate) {
-          if (selectedDate != null) {
-            selectDate.text = DateFormat('yyyy-MM-dd').format(selectedDate);
-          }
-        });
-      },
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter date.';
-        }
-        return null;
-      },
-    );
-  }
 
 }
 

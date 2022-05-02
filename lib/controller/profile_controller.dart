@@ -14,6 +14,9 @@ class ProfileController extends GetxController{
   var readOnlyPhone = true.obs;
   final formKey = GlobalKey<FormState>();
   var imageFile = null;
+
+
+  // Firebase ...
   CollectionReference? ProfileRef ;
   var Name ;
   var DOB ;
