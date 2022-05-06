@@ -122,7 +122,7 @@ class LogBookController extends GetxController{
     HighestGlu=HighestGlu.map((e)=>int.parse(e)).toList();
 
     print("Sorted") ;
-    HighestGlu.sort();
+    HighestGlu= HighestGlu.sort() as List;
     print(HighestGlu) ;
 
   }

@@ -127,10 +127,11 @@ class Home extends StatelessWidget {
                           child: CircularPercentIndicator(
                             radius: Get.width * 0.15,
                             lineWidth: 10.0,
-                            percent: double.parse(controller.CalPer[0].toString()),     //FireBase
+                           // percent: double.parse(controller.CalPer.first.toString()),     //FireBase
+                         percent: controller.CalPer.length == 0 ? 0 :double.parse(controller.CalPer.last.toString()),
                             animation: true,
                             animationDuration: 2000,
-                            center:  Text(controller.CalVal.length==0 ? "" : controller.CalVal.last.toStringAsFixed(2), style: TextStyle(
+                            center:  Text(controller.CalVal.length==0 ? "0" : controller.CalVal.last.toStringAsFixed(2), style: TextStyle(
                                 fontSize: 20
                             ),),
                             progressColor: Color(0xFFEA9363),
@@ -156,7 +157,9 @@ class Home extends StatelessWidget {
                 builder: (context, AsyncSnapshot snapshot) {
                   if(!snapshot.hasData){
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child:SpinKitCircle(
+                        color: Colors.amber,
+                      ),
                     );
                   }else{
                     return SfCartesianChart(

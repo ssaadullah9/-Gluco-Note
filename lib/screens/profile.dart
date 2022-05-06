@@ -1,9 +1,11 @@
 import 'dart:io';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -12,20 +14,20 @@ import 'package:test_saja/controller/profile_controller.dart';
 import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 import 'package:test_saja/screens/change_password.dart';
 
+import '../widgets/navbar.dart';
+
 class ProfileScreen extends StatelessWidget {
   final controller = Get.put(ProfileController());
   var user = FirebaseAuth.instance.currentUser ;
 
-  var selectedBirthDate = DateTime.now() ;
-  var firstDate = DateTime(1970 , 1);
-  var lastDate = DateTime.now();
-  DateTime? pickedDate ;
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+        drawer: NavBar(),
         appBar:   AppBar(
           centerTitle : true,
           elevation: 0,
@@ -42,157 +44,137 @@ class ProfileScreen extends StatelessWidget {
           ),),
 
         ),
-        body: FutureBuilder(
-            future: controller.ProfileRef!.get(),
-            builder: (context, AsyncSnapshot snapshot){
-              if(!snapshot.hasData){
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }else {
-                return ListView(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Get.width * 0.05
-                    ),
-                    children: [
-                      SizedBox(height: 20,),
-                      TextFormField(
-                      //readOnly: true,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: controller.Name.toString() == null
-                            ? "" : controller
-                            .Name.toString(),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+    body: StreamBuilder(
+     stream: controller.ProfileRef!.snapshots(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData){
+          return Center(
+            child: SpinKitCircle(
+              color: Colors.amber,
+            ),
+          );
+        } else
+          return ListView(
+          padding: EdgeInsets.all(
+              Get.width * 0.03
+          ),
+            children: [
+              SizedBox(height: 20,),
+              TextFormField(
+                initialValue: controller.UName.toString() ,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text('Name'),
+                ),
+                maxLength: 30,
+                onChanged: (val) {
+                  controller.name.value = val;
+                controller.name.value = controller.UName ;
+                },
+              ),
+              SizedBox(height: Get.width * 0.05,),
+              TextFormField(
+                readOnly: true,
+                initialValue: user!.email.toString(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text('Email'),
+                ),
+             /*   onChanged: (val) {
+                  controller.email.value = val;
+                },*/
+              ),
+              SizedBox(height: Get.width * 0.05,),
+              TextFormField(
+                readOnly: true,
+                style: TextStyle(
+                    color: Colors.black
+                ),
+                //initialValue: formattedDate,
+                decoration: InputDecoration(
+                  hintText: "${controller.UDOB}",
+                  border: OutlineInputBorder(),
+                  label: Text('Date of Birth '),
+                  suffixIcon: IconButton(
+                    onPressed: (){controller.SelectDate(context); } ,
+                    icon: Icon(Icons.cake , color: Colors.amber,),
+                  ),
+                ),
+                /*onTap: () {
+                  controller.SelectDate(context) ;
+                },*/
+              ),
+              SizedBox(height: Get.width * 0.05,),
+              TextFormField(
+                readOnly: false,
+                keyboardType: TextInputType.phone,
+                autovalidateMode: AutovalidateMode.always,
+                initialValue: controller.UPhone ,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text('Phone'),
+                ),
+                onChanged: (val) {
+                  controller.phone.value = val;
+                  controller.phone=controller.UPhone ;
+                },
 
-                        ),
-                        maxLength: 30,
-                        onChanged: (val) {
-                          controller.name.value = val;
-                        },
-                        validator: (val) {
-                          return val!.trim().isEmpty
-                              ? 'can\'t be empty'
-                              : null;
-                        },
-                      ),
-                      SizedBox(height: Get.width * 0.05,),
-                      TextFormField(
-                        readOnly: true,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: user!.email.toString(),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text('Email'),
-                        ),
-                        onChanged: (val) {
-                          controller.email.value = val;
-                        },
-                        validator: (val) {
-                          return (val!.trim().isEmpty)
-                              ? 'can\'t be empty'
-                              : !val.isEmail ?
-                          'email no\'t correct'
-                              : null;
-                        },
-                      ),
-                      SizedBox(height: Get.width * 0.05,),
+              ),
+              SizedBox(height: 60,),
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: Get.width *
+                      0.08),
+                  child: ElevatedButton.icon(
+                      onPressed: () {
+                        Get.to(() => ChangePassword());
+                      },
+                      icon: Icon(Icons.settings, size: 30),
+                      label: Text("change Password"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFE5A9379),)
+                  )
 
-                      TextFormField(
-                        style: TextStyle(
-                          color: Colors.black
-                        ),
-                       initialValue: ": ${pickedDate}",
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                       //  label: Text('Date of Birth '),
-                        ),
-                        onTap: () async{
-                          pickedDate = await showDatePicker(
-                              context: context, //context of current state
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                              lastDate: DateTime(2101)
+                //  )
 
-                          );
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: Get.width *
+                      0.08),
+                  child: ElevatedButton.icon(
+                      onPressed: () {
+                    //    addData();
+                        print(controller.name);
+                      },
+                      icon: Icon(Icons.done, size: 30),
+                      label: Text("Save Information"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFE5A9379),)
+                  )
 
-                          if(pickedDate != null ){
-                            print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
-                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
-                            print(formattedDate); //formatted date output using intl package =>  2021-03-16
-                          }else{
-                            print("Date is not selected");
-                          }
-                        },
-                      ),
-                      SizedBox(height: Get.width * 0.05,),
-                      TextFormField(
-                        readOnly: false,
-                        keyboardType: TextInputType.phone,
-                        autovalidateMode: AutovalidateMode.always,
-                        initialValue: controller.Phone??"jjj",
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text('Phone'),
-                        ),
-                        onChanged: (val) {
-                          controller.phone.value = val;
-                        },
-                        validator: (val) {
-                          return (val!.trim().isEmpty)
-                              ? 'can\'t be empty'
-                              : !val.isPhoneNumber ?
-                          'email no\'t correct'
-                              : null;
-                        },
-                      ),
+                //  )
 
-                      SizedBox(height: 60,),
+              )
 
-
-                      Container(
-                          margin: EdgeInsets.symmetric(horizontal: Get.width *
-                              0.08),
-                          child: ElevatedButton.icon(
-                              onPressed: () {
-                                Get.to(() => ChangePassword());
-                              },
-                              icon: Icon(Icons.settings, size: 30),
-                              label: Text("change Password"),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379),)
-                          )
-
-                        //  )
-
-                      ),
-                      Container(
-                          margin: EdgeInsets.symmetric(horizontal: Get.width *
-                              0.08),
-                          child: ElevatedButton.icon(
-                              onPressed: () {
-                                // Respond to button press
-                              },
-                              icon: Icon(Icons.done, size: 30),
-                              label: Text("Save Information"),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379),)
-                          )
-
-                        //  )
-
-                      )
-                    ]
-
-                );
-
-
-
-              }   })
+            ]
+        ) ;
+      },
+    ),
     );
   }
+  addData() async{
+    var user = FirebaseAuth.instance.currentUser ;
+    CollectionReference Date_ref = FirebaseFirestore.instance.collection("Acounts") ;
+    Date_ref.doc(user!.uid).set(
+        {
+          "Email" : user.email.toString() ,
+          "Name" : controller.name.toString() ,
+          "Phone" :controller.phone.toString() ,
+          "Date" : controller.formattedDate ,
 
+        }
+    ) ;
 
+  }
 }
 
 

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:test_saja/const/colors.dart';
 
 class ProfileController extends GetxController{
@@ -14,13 +15,15 @@ class ProfileController extends GetxController{
   var readOnlyPhone = true.obs;
   final formKey = GlobalKey<FormState>();
   var imageFile = null;
-
+  DateTime? pickedDate ;
+  var formattedDate ;
+  DateTime DOB=DateTime.now() ;
 
   // Firebase ...
   CollectionReference? ProfileRef ;
-  var Name ;
-  var DOB ;
-  var Phone ;
+  var UName ;
+  var UDOB ;
+  var UPhone ;
   var user = FirebaseAuth.instance.currentUser ;
 /*  void openCamera(BuildContext context)  async{
     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera ,);
@@ -85,14 +88,34 @@ class ProfileController extends GetxController{
     await ProfileRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
-        Name = element['Name'];
-        Phone = element['Phone'];
+        UName = element['Name'];
+        UPhone = element['Phone'];
+        UDOB=  element['Date'];
       });
     });
-    print(Name) ;
-    print(Phone) ;
+    print(UName) ;
+    print(UPhone) ;
+    print(UDOB) ;
 
 
+  }
+
+  Future<Null> SelectDate (BuildContext context) async {
+    pickedDate = await showDatePicker(
+        context: context, //context of current state
+        initialDate:DOB,
+        firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+        lastDate: DateTime(2101)
+
+    );
+    if(pickedDate != null ){
+      print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
+      formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
+      print(formattedDate); //formatted date output using intl package =>  2021-03-16
+
+    }else{
+      print("Date is not selected");
+    }
   }
   @override
   void onInit() {

@@ -20,7 +20,7 @@ class _AboutScreenState extends State<AboutScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios ,color: Colors.black54,),
           onPressed: (){
-            Get.to(ProfileScreen());
+            Get.back();
           },
         ),
         title: Text('About', style: TextStyle(

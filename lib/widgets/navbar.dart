@@ -32,7 +32,7 @@ class NavBar extends StatelessWidget {
                 accountEmail: Text(controller.user!.email.toString()),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
-                  child: Image.asset('assets/img.png' ,
+                  child: Image.asset('assets/np.png' ,
                     fit: BoxFit.cover,
                   ),
                 ),

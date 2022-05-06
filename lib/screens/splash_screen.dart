@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen>
            builder: (_){
   return ListView(
       children: [
-       SizedBox( height: 280,) ,
+       SizedBox(height: MediaQuery.of(context).size.width * 0.60,) ,
  Center(child: Lottie.asset('assets/Animation/lf30_editor_7ywx8uon.json' , repeat: false ,width: 150 ,height: 150)),
 
         Center(
