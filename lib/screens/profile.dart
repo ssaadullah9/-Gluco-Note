@@ -129,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                            var pickedDate = await showDatePicker(
                                 context: context, //context of current state
                                 initialDate:DateTime.now(),
-                                firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                firstDate: DateTime(1970), //DateTime.now() - not to allow to choose before today.
                                 lastDate: DateTime(2101)
 
                             );
@@ -158,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         text: controller.UPhone
                       ),
                       keyboardType: TextInputType.phone,
-                      autovalidateMode: AutovalidateMode.always,
+                      //autovalidateMode: AutovalidateMode.always,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                           labelText: 'Phone'

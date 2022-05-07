@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:search_choices/search_choices.dart';
 //import 'package:dropdown_button2/custom_dropdown_button2.dart';
@@ -15,6 +16,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 //import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:test_saja/screens/addreminder.dart';
 import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import '../widgets/notificationService.dart';
 
 
 class InTaksScreen extends StatefulWidget {
@@ -27,6 +30,25 @@ class InTaksScreen extends StatefulWidget {
   State<InTaksScreen> createState() => _InTaksScreenState();
 }
 class _InTaksScreenState extends State<InTaksScreen> {
+
+
+  void getDataFromFireBaseHealthInfo() async{
+    //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
+
+
+    data =  FirebaseFirestore.instance.collection("Health_Info");
+    await data!.get().then((snapShot) {
+      _w =int.parse('${ snapShot.docs[0]['Weight']}');
+      _l=int.parse('${ snapShot.docs[0]['Height']}');
+      /*snapShot.docs.forEach((element) {
+          // print(user!.uid);
+          //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد
+
+        });*/
+      print(_w) ;
+    });
+  }
+
   var timep;
   var t;
   var picked;
@@ -51,8 +73,9 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   List<String>? category = [];
   List<String>? exercise = [];
-
+  List<String>? liq = [];
   List<List<dynamic>>? categoryType = [];
+  List<dynamic>?  liquidType = [];
 
   List<dynamic>? exerciseTypes = [];
 
@@ -60,14 +83,15 @@ class _InTaksScreenState extends State<InTaksScreen> {
   double calories =0.0;
   var selectCategory;
   var selectCategoryType;
-
+  int FinishedTime=1 ;
   var selectExerciseType;
+  var selectliquidType;
   dynamic selectExerciseTime;
   var protein;
   String med_type='';
   dynamic med_q;
   //************
-
+  CollectionReference? data;
   String ? typesID;
 
   String ? foodID;
@@ -91,11 +115,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   late String dropdownValue;
 
-  int? _w;
+  int _w=0;
+  int _l=0;
   double calo =0;
   @override
   void initState() {
-    //getDataFromFireBaseHealthInfo();
+    getDataFromFireBaseHealthInfo();
     timep = TimeOfDay.now();
     this.category = [
       "Fruits",
@@ -200,48 +225,37 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
       ],
     ];
+    this.liquidType=[
+      {"name": "Apple juice", "cal":117 , "fat":0.27  , "pro":0.15},
+      {"name": "Banana Juice", "cal":218 , "fat":0.81  , "pro":2.67},
+      {"name": "Carrot Juice", "cal":94 , "fat":0.35  , "pro":2.24},
+      {"name": "Grape Juice", "cal":154 , "fat": 0.2 , "pro":1.42},
+      {"name": "Grapefruit Juice", "cal":94 , "fat":0.25  , "pro":1.28},
+      {"name": "Mango Juice", "cal":140 , "fat":0  , "pro":0},
+      {"name": "Orange juice", "cal":112 , "fat":0.5  , "pro":1.74},
+      {"name": "Passion fruit juice", "cal":126 , "fat":0.12  , "pro":0.96},
+      {"name": "Strawberry Juice", "cal": 90, "fat":1.42  , "pro":0.71},
+      {"name": "Tomato Juice", "cal":41 , "fat":0.12  , "pro":1.85},
+      {"name": "Tea (Brewed)", "cal": 2, "fat": 0, "pro": 0},
+      {"name": "Green tea", "cal":2 , "fat": 0 , "pro":0},
+      {"name": "Milk", "cal":122 , "fat":4.88  , "pro":8.03},
+      {"name": "Milk Shake", "cal":382 , "fat":13.84  , "pro":9.03},
+      {"name": "Chocolate Milk", "cal":208 , "fat":8.48  , "pro":7.92},
+      {"name": "Coffee with Milk", "cal":6 , "fat":0.15  , "pro":0.33},
+      {"name": "Caffe Americano (Starbucks)", "cal":5 , "fat":0  , "pro":0},
+      {"name": "Latte Coffee", "cal":135, "fat":5.51  , "pro":8.81},
+      {"name": "Espresso Coffee", "cal":1 , "fat":0.11  , "pro":0.07},
+      {"name": "Cappuccino", "cal":56 , "fat":2.99  , "pro":3.06},
+      {"name": "French Vanilla Cafe", "cal":60 , "fat":2.5  , "pro":0},
+      {"name": "Turkish Coffee", "cal":46 , "fat":0.02  , "pro":0.13},
+      {"name": "other"},
 
 
-    //
-    // this.exerciseTypes = [
-    //   "Aerobics",
-    //   "Baseball",
-    //   "Basketball",
-    //       "Billiards",
-    //   "Bowling",//3
-    //   "Cycling",
-    //   "Dancing",
-    //   "Fishing",
-    //   "Football",
-    //   "Hiking",//done
-    //   "Ice skating",//done
-    //   "Racquet sports",//done
-    //   "Running",//done
-    //   "Swimming",
-    //   "Walking",
-    // ];
-    // this.exerciseTypes=[
-    //
-    //   {"name":"Aerobics","met":6.83},
-    //   {"name":"Baseball","met":5},
-    //   {"name":"Basketball","met":8},
-    //   {"name":"Billiards","met":2.5},//done
-    //   {"name":"Bowling","met":3},
-    //   {"name":"Cycling","met":9.5},
-    //   {"name":"Dancing","met":4.5},
-    //   {"name":"Fishing","met":4.5},
-    //   {"name":"Football","met":7},
-    //   {"name":"Hiking","met":6},
-    //   {"name":"Ice skating","met":7},
-    //   {"name":"Racquet sports","met":8.5},
-    //   {"name":"Running","met":9.8},
-    //   {"name":"Swimming","met":8},
-    //   {"name":"Walking","met":3.8},
-    //
-    //
-    //
-    //
-    // ];
+
+
+
+    ];
+
     this.exerciseTypes=[
 
       {"name":"Aerobics","met":6.83},
@@ -268,13 +282,15 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   }
   var updated;
-
+  var other2;
   var other;
   String typeOthers = '';
   int indexType = 0;
   int indexType2 = 0;
+  int indexType3 = 0;
   bool isLoading = false;
   bool isLoading2 = false;
+  bool isLoading3 = false;
 
   String percent = '0';
   int milliseconds = 5000;
@@ -299,7 +315,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
   dynamic protein_s = 0,
       fat_s = 0,
       cal_s = 0,
-      Scal = 0;
+      Scal = 0,
+      cal_l=0,
+      fat_l=0,
+      pro_l=0;
   dynamic tim = 0,
       h = 0,
       w = 0;
@@ -508,7 +527,9 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                 print(categoryType![i][j]["pro"]);
                                 protein_s = categoryType![i][j]["pro"];
                                 spro = protein_s * selected_squantity;
-
+                                sfat=sfat.toStringAsFixed(2);
+                                spro=spro.toStringAsFixed(2);
+                                Scal=Scal.toStringAsFixed(2);
 
                                 setState(() {
 
@@ -556,51 +577,62 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 ]),
             //screen2
             ListView(
-                padding: EdgeInsets.all(Get.width * 0.08),
+                padding: EdgeInsets.all(15.0),
                 children: <Widget>[
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Liquid type: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Get.width * 0.05,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                   DropdownButtonFormField(
                       decoration: InputDecoration(
-                          border: OutlineInputBorder()
-                      ),
-                      items: [
-                        "Coffee ",
-                        "Tea ",
-                        "Juice",
-                        "Soup",
-                        "Milk",
-                        "Others"
-                      ].map((e) =>
-                          DropdownMenuItem(
-                            child: Text('$e'),
-                            value: e,
-                          )).toList(),
-                      hint: Text('Select Liquids'),
+                          hintText: 'Select liquid type',
+                          border: OutlineInputBorder()),
+                      items: liquidType!.map((e) {
+                        return DropdownMenuItem(
+                          child: Text('${e['name']}'),
+                          value: e['name']??e,
+                        );
+                      }).toList(),
                       onChanged: (val) {
-                        selected_Ltype = val as String;
-                        setState(() {
-                          print(selected_Ltype);
+                        selectliquidType = val;
+                        indexType3 = liquidType!.indexOf('$selectliquidType');
+                        isLoading2 = true;
+                        Timer(Duration(milliseconds: 500), () {
+                          isLoading2 = false;
+                          setState(() {});
                         });
+                        setState(() {});
                       }),
-                  SizedBox(height: Get.width * 0.05,),
-                  //selected_Ltype=='Others'?
-                  TextFormField(
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  isLoading2
+                      ? Center(child: CircularProgressIndicator())
+                      : selectliquidType == "other"
+                      ?TextFormField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter the calories..'
+                      border: OutlineInputBorder(),
+                      hintText: "Enter the calories",
 
                     ),
-                    validator: (val) {
-                      return val!.isEmpty
-                          ? 'can\'t be empty'
-                          : null;
-                    },
-
                     onChanged: (val) {
-                      L_calories = int.parse(val);
+                      other2 = int.parse(val);
                     },
-
-                  ),
+                  )
+                      :
 
 
                   SizedBox(),
@@ -636,46 +668,73 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           amount: liquid_result,
                           module: 'cal'
                       ),
-                      // _buildContainerSolids(
-                      //     label: 'Fat',
-                      //     amount: '0',
-                      //     module: 'g'
-                      // ), _buildContainerSolids(
-                      //     label: 'Protein',
-                      //     amount: '0',
-                      //     module: 'g'
-                      // ),
+                      _buildContainerSolids(
+                          label: 'Fat',
+                          amount: fat_l,
+                          module: 'g'
+                      ), _buildContainerSolids(
+                          label: 'Protein',
+                          amount:  pro_l,
+                          module: 'g'
+                      ),
                     ],
                   ),
                   SizedBox(height: Get.width * 0.1,),
-                  ElevatedButton.icon(
-                      onPressed: () {
-                        liquid_result = L_calories * selected_Lquantity;
-                        print(liquid_result);
-                        setState(() {});
-                        Get.snackbar(
-                            'do you want save it?',
-                            'it will be show in the logbook',
-                            snackPosition: SnackPosition.BOTTOM,
-                            borderRadius: 0,
-                            duration: Duration(milliseconds: 4500),
-                            margin: EdgeInsets.zero,
-                            mainButton: TextButton(onPressed: () {
-                              add_intakes("liquids",liquid_result,selected_Lquantity ,selected_Ltype);
-                              liquid_result = 0;
-                              setState(() {});
-                            },
-                                child: Text('Save', style: TextStyle(
-                                    color: Colors.blue
-                                ),)
+                  Container(
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          //
+                          // liquid_result = L_calories * selected_Lquantity;
+                          // print(liquid_result);
+                          for (var i = 0; i < liquidType!.length; i++) {
+                            if (selectliquidType == "Other"){
+                              liquid_result= other2 * selected_Lquantity;
+                            }
+                            else
+                            if (selectliquidType ==
+                                liquidType![i]["name"]) {
+                              cal_l = liquidType![i]["cal"];
+                              liquid_result = cal_l * selected_Lquantity;
+                              print(liquidType![i]["fat"]);
+                              fat_l = liquidType![i]["fat"];
+                              fat_l = fat_l * selected_Lquantity;
+                              print(liquidType![i]["pro"]);
+                              pro_l =liquidType![i]["pro"];
+                              pro_l = pro_l * selected_Lquantity;
 
-                            )
-                        );
-                      },
-                      icon: Icon(Icons.add, size: 30),
-                      label: Text("Calculate"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE5A9379),)
+                              liquid_result = cal_l * selected_Lquantity;
+                              print(liquid_result);}}
+                          liquid_result=liquid_result.toStringAsFixed(2);
+                          pro_l=pro_l.toStringAsFixed(2);
+                          fat_l=fat_l.toStringAsFixed(2);
+                          setState(() {});
+
+                          Get.snackbar(
+                              'do you want save it?',
+                              'it will be show in the logbook',
+                              snackPosition: SnackPosition.BOTTOM,
+                              borderRadius: 0,
+                              duration: Duration(milliseconds: 4500),
+                              margin: EdgeInsets.zero,
+                              mainButton: TextButton(onPressed: () {
+                                add_intakes("liquids",liquid_result,selected_Lquantity ,selected_Ltype);
+                                liquid_result = 0;
+                                pro_l=0;
+                                fat_l=0;
+                                setState(() {});
+                              },
+                                  child: Text('Save', style: TextStyle(
+                                      color: Colors.blue
+                                  ),)
+
+                              )
+                          );
+                        },
+                        icon: Icon(Icons.add, size: 30),
+                        label: Text("Calculate"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5A9379),)
+                    ),
                   )
                 ]),
 
@@ -800,7 +859,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   ),
                   DropdownButtonFormField(
                       decoration: InputDecoration(
-                          hintText: 'selectType', border: OutlineInputBorder()),
+                          hintText: 'SelectType', border: OutlineInputBorder()),
                       items: exerciseTypes!.map((e) {
                         return DropdownMenuItem(
                           child: Text('${e['name']}'),
@@ -841,7 +900,10 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   isLoading2
                       ? Center(child: CircularProgressIndicator())
                       :TextFormField(
+                    maxLength:3,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     keyboardType: TextInputType.datetime,
+                    inputFormatters:[FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
 
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -852,6 +914,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     },
                     onEditingComplete: (){
                       print(selectExerciseTime);
+                       FinishedTime = int.parse(selectExerciseTime) ;
                       milliseconds = int.parse(selectExerciseTime)*60000;
                       print(milliseconds);
                       FocusScope.of(context).unfocus();
@@ -985,7 +1048,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                   AwesomeDialog(
                                       context: context,
                                       dialogType: DialogType.SUCCES,
-                                      desc: 'Heloo Done Dear@',
+                                      desc: 'Exercies is finish',
                                       btnOkOnPress: () {
                                         selectExerciseTime = '0';
                                         milliseconds = 5000;
@@ -1014,39 +1077,51 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: Get.width * 0.08),
-                      child: ElevatedButton.icon(
-                          onPressed: () {
-                            //
-                            // calories=cal_swimming(h ,selectExerciseTime);
-                            // print(calories);
-                            //  Respond to button press
-                            for (var j = 0; j < exerciseTypes!.length; j++) {
-                              if (selectExerciseType ==
-                                  exerciseTypes![j]["name"]){
-                                print(exerciseTypes![j]["name"]);
-                                print(exerciseTypes![j]["met"]);
-                                selectExerciseTime= double.parse(selectExerciseTime);
-                                //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
+                      child: FutureBuilder(
+                        future: data!.get(),
+                        builder: (context, snapshot) {
+                          return ElevatedButton.icon(
+                              onPressed: () {
+                                //
+                                // calories=cal_swimming(h ,selectExerciseTime);
+                                // print(calories);
+                                //  Respond to button press
+                                for (var j = 0; j < exerciseTypes!.length; j++) {
+                                  if (selectExerciseType ==
+                                      exerciseTypes![j]["name"]){
+                                    print(exerciseTypes![j]["name"]);
+                                    print(exerciseTypes![j]["met"]);
+                                    selectExerciseTime= double.parse(selectExerciseTime);
+                                    //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
 
-                                calories= ((milliseconds/60000 )* exerciseTypes![j]["met"]*3.5*53/200);
+                                    calories= ((milliseconds/60000 )* exerciseTypes![j]["met"]*3.5*_w/_l);
 
-                                // calories= double.parse(calories);
-                                print("befor:");
-                                print( calories);
-                                //  calo= calories.toInt();
-                                calo= calories/500;
-                                print(calo);
-                                add_ex(selectExerciseType,calories, calo);
-                                initState();
-                              }
-                              //   //هنا مفروض يضرب القيم بالمعادله اللي فوق في ال ميت اللي اختاره اليوزر حسب اللست
-                            }
+                                    // calories= double.parse(calories);
+                                    print("befor:");
+                                    print( calories);
+                                    print("wwwww") ;
+                                    print(_w) ;
+                                    //  calo= calories.toInt();
+                                    calo= calories/500;
+                                    print(calo);
+                                    calories= double.parse((calories). toStringAsFixed(2));
+                                    print(calories);
+                                    add_ex(selectExerciseType,calories, calo);
+                                    NotificationService().showNotification(
+                                        1, "Excirses Time ",
+                                        'Exeirses time is finished ', FinishedTime  );
+                                    initState();
+                                  }
 
-                          },
-                          icon: Icon(Icons.add, size: 30),
-                          label: Text("Calculate"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFFE5A9379),)
+                                }
+
+                              },
+                              icon: Icon(Icons.add, size: 30),
+                              label: Text("Calculate"),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5A9379),)
+                          );
+                        }
                       )
 
                     //  )
@@ -1093,7 +1168,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   Widget _buildContainerlequids({label, amount, module}) {
     return Container(
-      width: Get.width * 0.5,
+      width: Get.width * 0.25,
       height: Get.width * 0.25, child: Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1135,21 +1210,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
         }
     );
 
-    void getDataFromFireBaseHealthInfo()async{
-      //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
-      //var user  =  FirebaseAuth.instance.currentUser;
 
-      CollectionReference? data;
-      data =  FirebaseFirestore.instance.collection("Health_Info");
-      await data.get().then((snapShot) {
-        _w =int.parse('${ snapShot.docs[1]['Weight']}');
-        snapShot.docs.forEach((element) {
-          // print(user!.uid);
-          //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد
-
-        });
-      });
-    }
 
     cal_swimming(String val, int w, int t) {
       dynamic calories;
@@ -1172,4 +1233,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
           "ex_cal":calories,
           "ex_per":calo,
         });}
+
+
+
 }
