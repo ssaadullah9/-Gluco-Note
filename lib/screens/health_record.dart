@@ -10,9 +10,16 @@ import 'package:test_saja/widgets/navbar.dart';
 
 import '../const/colors.dart';
 
-class HealthRecordScreen extends StatelessWidget {
+class HealthRecordScreen extends StatefulWidget {
+  @override
+  State<HealthRecordScreen> createState() => _HealthRecordScreenState();
+}
+
+class _HealthRecordScreenState extends State<HealthRecordScreen> {
   final controller = Get.put(HealthRecordController());
+
   var user = FirebaseAuth.instance.currentUser ;
+
   @override
   Widget build(BuildContext context) {
         return Scaffold(
@@ -160,9 +167,10 @@ class HealthRecordScreen extends StatelessWidget {
                     height: Get.width * 0.06,
                   ),
                   _buildDateSelected(
-                      text: controller.user_LDLDate == null ?'LDL Date' :  controller.user_LDLDate,
+                      text: "LDL Date",
                       context: context,
-                      selectDate: controller.selectedLDLDates),
+                      selectDate: controller.selectedLDLDates
+                  ),
                   SizedBox(
                     height: Get.width * 0.06,
                   ),
@@ -188,7 +196,7 @@ class HealthRecordScreen extends StatelessWidget {
                     height: Get.width * 0.06,
                   ),
                   _buildDateSelected(
-                      text: controller.user_TGDate == null ?'TG Date' :  controller.user_TGDate,
+                      text: 'TG Date',
                       context: context,
                       selectDate: controller.selectedTGDates),
                   SizedBox(
@@ -216,9 +224,9 @@ class HealthRecordScreen extends StatelessWidget {
                     height: Get.width * 0.06,
                   ),
                   _buildDateSelected(
-                      text: controller.user_ALBUMINDate == null ?'Albumin Date' :  controller.user_ALBUMINDate,
+                      text:'Albumin Date',
                       context: context,
-                      selectDate: controller.selectedAlbuminDates),
+                      selectDate: controller.selectedAlbuminDates== null ? "": controller.selectedAlbuminDates ),
                   SizedBox(
                     height: Get.width * 0.06,
                   ),
@@ -247,17 +255,22 @@ class HealthRecordScreen extends StatelessWidget {
 
 
 }
+
   Widget _buildDateSelected({text, context, selectDate}) {
     return TextFormField(
+
       readOnly: true,
       style:TextStyle(
           color: Colors.black
       ) ,
 
-      controller: selectDate,
+      controller: TextEditingController(
+        text: selectDate.text
+      ),
       decoration:
       InputDecoration(
-       labelText: '$text', border: OutlineInputBorder(),
+       labelText: '$text',
+        border: OutlineInputBorder(),
 
 
       ),
@@ -269,7 +282,11 @@ class HealthRecordScreen extends StatelessWidget {
           lastDate: DateTime(2025),
         ).then((selectedDate) {
           if (selectedDate != null) {
-            selectDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+            selectDate.text = DateFormat('yyyy-MM-dd').
+            format(selectedDate);
+            setState(() {
+
+            });
           }
         });
       },
@@ -281,6 +298,7 @@ class HealthRecordScreen extends StatelessWidget {
       },
     );
   }
+
   Future<void> add_record() async {
     CollectionReference helth_record =
     FirebaseFirestore.instance.collection("Health_Record");

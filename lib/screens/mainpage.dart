@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
@@ -21,8 +22,8 @@ class MainScreen extends StatelessWidget {
             ()=>Scaffold(
 
           resizeToAvoidBottomInset: false,
-          drawer: StreamBuilder(
-            stream: controller.ProfileRef!.snapshots(),
+          drawer: FutureBuilder(
+            future: controller.ProfileRef!.get(),
             builder: (context, snapshot) {
               return NavBar();
             }
@@ -31,10 +32,19 @@ class MainScreen extends StatelessWidget {
           [controller.currentIndex.value]['appBar']
               ?AppBar(
             backgroundColor: Colors.blueGrey,
-            title: Text(
-              'Hi  ${controller.Name.toString() == null ? "" : controller.Name} ,',
-              style: TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            title:FutureBuilder(
+              future: controller.ProfileRef!.get(),
+              builder: (ctx,snapShot){
+                if(snapShot.hasData){
+                  return Text(
+                    'Hi  ${controller.Name.toString() == null ? "" : controller.Name} ,',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                  );
+                }else{
+                  return Text("......")
+;                }
+              },
             ),
           ):null,
           floatingActionButton: FloatingActionButton(

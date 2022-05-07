@@ -16,18 +16,24 @@ import 'package:test_saja/screens/change_password.dart';
 
 import '../widgets/navbar.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   final controller = Get.put(ProfileController());
-  var user = FirebaseAuth.instance.currentUser ;
 
-
-
-
+  @override
+  void initState() {
+    controller.ProfileRef!.get();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        drawer: NavBar(),
+        //drawer: NavBar(),
         appBar:   AppBar(
           centerTitle : true,
           elevation: 0,
@@ -36,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
             icon: Icon(Icons.arrow_back_ios ,color: Colors.black54,),
             onPressed: (){
             //  Get.back();
-              Navigator.pop(context) ;
+               Navigator.pop(context) ;
             },
           ),
           title: Text('Profile', style: TextStyle(
@@ -44,8 +50,10 @@ class ProfileScreen extends StatelessWidget {
           ),),
 
         ),
-    body: StreamBuilder(
-     stream: controller.ProfileRef!.snapshots(),
+    body:
+
+    FutureBuilder(
+     future: controller.ProfileRef!.get(),
       builder: (context, snapshot){
         if(!snapshot.hasData){
           return Center(
@@ -53,123 +61,171 @@ class ProfileScreen extends StatelessWidget {
               color: Colors.amber,
             ),
           );
-        } else
-          return ListView(
-          padding: EdgeInsets.all(
-              Get.width * 0.03
-          ),
-            children: [
-              SizedBox(height: 20,),
-              TextFormField(
-                initialValue: controller.UName.toString() ,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Name'),
-                ),
-                maxLength: 30,
-                onChanged: (val) {
-                  controller.name.value = val;
-                controller.name.value = controller.UName ;
-                },
-              ),
-              SizedBox(height: Get.width * 0.05,),
-              TextFormField(
-                readOnly: true,
-                initialValue: user!.email.toString(),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Email'),
-                ),
-             /*   onChanged: (val) {
-                  controller.email.value = val;
-                },*/
-              ),
-              SizedBox(height: Get.width * 0.05,),
-              TextFormField(
-                readOnly: true,
-                style: TextStyle(
-                    color: Colors.black
-                ),
-                //initialValue: formattedDate,
-                decoration: InputDecoration(
-                  hintText: "${controller.UDOB}",
-                  border: OutlineInputBorder(),
-                  label: Text('Date of Birth '),
-                  suffixIcon: IconButton(
-                    onPressed: (){controller.SelectDate(context); } ,
-                    icon: Icon(Icons.cake , color: Colors.amber,),
-                  ),
-                ),
-                /*onTap: () {
-                  controller.SelectDate(context) ;
-                },*/
-              ),
-              SizedBox(height: Get.width * 0.05,),
-              TextFormField(
-                readOnly: false,
-                keyboardType: TextInputType.phone,
-                autovalidateMode: AutovalidateMode.always,
-                initialValue: controller.UPhone ,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Phone'),
-                ),
-                onChanged: (val) {
-                  controller.phone.value = val;
-                  controller.phone=controller.UPhone ;
-                },
+        }
+        else{
 
-              ),
-              SizedBox(height: 60,),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: Get.width *
-                      0.08),
-                  child: ElevatedButton.icon(
-                      onPressed: () {
-                        Get.to(() => ChangePassword());
+          return Padding(
+            padding:  EdgeInsets.all(
+                Get.width * 0.03
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                  children: [
+                    SizedBox(height: 20,),
+                    TextFormField(
+                      controller: TextEditingController(
+                        text: controller.UName
+                      ),
+
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Name'
+                      ),
+
+                      maxLength: 30,
+                      onChanged: (val) {
+                        controller.UName = val;
+                      setState(() {
+
+                      });
                       },
-                      icon: Icon(Icons.settings, size: 30),
-                      label: Text("change Password"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE5A9379),)
-                  )
+                    ),
+                    SizedBox(height: Get.width * 0.05,),
 
-                //  )
+                    TextFormField(
+                      controller: TextEditingController(
+                        text: controller.user!.email
+                      ),
+                      readOnly: true,
 
-              ),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: Get.width *
-                      0.08),
-                  child: ElevatedButton.icon(
-                      onPressed: () {
-                    //    addData();
-                        print(controller.name);
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                          labelText: 'Email'
+
+                      ),
+                      /*   onChanged: (val) {
+                      controller.email.value = val;
+                    },*/
+                    ),
+
+                    SizedBox(height: Get.width * 0.05,),
+                    TextFormField(
+                      readOnly: true,
+                      controller: TextEditingController(
+                        text: controller.UDOB
+                      ),
+                      style: TextStyle(
+                          color: Colors.black
+                      ),
+                      //initialValue: formattedDate,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        // label: Text('Date of Birth '),
+                          labelText: 'Date of Birth',
+
+                          suffixIcon: IconButton(
+                          onPressed: ()async{
+
+                           var pickedDate = await showDatePicker(
+                                context: context, //context of current state
+                                initialDate:DateTime.now(),
+                                firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                lastDate: DateTime(2101)
+
+                            );
+                            if(pickedDate != null ){
+                              print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
+                              controller.UDOB = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              setState(() {
+
+                              });
+                              print(controller.UDOB); //formatted date output using intl package =>  2021-03-16
+
+                            }else{
+                              print("Date is not selected");
+                            }
+                            } ,
+                          icon: Icon(Icons.cake , color: Colors.amber,),
+                        ),
+                      ),
+                      /*onTap: () {
+                      controller.SelectDate(context) ;
+                    },*/
+                    ),
+                    SizedBox(height: Get.width * 0.05,),
+                    TextFormField(
+                      controller: TextEditingController(
+                        text: controller.UPhone
+                      ),
+                      keyboardType: TextInputType.phone,
+                      autovalidateMode: AutovalidateMode.always,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                          labelText: 'Phone'
+                      ),
+                      onChanged: (val) {
+                       controller.UPhone = val;
+                       setState(() {
+
+                       });
                       },
-                      icon: Icon(Icons.done, size: 30),
-                      label: Text("Save Information"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE5A9379),)
-                  )
 
-                //  )
+                    ),
+                    SizedBox(height: 60,),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: Get.width *
+                            0.08),
+                        child: ElevatedButton.icon(
+                            onPressed: () {
+                              Get.to(() => ChangePassword());
+                            },
+                            icon: Icon(Icons.settings, size: 30),
+                            label: Text("change Password"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFE5A9379),)
+                        )
 
-              )
+                      //  )
 
-            ]
-        ) ;
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: Get.width *
+                            0.08),
+                        child: ElevatedButton.icon(
+                            onPressed: () {
+                                  addData();
+
+                            },
+                            icon: Icon(Icons.done, size: 30),
+                            label: Text("Save Information"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFE5A9379),)
+                        )
+
+                      //  )
+
+                    )
+
+                  ]
+              ),
+            ),
+          ) ;
+        }
+
       },
     ),
     );
   }
+
   addData() async{
     var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Date_ref = FirebaseFirestore.instance.collection("Acounts") ;
     Date_ref.doc(user!.uid).set(
         {
           "Email" : user.email.toString() ,
-          "Name" : controller.name.toString() ,
-          "Phone" :controller.phone.toString() ,
-          "Date" : controller.formattedDate ,
+          "Name" : controller.UName ,
+          "Phone" :controller.UPhone ,
+          "Date" : controller.UDOB ,
 
         }
     ) ;

@@ -7,12 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:test_saja/const/colors.dart';
 
 class ProfileController extends GetxController{
-  var name ;
-  var email ;
-  var phone;
-  var DateOfBitrth ;
-  var readOnlyPassword = true.obs;
-  var readOnlyPhone = true.obs;
+
   final formKey = GlobalKey<FormState>();
   var imageFile = null;
   DateTime? pickedDate ;
@@ -21,10 +16,12 @@ class ProfileController extends GetxController{
 
   // Firebase ...
   CollectionReference? ProfileRef ;
-  var UName ;
-  var UDOB ;
-  var UPhone ;
+  var UName = "";
+  var UDOB  = "";
+  var UPhone  = "";
+
   var user = FirebaseAuth.instance.currentUser ;
+
 /*  void openCamera(BuildContext context)  async{
     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera ,);
           imageFile = pickedFile!;
@@ -82,16 +79,14 @@ class ProfileController extends GetxController{
       ));
   }*/
 
-  Future<void>  getData() async {
+  getData() async {
 
-    ProfileRef = FirebaseFirestore.instance.collection("Acounts") ;
-    await ProfileRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+    ProfileRef =  FirebaseFirestore.instance.collection("Acounts") ;
+    await ProfileRef!.where("Email" , isEqualTo: user!.email).get().then((snapShot) {
       print(snapShot.docs.length);
-      snapShot.docs.forEach((element) {
-        UName = element['Name'];
-        UPhone = element['Phone'];
-        UDOB=  element['Date'];
-      });
+      UName = snapShot.docs[0]["Name"];
+      UPhone = snapShot.docs[0]['Phone'];
+      UDOB=  snapShot.docs[0]['Date'];
     });
     print(UName) ;
     print(UPhone) ;
@@ -100,23 +95,7 @@ class ProfileController extends GetxController{
 
   }
 
-  Future<Null> SelectDate (BuildContext context) async {
-    pickedDate = await showDatePicker(
-        context: context, //context of current state
-        initialDate:DOB,
-        firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-        lastDate: DateTime(2101)
 
-    );
-    if(pickedDate != null ){
-      print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
-      formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
-      print(formattedDate); //formatted date output using intl package =>  2021-03-16
-
-    }else{
-      print("Date is not selected");
-    }
-  }
   @override
   void onInit() {
     getData() ;
