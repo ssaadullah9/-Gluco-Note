@@ -20,6 +20,7 @@ class HealthInfoController extends GetxController{
    var w ;
  var h ;
  var DT ;
+ var g ;
   var user = FirebaseAuth.instance.currentUser ;
 
 /*  Future<void> selectBirthDate(BuildContext context) async {
@@ -42,11 +43,13 @@ class HealthInfoController extends GetxController{
         w = element['Weight'];
         h = element['Height'];
         DT = element['Diabetes_Type'].toString();
+        g=element['Gender'].toString();
       });
     });
     print(w) ;
     print(h) ;
     print(DT) ;
+    print(g) ;
 
   }
  @override

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:test_saja/const/colors.dart';
@@ -37,7 +38,7 @@ class HealthInfoScreen extends StatelessWidget {
             color: Colors.black54,
           ),
           onPressed: () {
-            Get.back();
+            Navigator.pop(context) ;
           },
         ),
         title: Text(
@@ -49,8 +50,10 @@ class HealthInfoScreen extends StatelessWidget {
         future: controller.Health_info!.get(),
         builder: (context,snapshot){
           if(!snapshot.hasData){
-            return Center(
-              child: CircularProgressIndicator(),
+            return  Center(
+              child: SpinKitCircle(
+                color: Colors.amber,
+              ),
             );
           }else{
             return ListView(
@@ -58,7 +61,7 @@ class HealthInfoScreen extends StatelessWidget {
                   Get.width * 0.03
               ),
               children: [
-                Container(
+           /*     Container(
                     padding: EdgeInsets.only(left: 16.0, right: 16.0),
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1),
@@ -94,10 +97,31 @@ class HealthInfoScreen extends StatelessWidget {
                         'Female',
                         style: new TextStyle(fontSize: 15.0),
                       ),
-                    ])),
+                    ])),*/
+                DropdownButtonFormField(
+                  decoration: InputDecoration(
+                      labelText: "Gender:",
+                      border: OutlineInputBorder()
+                  ),
+                  items: ["Male", "Female"]
+                      .map((e) => DropdownMenuItem(
+                    child: Text("$e"),
+                    value: e,
+                  ))
+                      .toList(),
+                  onChanged: (val) {
+                    controller.selectedGender.value = val as String;
+                  },
+
+                  hint: Text(
+                      controller.g==null ?
+                      'Gender:':
+                      "${controller.g}"
+                  ),
+                ),
                 SizedBox(height: Get.width * 0.05,),
                 TextFormField(
-                  initialValue: controller.w == null?"": controller.w,
+                  initialValue: controller.w == null?"0": controller.w,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -109,7 +133,7 @@ class HealthInfoScreen extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width * 0.05,),
                 TextFormField(
-                  initialValue:  controller.h.toString(),
+                  initialValue:  controller.h == null ? "0": controller.h,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -143,19 +167,13 @@ class HealthInfoScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: Get.width * 0.05,),
-                /*    _buildDateField(
-                hintText: 'Date of birth ',
-                selectedFromDate: controller.selectedBirthDate.value,
-                onTap: () {
-                  controller.selectBirthDate(context);
-                },
-              ),*/
+
                 SizedBox(height: Get.width * 0.05,),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          if(  (controller.radioButtonItem.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
+                          if(  (controller.selectedGender.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
                               &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
                             addData() ;
                             Get.snackbar(
@@ -199,7 +217,7 @@ class HealthInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDateField({required String hintText, DateTime? selectedFromDate, required VoidCallback onTap,}) {
+ /* Widget _buildDateField({required String hintText, DateTime? selectedFromDate, required VoidCallback onTap,}) {
     return GestureDetector(
         child: AbsorbPointer(
           child: TextFormField(
@@ -234,14 +252,14 @@ class HealthInfoScreen extends StatelessWidget {
           ),
         ),
         onTap: onTap);
-  }
+  }*/
   addData() async{
     var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
     Health_info.doc(user!.uid).set(
         {
           "Email" : user.email.toString() ,
-          "Gender" : controller.radioButtonItem.value.toString(),
+          "Gender" : controller.selectedGender.value.toString(),
           "Weight" : controller.selectedWeight.value,
           "Height" : controller.selectedHeight.value,
           "Diabetes_Type" : controller.selectedType.value,

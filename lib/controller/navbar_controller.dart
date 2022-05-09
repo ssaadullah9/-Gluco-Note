@@ -10,8 +10,7 @@ class NavBaRController extends  GetxController{
   var Name ;
 
 
-  Future<void>  getData() async {
-
+  getData() async {
     ProfileRef = FirebaseFirestore.instance.collection("Acounts") ;
     await ProfileRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
@@ -25,7 +24,7 @@ class NavBaRController extends  GetxController{
   }
   @override
   void onInit() {
-    getData() ;
+    getData();
     super.onInit();
   }
 

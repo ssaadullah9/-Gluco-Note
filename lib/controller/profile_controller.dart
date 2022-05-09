@@ -3,25 +3,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:test_saja/const/colors.dart';
 
 class ProfileController extends GetxController{
-  var name ;
-  var email ;
-  var phone;
-  var DateOfBitrth ;
-  var readOnlyPassword = true.obs;
-  var readOnlyPhone = true.obs;
+
   final formKey = GlobalKey<FormState>();
   var imageFile = null;
-
+  DateTime? pickedDate ;
+  var formattedDate ;
+  DateTime DOB=DateTime.now() ;
 
   // Firebase ...
   CollectionReference? ProfileRef ;
-  var Name ;
-  var DOB ;
-  var Phone ;
+  var UName = "";
+  var UDOB  = "";
+  var UPhone  = "";
+
   var user = FirebaseAuth.instance.currentUser ;
+
 /*  void openCamera(BuildContext context)  async{
     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera ,);
           imageFile = pickedFile!;
@@ -79,21 +79,23 @@ class ProfileController extends GetxController{
       ));
   }*/
 
-  Future<void>  getData() async {
+  getData() async {
 
-    ProfileRef = FirebaseFirestore.instance.collection("Acounts") ;
-    await ProfileRef!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+    ProfileRef =  FirebaseFirestore.instance.collection("Acounts") ;
+    await ProfileRef!.where("Email" , isEqualTo: user!.email).get().then((snapShot) {
       print(snapShot.docs.length);
-      snapShot.docs.forEach((element) {
-        Name = element['Name'];
-        Phone = element['Phone'];
-      });
+      UName = snapShot.docs[0]["Name"];
+      UPhone = snapShot.docs[0]['Phone'];
+      UDOB=  snapShot.docs[0]['Date'];
     });
-    print(Name) ;
-    print(Phone) ;
+    print(UName) ;
+    print(UPhone) ;
+    print(UDOB) ;
 
 
   }
+
+
   @override
   void onInit() {
     getData() ;

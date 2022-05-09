@@ -115,6 +115,7 @@ class SignUpController extends GetxController {
           "Email" : user.email.toString() ,
           "Name" : name.toString() ,
           "Phone" : phone.toString() ,
+          "Date": "" ,
 
         }
     ) ;

@@ -22,27 +22,21 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        children: [
-          StreamBuilder(
-            stream: controller.ProfileRef!.snapshots(),
-            builder: (context, snapshot) {
-              return UserAccountsDrawerHeader(
-                margin : const EdgeInsets.only(bottom: 8.0),
-                accountName: Text(controller.Name == null ? "" : controller.Name.toString()),
-                accountEmail: Text(controller.user!.email.toString()),
-              currentAccountPicture: CircleAvatar(
-                child: ClipOval(
-                  child: Image.asset('assets/img.png' ,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blueGrey
-              ),
-              );
-            }
+        children: [  UserAccountsDrawerHeader(
+      margin : const EdgeInsets.only(bottom: 8.0),
+      accountName: Text('${controller.Name}'),
+      accountEmail: Text(controller.user!.email.toString()),
+      currentAccountPicture: CircleAvatar(
+        child: ClipOval(
+          child: Image.asset('assets/np.png' ,
+            fit: BoxFit.cover,
           ),
+        ),
+      ),
+      decoration: BoxDecoration(
+          color: Colors.blueGrey
+      ),
+    ),
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
@@ -59,7 +53,8 @@ class NavBar extends StatelessWidget {
             leading: Icon(Icons.account_box),
             title: Text('Profile'),
             onTap:  (){
-              Get.to(()=>ProfileScreen());
+              Navigator.push(context, MaterialPageRoute
+                (builder: (ctx)=>ProfileScreen()));
             },
           ),
           Spacer() ,
