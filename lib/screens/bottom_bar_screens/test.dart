@@ -500,8 +500,10 @@ class TestScreen extends StatelessWidget {
                             TextFormField(
                               readOnly: true,
                               onTap: () {
+
                                 controller.date =
                                     Navigator.of(context).push(
+
                                       showPicker(
                                         context: context,
                                         value: controller.time.value,
@@ -563,7 +565,7 @@ class TestScreen extends StatelessWidget {
                                     {
                                       //add_glu(context);
 
-                                      if(controller.valueHolder.value != null && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
+                                        if(controller.valueHolder.value != 0 && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
                                       {
 
                                         Get.snackbar(
