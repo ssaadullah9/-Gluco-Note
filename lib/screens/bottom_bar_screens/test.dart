@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:test_saja/const/colors.dart';
 import 'package:test_saja/controller/test_controller.dart';
+import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
 import '/Custom_Dialog.dart';
 import '/bmi.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +43,7 @@ class TestScreen extends StatelessWidget {
                             duration: Duration(milliseconds: 500),
                             alignment: Alignment.center,
                             child: Text(
-                              'BMI',
+                              'BMI Calcolator ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -66,7 +69,7 @@ class TestScreen extends StatelessWidget {
                             duration: Duration(milliseconds: 500),
                             alignment: Alignment.center,
                             child: Text(
-                              'Glucose Measurement',
+                              'Glucose Recorder',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -563,7 +566,7 @@ class TestScreen extends StatelessWidget {
                                     {
                                       //add_glu(context);
 
-                                      if(controller.valueHolder.value != null && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
+                                      if(controller.valueHolder.value !=0 && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
                                       {
 
                                         Get.snackbar(
@@ -576,6 +579,7 @@ class TestScreen extends StatelessWidget {
                                             mainButton: TextButton(
                                                 onPressed: () {
                                                   add_glu(context);
+
                                                 }, child: Text('Save',
                                               style: TextStyle(
                                                   color: Colors.blue

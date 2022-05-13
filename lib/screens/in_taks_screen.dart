@@ -1043,7 +1043,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               animationDuration: milliseconds,
                               percent: (selectExerciseTime==null
                                   ||selectExerciseTime == '0')?0:1,
-                              onAnimationEnd: (){
+                            /*  onAnimationEnd: (){
                                 if(selectExerciseTime !=null||selectExerciseTime != '0'){
                                   AwesomeDialog(
                                       context: context,
@@ -1058,7 +1058,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                   )..show();
 
                                 }
-                              },
+                              },*/
                               center: Text('${percent}%'),
                               barRadius: const Radius.circular(16),
                               progressColor: Colors.red,

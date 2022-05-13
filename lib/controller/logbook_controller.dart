@@ -60,20 +60,6 @@ class LogBookController extends GetxController{
         row1.cells[j].value = rows[i][j];
       }
     }
-    // PdfGridRow row = pdfGrid.rows.add();
-    // row.cells[0].value =  'row1';
-    // row.cells[1].value = 'row2';
-    // row.cells[2].value = 'row3';
-    //
-    // row= pdfGrid.rows.add();
-    // row.cells[0].value = 'row11';
-    // row.cells[1].value = 'row22';
-    // row.cells[2].value = 'row33';
-    //
-    // row= pdfGrid.rows.add();
-    // row.cells[0].value = 'row111';
-    // row.cells[1].value = 'row222';
-    // row.cells[2].value = 'row333';
 
     pdfGrid1.draw(page: document.pages.add(),
         bounds:  Rect.fromLTWH( 0, 0, 0,0)
@@ -89,9 +75,10 @@ class LogBookController extends GetxController{
 
   }
 
-  Future<void> getGtableData() async {
+  getGtableData() async {
     Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
     await Glucoref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+     print (snapShot.docs);
       for (var i = 0; i < snapShot.docs.length; i++) {
         Glurow.add([]);
         for (var j = 0; j < 3; j++) {
@@ -103,8 +90,12 @@ class LogBookController extends GetxController{
         }
       }
     });
-  
+    print('glurow is');
+    print(Glurow);
+
+
     update();
+
   }
 
   Future<void> getGluData() async {
@@ -149,7 +140,7 @@ class LogBookController extends GetxController{
 
   }
 
-  Future<void> getCtableData() async{
+   getCtableData() async{
     Calref = FirebaseFirestore.instance.collection("intakes");
     await Calref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot)
     {

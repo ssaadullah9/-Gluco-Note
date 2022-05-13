@@ -56,9 +56,9 @@ class Home extends StatelessWidget {
                 ]
             ),
 
-            child: FutureBuilder(
-              future: controller.Glucose!.get() ,
-              builder: ( context, AsyncSnapshot snapshot) {
+            child: StreamBuilder(
+              stream: controller.Glucose!.snapshots() ,
+              builder: ( context,  snapshot) {
                 if(!snapshot.hasData){
                   return Center(
                     child:SpinKitCircle(
@@ -74,7 +74,7 @@ class Home extends StatelessWidget {
                           fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                       ),),
                       SizedBox(height: Get.width * 0.015,),
-                      Text(controller.GlucoseVal== null ? "0 mg/dl" : "${controller.GlucoseVal.last} mg/dl"   ,style: TextStyle(
+                      Text(controller.GlucoseVal.length== 0 ? "0 mg/dl" : "${controller.GlucoseVal.last} mg/dl"   ,style: TextStyle(
                           fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
                       )),
 
@@ -111,8 +111,8 @@ class Home extends StatelessWidget {
                 Text('Calories burned ' ,style: TextStyle(
                     fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                 )),
-                FutureBuilder(
-                    future: controller.IndecatorRef!.get(),
+                StreamBuilder(
+                    stream: controller.IndecatorRef!.snapshots(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if(!snapshot.hasData){
                         return Center(
@@ -152,8 +152,8 @@ class Home extends StatelessWidget {
 
           Container(
             height: Get.width * 0.8,
-            child: FutureBuilder(
-                future: controller.Chartref!.get(),
+            child: StreamBuilder(
+                stream: controller.Chartref!.snapshots(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if(!snapshot.hasData){
                     return Center(
@@ -174,17 +174,17 @@ class Home extends StatelessWidget {
                             name : "Glucose Level ",
                               enableTooltip: true,
                             color: Color(0xFF9F87BF),
-                              xAxisName : "ssss",
+
                             markerSettings: MarkerSettings(isVisible: true),
                               dataSource: controller.ChartList ,
                               xValueMapper: (GlucoseData data,_)
                               => intl.DateFormat.EEEE().format(
                                 DateTime.parse(data.GDay )),
                               yValueMapper: (GlucoseData data,_)=> int.tryParse(data.Glevel),
-                              dataLabelSettings: DataLabelSettings(
+                             /* dataLabelSettings: DataLabelSettings(
                                   isVisible: true,
                                   labelPosition: ChartDataLabelPosition.inside
-                              ),
+                              ),*/
 
                           )
                           ,

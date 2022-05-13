@@ -14,13 +14,19 @@ import 'package:test_saja/model.dart';
 
 import '../../widgets/build_section_calorises.dart';
 
-class LogBookScreen extends StatelessWidget {
+class LogBookScreen extends StatefulWidget {
+  @override
+  State<LogBookScreen> createState() => _LogBookScreenState();
+}
+
+class _LogBookScreenState extends State<LogBookScreen> {
   final controller = Get.put(LogBookController());
+
   List<List<String>>  Finish_PDF_LIST = [];
+
   final divider= Divider(
     color: Colors.blueGrey,
   );
-
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,7 @@ class LogBookScreen extends StatelessWidget {
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2050)).then((value){
-                    if(value==null){
+                    if(value==null ){
                       Get.dialog(
                           Center(
                             child:Card(
@@ -93,13 +99,18 @@ class LogBookScreen extends StatelessWidget {
                           print(controller.Glurow[i]);
                           continue;
                         }
-                        print(Finish_PDF_LIST);
+                      /*  print(Finish_PDF_LIST);
                         controller.createPDF(
                             Glucolumn,
                             Finish_PDF_LIST
-                        );
+                        );*/
                       }
                     }}) ;
+                  print(Finish_PDF_LIST);
+                  controller.createPDF(
+                      Glucolumn,
+                      Finish_PDF_LIST
+                  );
                   if(Finish_PDF_LIST.isNotEmpty){
 
                     controller.createPDF(
@@ -119,8 +130,8 @@ class LogBookScreen extends StatelessWidget {
 
         body: ListView(
     children: <Widget>[
-      FutureBuilder(
-        future: controller.HCalref!.get(),
+      StreamBuilder(
+        stream: controller.HCalref!.snapshots(),
         builder: (context,AsyncSnapshot snapshot)
         {
           if(!snapshot.hasData){
@@ -158,8 +169,8 @@ class LogBookScreen extends StatelessWidget {
           }
         } , ) ,
       // Cal Table
-      FutureBuilder(
-        future: controller.Calref!.get(),
+     StreamBuilder(
+        stream: controller.Calref!.snapshots(),
         builder: (context,AsyncSnapshot snapshot)
         {
           if(!snapshot.hasData){
@@ -209,13 +220,8 @@ class LogBookScreen extends StatelessWidget {
                                 }).toList()
                             );
                           }).toList()
-
-                      )
-                  ),
-                ],
-              ),
-            );
-          }
+                      )),],),
+            );}
         } , ) ,
 // Glucose Number
       StreamBuilder(
@@ -250,9 +256,9 @@ class LogBookScreen extends StatelessWidget {
           }
       ),
 
-      StreamBuilder(
+     StreamBuilder(
           stream: controller.Glucoref!.snapshots(),
-          builder: (context, AsyncSnapshot snapshot) {
+          builder: (context,  snapshot) {
             if(!snapshot.hasData){
               return Center(
                 child: SpinKitCircle(
@@ -283,28 +289,30 @@ class LogBookScreen extends StatelessWidget {
                       child: Container(
                         color: Colors.white,
                         child: DataTable(
-                            columnSpacing: size.width *0.08 ,
-                            sortColumnIndex: controller.currentSortColumn.value,
-                            sortAscending: controller.isAscending.value,
-                            headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
-                            columns:
-                            //send column List
-                            Glucolumn.map((e) => DataColumn(
-                              label: Text('$e'),
-                            )).toList(),
-                            rows:
-                            // get Rows List
-                            //fireBAse
-                            controller.Glurow.map((ee) {
-                              return DataRow(
-                                  cells: ee.map((el){
-                                    return DataCell(
-                                        Text('$el')
-                                    );
-                                  }).toList()
-                              );
-                            }).toList()
-                        ),
+                                    columnSpacing: size.width *0.08 ,
+                                    sortColumnIndex: controller.currentSortColumn.value,
+                                    sortAscending: controller.isAscending.value,
+                                    headingRowColor: MaterialStateProperty.all(Colors.blueGrey),
+                                    columns:
+                                    //send column List
+                                    Glucolumn.map((e) => DataColumn(
+                                      label: Text('$e'),
+                                    )).toList(),
+                                    rows:
+                                    // get Rows List
+                                    //fireBAse
+                                    controller.Glurow.map((ee) {
+                                      return DataRow(
+                                          cells: ee.map((el){
+                                            return DataCell(
+                                                Text('$el')
+                                            );
+                                          }).toList()
+                                      );
+                                    }).toList()
+
+                            ),
+
                       ),
                     ),
                   ],),
@@ -326,11 +334,11 @@ class LogBookScreen extends StatelessWidget {
     'Quantity',
     'Calories',
   ].obs;
+
   List<String> Glucolumn = [
     'Result',
     'Test_preiod',
     'Time',
     'Date'
   ].obs;
-
 }

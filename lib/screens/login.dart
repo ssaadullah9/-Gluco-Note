@@ -128,9 +128,7 @@ class LoginScreen extends StatelessWidget {
                 onTap: () async{
 
                   if(controller.keyForm.currentState!.validate()){
-                    Get.snackbar("Logged in Successfully", "",
-                        showProgressIndicator: true
-                    ) ;
+
                     await controller.login(
                         email: controller.email.value,
                         password: controller.passWord.value
