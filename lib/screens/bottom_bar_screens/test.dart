@@ -265,11 +265,12 @@ class TestScreen extends StatelessWidget {
                                                               mainAxisAlignment: MainAxisAlignment.end,
                                                               children: [
                                                                 TextButton(onPressed: (){
-                                                                  add_bmi();
+                                                                /*  add_bmi();
                                                                   controller
                                                                       .keyForm.value
                                                                       .currentState
                                                                   !.reset();
+                                                                  Get.back();*/
                                                                   Get.back();
                                                                 }, child: Text('ok',style: TextStyle(
                                                                     color: Colors.black
@@ -312,6 +313,12 @@ class TestScreen extends StatelessWidget {
                                               //     ],
                                               //   ),
                                               // );
+                                              add_bmi();
+                                              controller
+                                                  .keyForm.value
+                                                  .currentState
+                                              !.reset();
+
                                             }
                                             else{
                                                   AwesomeDialog(
@@ -565,6 +572,7 @@ class TestScreen extends StatelessWidget {
                                     {
                                       //add_glu(context);
 
+
                                         if(controller.valueHolder.value != 0 && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
                                       {
 
@@ -578,6 +586,10 @@ class TestScreen extends StatelessWidget {
                                             mainButton: TextButton(
                                                 onPressed: () {
                                                   add_glu(context);
+                                                /*  controller.keyForm.value.currentState!.reset();
+                                                  Get.back();*/
+
+
                                                 }, child: Text('Save',
                                               style: TextStyle(
                                                   color: Colors.blue
@@ -591,8 +603,11 @@ class TestScreen extends StatelessWidget {
                                           title: 'Error',
                                           desc: 'You must fill all the information',
                                           btnOkOnPress: () {
+                                            // controller.keyForm.value.currentState!.reset();
+
                                             Get.back();
                                           },
+
                                         )..show();
                                       }
 
