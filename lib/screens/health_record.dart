@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,7 +73,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     ))
                         .toList(),
                     onChanged: (val) {
-                      controller.anti_diabteees.value = val as String;
+                      controller.user_AntiD = val as String;
                     },
 
                     hint: Text(
@@ -93,7 +95,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     ))
                         .toList(),
                     onChanged: (val) {
-                      controller.insulin.value = val as String;
+                      controller.user_insulin = val as String;
                     },
 
                     hint: Text(
@@ -115,7 +117,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     ))
                         .toList(),
                     onChanged: (val) {
-                      controller.injectable.value = val as String;
+                      controller.user_injectable = val as String;
                     },
 
                     hint: Text(
@@ -137,7 +139,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     ))
                         .toList(),
                     onChanged: (val) {
-                      controller.nutrition.value = val as String;
+                      controller.user_nutrition = val as String;
                     },
 
                     hint: Text(
@@ -148,7 +150,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     height: Get.width * 0.06,
                   ),
                   TextFormField(
-                    initialValue: controller.user_LDL==null ? "0": controller.user_LDL ,
+                    initialValue: controller.user_LDL==null ? "": controller.user_LDL ,
                     style: TextStyle(
                     color:Colors.black
                     ) ,
@@ -157,11 +159,11 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                       border: OutlineInputBorder(),
                       labelText: "LDL",
                     ),
-                    validator: (val) {
+                   /* validator: (val) {
                       return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                    },
+                    },*/
                     onChanged: (val) {
-                      controller.ldl.value = val;
+                      controller.user_LDL = val;
                     },),
                   SizedBox(
                     height: Get.width * 0.06,
@@ -169,13 +171,14 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                   _buildDateSelected(
                       text: "LDL Date",
                       context: context,
-                      selectDate: controller.selectedLDLDates
+                      selectDate: controller.selectedLDLDates,
+                    showText:  controller.user_LDLDate == null ?null :  controller.user_LDLDate
                   ),
                   SizedBox(
                     height: Get.width * 0.06,
                   ),
                   TextFormField(
-                    initialValue: controller.user_TG==null ? "0 ": controller.user_TG,
+                    initialValue: controller.user_TG==null ? " ": controller.user_TG,
                     style: TextStyle(
                         color:Colors.black
                     ) ,
@@ -184,11 +187,11 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                       border: OutlineInputBorder(),
                       labelText: "TG",
                     ),
-                    validator: (val) {
+                   /* validator: (val) {
                       return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                    },
+                    },*/
                     onChanged: (val) {
-                      controller.tg.value = val;
+                      controller.user_TG = val;
                       // print(controller.tg.value);
                     },
                   ),
@@ -198,12 +201,14 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                   _buildDateSelected(
                       text: 'TG Date',
                       context: context,
-                      selectDate: controller.selectedTGDates),
+                      selectDate: controller.selectedTGDates,
+                      showText: controller.user_TGDate == null ?null :  controller.user_TGDate
+                  ),
                   SizedBox(
                     height: Get.width * 0.06,
                   ),
                   TextFormField(
-                    initialValue: controller.user_ALBUMIN==null ? "0 ": controller.user_ALBUMIN,
+                    initialValue: controller.user_ALBUMIN==null ? " ": controller.user_ALBUMIN,
                     style: TextStyle(
                         color: Colors.black
                     ) ,
@@ -212,11 +217,11 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                       border: OutlineInputBorder(),
                       labelText: "Albumin",
                     ),
-                    validator: (val) {
+                 /*   validator: (val) {
                       return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                    },
+                    },*/
                     onChanged: (val) {
-                      controller.albumin.value = val;
+                      controller.user_ALBUMIN = val;
                       //  print(controller.albumin.value);
                     },
                   ),
@@ -226,17 +231,24 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                   _buildDateSelected(
                       text:'Albumin Date',
                       context: context,
-                      selectDate: controller.selectedAlbuminDates== null ? "": controller.selectedAlbuminDates ),
+                      selectDate: controller.selectedAlbuminDates,
+                    showText:  controller.user_ALBUMINDate == null ?null :  controller.user_ALBUMINDate
+                  ),
                   SizedBox(
                     height: Get.width * 0.06,
                   ),
                   Container(
                       margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                       child: ElevatedButton.icon(
-                          onPressed: () {
+                          onPressed: () {/*
                             if (controller.keyForm.currentState!.validate()) {
-                            //  add_record();
-                            }
+                             add_record();
+                            }*/
+                            add_record();
+                            Get.snackbar(
+                                "Data Saved Successfully" ,
+                                ""
+                            );
                           },
                           icon: Icon(Icons.done, size: 30),
                           label: Text("Save Information"),
@@ -256,16 +268,15 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
 
 }
 
-  Widget _buildDateSelected({text, context, selectDate}) {
+  Widget _buildDateSelected({text, context, selectDate,showText}) {
     return TextFormField(
-
       readOnly: true,
       style:TextStyle(
           color: Colors.black
       ) ,
 
       controller: TextEditingController(
-        text: selectDate.text
+        text: showText == null?selectDate.text:showText
       ),
       decoration:
       InputDecoration(
@@ -304,15 +315,15 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     FirebaseFirestore.instance.collection("Health_Record");
     helth_record.doc(user!.uid).set({
       "Email": controller.user!.email.toString(),
-      "AntiDiabtees": controller.anti_diabteees.value,
-      "Insulin": controller.insulin.value,
-      "Injectable": controller.injectable.value,
-      "Nutrition ": controller.nutrition.value,
-      "LDL ": controller.ldl.value,
+      "AntiDiabtees": controller.user_AntiD,
+      "Insulin":  controller.user_insulin,
+      "Injectable":  controller.user_injectable,
+      "Nutrition ": controller.user_nutrition,
+      "LDL ": controller.user_LDL,
       "LDL Date ": controller.selectedLDLDates.text,
-      "TG ": controller.tg.value,
+      "TG ": controller.user_TG,
       "TG Date ": controller.selectedTGDates.text,
-      "Albumin ": controller.albumin.value,
+      "Albumin ": controller.user_ALBUMIN,
       "Albumin Date ": controller.selectedAlbuminDates.text,
     });
     // Get.snackbar('Hello', 'successfully add data');

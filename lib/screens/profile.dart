@@ -52,8 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
     body:
 
-    FutureBuilder(
-     future: controller.ProfileRef!.get(),
+    StreamBuilder(
+     stream: controller.ProfileRef!.snapshots(),
       builder: (context, snapshot){
         if(!snapshot.hasData){
           return Center(
@@ -163,6 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         border: OutlineInputBorder(),
                           labelText: 'Phone'
                       ),
+                      maxLength: 10,
                       onChanged: (val) {
                        controller.UPhone = val;
                        setState(() {
@@ -173,8 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     SizedBox(height: 60,),
                     Container(
-                        margin: EdgeInsets.symmetric(horizontal: Get.width *
-                            0.08),
+                        margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                         child: ElevatedButton.icon(
                             onPressed: () {
                               Get.to(() => ChangePassword());
@@ -189,12 +189,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     ),
                     Container(
-                        margin: EdgeInsets.symmetric(horizontal: Get.width *
-                            0.08),
+                        margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                         child: ElevatedButton.icon(
                             onPressed: () {
                                   addData();
-
+                                Get.snackbar("Data changed Successfully", "");
                             },
                             icon: Icon(Icons.done, size: 30),
                             label: Text("Save Information"),
@@ -204,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       //  )
 
-                    )
+                    ) ,
 
                   ]
               ),

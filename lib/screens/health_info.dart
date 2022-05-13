@@ -61,43 +61,7 @@ class HealthInfoScreen extends StatelessWidget {
                   Get.width * 0.03
               ),
               children: [
-           /*     Container(
-                    padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Row(children: <Widget>[
-                      Text('Gender: ',style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),),
 
-                      Radio(
-                        activeColor: mainColor,
-                        value: 1,
-                        groupValue: controller.id.value,
-                        onChanged: (val) {
-                          controller.radioButtonItem.value = "Male";
-                          controller.id.value = 1;
-                        },
-                      ),
-                      Text(
-                        'Male',
-                        style: new TextStyle(fontSize: 15.0),
-                      ),
-                      Radio(
-                        activeColor: mainColor,
-                        value: 2,
-                        groupValue: controller.id.value ,
-                        onChanged: (x) {
-                          controller.radioButtonItem.value = "Female";
-                          controller.id.value = 2;
-                        },
-                      ),
-                      Text(
-                        'Female',
-                        style: new TextStyle(fontSize: 15.0),
-                      ),
-                    ])),*/
                 DropdownButtonFormField(
                   decoration: InputDecoration(
                       labelText: "Gender:",
@@ -110,7 +74,7 @@ class HealthInfoScreen extends StatelessWidget {
                   ))
                       .toList(),
                   onChanged: (val) {
-                    controller.selectedGender.value = val as String;
+                    controller.g = val ;
                   },
 
                   hint: Text(
@@ -121,26 +85,27 @@ class HealthInfoScreen extends StatelessWidget {
                 ),
                 SizedBox(height: Get.width * 0.05,),
                 TextFormField(
-                  initialValue: controller.w == null?"0": controller.w,
+                  initialValue: controller.w == 0?"": controller.w,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Weight",
                   ),
                   onChanged: (val){
-                    controller.selectedWeight.value= val ;
+                    controller.w= val  ;
+
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
                 TextFormField(
-                  initialValue:  controller.h == null ? "0": controller.h,
+                  initialValue:  controller.h == null ? "": controller.h,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Height",
                   ),
                   onChanged: (val){
-                    controller.selectedHeight.value= val ;
+                    controller.h= val ;
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
@@ -156,7 +121,7 @@ class HealthInfoScreen extends StatelessWidget {
                   ))
                       .toList(),
                   onChanged: (val) {
-                    controller.selectedType.value = val as String;
+                    controller.DT = val ;
                   },
 
                   hint: Text(
@@ -173,13 +138,13 @@ class HealthInfoScreen extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          if(  (controller.selectedGender.value.isNotEmpty  &&  controller.selectedWeight.value.isNotEmpty
-                              &&controller.selectedHeight.value.isNotEmpty   && controller.selectedBirthDate != null && controller.selectedType.value != null)){
+                          if(  (controller.g!= null  &&  controller.w.isNotEmpty
+                              &&controller.h.isNotEmpty   && controller.DT!= null  )){
                             addData() ;
                             Get.snackbar(
-                                "Data Saved Succesfully" ,
+                                "Data Saved Successfully" ,
                                 ""
-                            );/*Timer(
+                            );Timer(
                              Duration(
                                  seconds: 2
                              ) ,
@@ -187,7 +152,7 @@ class HealthInfoScreen extends StatelessWidget {
 
                                Navigator.pop(context) ;
                              }
-                         ) ;*/
+                         ) ;
 
                           }
                           else
@@ -217,52 +182,16 @@ class HealthInfoScreen extends StatelessWidget {
     );
   }
 
- /* Widget _buildDateField({required String hintText, DateTime? selectedFromDate, required VoidCallback onTap,}) {
-    return GestureDetector(
-        child: AbsorbPointer(
-          child: TextFormField(
-            readOnly: true,
-            decoration: InputDecoration(
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey,
-                ),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                ),
-              ),
-              // border: InputBorder.none,
-              hintText: selectedFromDate == null
-                  ? hintText
-                  : DateFormat('yyy-MM-dd').format(
-                selectedFromDate,
-              ),
-              hintStyle: const TextStyle(
-                color: Color.fromARGB(255, 138, 136, 136),
-              ),
-            ),
-            onChanged: (v) {
-              selectedFromDate = v as DateTime?;
-            },
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-        ),
-        onTap: onTap);
-  }*/
   addData() async{
     var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
     Health_info.doc(user!.uid).set(
         {
           "Email" : user.email.toString() ,
-          "Gender" : controller.selectedGender.value.toString(),
-          "Weight" : controller.selectedWeight.value,
-          "Height" : controller.selectedHeight.value,
-          "Diabetes_Type" : controller.selectedType.value,
+          "Gender" : controller.g,
+          "Weight" : controller.w.toString(),
+          "Height" : controller.h,
+          "Diabetes_Type" : controller.DT,
         }
     ) ;
 

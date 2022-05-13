@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test_saja/screens/bottom_bar_screens/home.dart';
 import 'package:test_saja/screens/profile.dart';
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _AboutScreenState extends State<AboutScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios ,color: Colors.black54,),
           onPressed: (){
-            Get.back();
+            Navigator.pop(context) ;
           },
         ),
         title: Text('About', style: TextStyle(

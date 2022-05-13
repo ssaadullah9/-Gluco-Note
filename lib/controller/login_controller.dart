@@ -46,6 +46,9 @@ class LoginController extends GetxController{
           email: email!,
           password: password!);
       if (_user != null) {
+        Get.snackbar("Logged in Successfully", "",
+            showProgressIndicator: true
+        ) ;
         Get.off(MainScreen());
       }
     }on FirebaseAuthException catch(e){
