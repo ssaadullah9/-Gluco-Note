@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:test_saja/const/colors.dart';
+import 'package:test_saja/controller/logbook_controller.dart';
 import 'package:test_saja/controller/test_controller.dart';
 import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
 import '/Custom_Dialog.dart';
@@ -595,9 +596,11 @@ class _TestScreenState extends State<TestScreen> {
                                                   Get.back();*/
                                                   Get.to(()=>LogBookScreen())!.then((value) {
                                                     setState(() {
-
+                                                      LogBookController().update() ;
                                                     });
                                                   });
+
+                                          /*        Get.to(()=>LogBookScreen()) ;*/
 
                                                 }, child: Text('Save',
                                               style: TextStyle(
