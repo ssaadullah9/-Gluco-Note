@@ -77,22 +77,22 @@ class MainScreen extends StatelessWidget {
                         _buildIconBottomBar(
                             icon:Icons.home,
                             index: 0,
-                            label: 'Home'
+                            label: LocaleKeys.home.tr
                         ),
                         _buildIconBottomBar(
                             icon:Icons.add_chart_rounded,
                             index: 1,
-                            label: 'LogBook'
+                            label: LocaleKeys.logbook.tr
                         ),
                         _buildIconBottomBar(
                             icon:Icons.calculate_outlined,
                             index: 2,
-                            label: 'Tests'
+                            label: LocaleKeys.tests.tr
                         ),
                         _buildIconBottomBar(
                             icon:Icons.notification_important,
                             index: 3,
-                            label: 'Reminder'
+                            label: LocaleKeys.reminders.tr
                         ),
                       ],
                     ),

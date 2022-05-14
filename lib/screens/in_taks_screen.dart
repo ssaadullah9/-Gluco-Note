@@ -417,6 +417,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       ? Center(child: CircularProgressIndicator())
                       : selectCategory == "Other"
                       ?TextFormField(
+
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -426,6 +427,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     onChanged: (val) {
                       other = int.parse(val);
                     },
+
                   )
                       :
 
@@ -504,69 +506,81 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     ),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          if (selectCategory=="other"){
-                            Scal= other * selected_squantity;
-                            print(Scal);
+                          if(selectCategory==null || selectCategoryType ==null || selected_squantity==null){
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'Error',
+                              desc: 'You must fill all the information',
+                              btnOkOnPress: () {},
+                            )..show();
                           }
 
-                          for (var i = 0; i < categoryType!.length; i++) {
-                            if (selectCategory == "Other"){
+                          else{
+                            if (selectCategory=="other"){
                               Scal= other * selected_squantity;
-                              sfat=0;
-                              spro=0;
+                              print(Scal);
                             }
-                            for (var j = 0; j < categoryType![i].length; j++) {
-                              if (selectCategoryType ==
-                                  categoryType![i][j]["name"]) {
-                                print(categoryType![i][j]["cal"]);
-                                cal_s = categoryType![i][j]["cal"];
-                                Scal = cal_s * selected_squantity;
-                                print(categoryType![i][j]["fat"]);
-                                fat_s = categoryType![i][j]["fat"];
-                                sfat = fat_s * selected_squantity;
-                                print(categoryType![i][j]["pro"]);
-                                protein_s = categoryType![i][j]["pro"];
-                                spro = protein_s * selected_squantity;
-                                sfat=sfat.toStringAsFixed(2);
-                                spro=spro.toStringAsFixed(2);
-                                Scal=Scal.toStringAsFixed(2);
 
-                                setState(() {
+                            for (var i = 0; i < categoryType!.length; i++) {
+                              if (selectCategory == "Other"){
+                                Scal= other * selected_squantity;
+                                sfat=0;
+                                spro=0;
+                              }
+                              for (var j = 0; j < categoryType![i].length; j++) {
+                                if (selectCategoryType ==
+                                    categoryType![i][j]["name"]) {
+                                  print(categoryType![i][j]["cal"]);
+                                  cal_s = categoryType![i][j]["cal"];
+                                  Scal = cal_s * selected_squantity;
+                                  print(categoryType![i][j]["fat"]);
+                                  fat_s = categoryType![i][j]["fat"];
+                                  sfat = fat_s * selected_squantity;
+                                  print(categoryType![i][j]["pro"]);
+                                  protein_s = categoryType![i][j]["pro"];
+                                  spro = protein_s * selected_squantity;
+                                  sfat=sfat.toStringAsFixed(2);
+                                  spro=spro.toStringAsFixed(2);
+                                  Scal=Scal.toStringAsFixed(2);
 
-                                });
+                                  setState(() {
+
+                                  });
+                                }
                               }
                             }
-                          }
-                          Get.snackbar(
-                              'do you want save it?',
-                              'it will be show in the logbook',
-                              snackPosition: SnackPosition.BOTTOM,
-                              borderRadius: 0,
-                              duration: Duration(milliseconds: 4500),
-                              margin: EdgeInsets.zero,
-                              mainButton: TextButton(
-                                  onPressed: () {
-                                    add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
-                                    Scal=0;
-                                    sfat=0;
-                                    spro=0;
-                                    Timer(
-                                        Duration(
-                                            seconds: 2
-                                        ) ,
-                                            () {
+                            Get.snackbar(
+                                'do you want save it?',
+                                'it will be show in the logbook',
+                                snackPosition: SnackPosition.BOTTOM,
+                                borderRadius: 0,
+                                duration: Duration(milliseconds: 4500),
+                                margin: EdgeInsets.zero,
+                                mainButton: TextButton(
+                                    onPressed: () {
+                                      add_intakes("solids",cal_s ,selected_squantity ,selectCategoryType.toString());
+                                      Scal=0;
+                                      sfat=0;
+                                      spro=0;
+                                      Timer(
+                                          Duration(
+                                              seconds: 2
+                                          ) ,
+                                              () {
 
-                                          Navigator.pop(context ,LogBookScreen()) ;
-                                        }
-                                    ) ;
-                                    // solids_result = cal_s * selected_squantity;
-                                    print(solids_result);
-                                    setState(() {});
-                                  }, child: Text('Save',
-                                style: TextStyle(
-                                    color: Colors.blue
-                                ),))
-                          );
+                                            Navigator.pop(context ,LogBookScreen()) ;
+                                          }
+                                      ) ;
+                                      // solids_result = cal_s * selected_squantity;
+                                      print(solids_result);
+                                      setState(() {});
+                                    }, child: Text('Save',
+                                  style: TextStyle(
+                                      color: Colors.blue
+                                  ),))
+                            );}
                         },
                         icon: Icon(Icons.add, size: 30),
                         label: Text("Calculate"),
@@ -683,52 +697,61 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   Container(
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          //
-                          // liquid_result = L_calories * selected_Lquantity;
-                          // print(liquid_result);
-                          for (var i = 0; i < liquidType!.length; i++) {
-                            if (selectliquidType == "Other"){
-                              liquid_result= other2 * selected_Lquantity;
-                            }
-                            else
-                            if (selectliquidType ==
-                                liquidType![i]["name"]) {
-                              cal_l = liquidType![i]["cal"];
-                              liquid_result = cal_l * selected_Lquantity;
-                              print(liquidType![i]["fat"]);
-                              fat_l = liquidType![i]["fat"];
-                              fat_l = fat_l * selected_Lquantity;
-                              print(liquidType![i]["pro"]);
-                              pro_l =liquidType![i]["pro"];
-                              pro_l = pro_l * selected_Lquantity;
+                          if(liquidType==null || selectliquidType ==null || selected_Lquantity==null){
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'Error',
+                              desc: 'You must fill all the information',
+                              btnOkOnPress: () {},
+                            )..show();
+                          }
+                          else{
+                            for (var i = 0; i < liquidType!.length; i++) {
+                              if (selectliquidType == "Other") {
+                                liquid_result = other2 * selected_Lquantity;
+                              }
+                              else if (selectliquidType ==
+                                  liquidType![i]["name"]) {
+                                cal_l = liquidType![i]["cal"];
+                                liquid_result = cal_l * selected_Lquantity;
+                                print(liquidType![i]["fat"]);
+                                fat_l = liquidType![i]["fat"];
+                                fat_l = fat_l * selected_Lquantity;
+                                print(liquidType![i]["pro"]);
+                                pro_l = liquidType![i]["pro"];
+                                pro_l = pro_l * selected_Lquantity;
 
-                              liquid_result = cal_l * selected_Lquantity;
-                              print(liquid_result);}}
-                          liquid_result=liquid_result.toStringAsFixed(2);
-                          pro_l=pro_l.toStringAsFixed(2);
-                          fat_l=fat_l.toStringAsFixed(2);
-                          setState(() {});
+                                liquid_result = cal_l * selected_Lquantity;
+                                print(liquid_result);
+                              }
 
-                          Get.snackbar(
-                              'do you want save it?',
-                              'it will be show in the logbook',
-                              snackPosition: SnackPosition.BOTTOM,
-                              borderRadius: 0,
-                              duration: Duration(milliseconds: 4500),
-                              margin: EdgeInsets.zero,
-                              mainButton: TextButton(onPressed: () {
-                                add_intakes("liquids",liquid_result,selected_Lquantity ,selected_Ltype);
-                                liquid_result = 0;
-                                pro_l=0;
-                                fat_l=0;
-                                setState(() {});
-                              },
-                                  child: Text('Save', style: TextStyle(
-                                      color: Colors.blue
-                                  ),)
+                              liquid_result = liquid_result.toStringAsFixed(2);
+                              pro_l = pro_l.toStringAsFixed(2);
+                              fat_l = fat_l.toStringAsFixed(2);
+                              setState(() {});
 
-                              )
-                          );
+                              Get.snackbar(
+                                  'do you want save it?',
+                                  'it will be show in the logbook',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  borderRadius: 0,
+                                  duration: Duration(milliseconds: 4500),
+                                  margin: EdgeInsets.zero,
+                                  mainButton: TextButton(onPressed: () {
+                                    add_intakes("liquids",liquid_result,selected_Lquantity ,selected_Ltype);
+                                    liquid_result = 0;
+                                    pro_l=0;
+                                    fat_l=0;
+                                    setState(() {});
+                                  },
+                                      child: Text('Save', style: TextStyle(
+                                          color: Colors.blue
+                                      ),)
+
+                                  )
+                              );}}
                         },
                         icon: Icon(Icons.add, size: 30),
                         label: Text("Calculate"),
@@ -823,16 +846,27 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE5A9379),),
                     onPressed: () {
-                      //ToDo
-                      bool showText;
-                      Get.to(() =>
-                          AddnewReminder(
+                      if(med_name== null || med_time==null || med_type ==null || med_q==null){
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.ERROR,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Error',
+                          desc: 'You must fill all the information',
+                          btnOkOnPress: () {},
+                        )..show();
+                      }
+                      else{
+                        //ToDo
+                        bool showText;
+                        Get.to(() =>
+                            AddnewReminder(
 
-                            //send parametr
-                          ) , arguments: [med_name, med_time,med_type,med_q ]);
+                              //send parametr
+                            ) , arguments: [med_name, med_time,med_type,med_q ]);
 
+                      }
                     },
-
                     icon: Icon(Icons.add, size: 30),
                     label: Text("Add reminder"),
 
@@ -914,7 +948,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     },
                     onEditingComplete: (){
                       print(selectExerciseTime);
-                       FinishedTime = int.parse(selectExerciseTime) ;
+                      FinishedTime = int.parse(selectExerciseTime) ;
                       milliseconds = int.parse(selectExerciseTime)*60000;
                       print(milliseconds);
                       FocusScope.of(context).unfocus();
@@ -957,7 +991,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Calories burnt ', style: TextStyle(
+                        Text('Calories burned ', style: TextStyle(
                             fontSize: 18,
                             color: Colors.black,
                             fontWeight: FontWeight.bold
@@ -1043,7 +1077,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                               animationDuration: milliseconds,
                               percent: (selectExerciseTime==null
                                   ||selectExerciseTime == '0')?0:1,
-                            /*  onAnimationEnd: (){
+                              /*  onAnimationEnd: (){
                                 if(selectExerciseTime !=null||selectExerciseTime != '0'){
                                   AwesomeDialog(
                                       context: context,
@@ -1078,50 +1112,57 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       margin: EdgeInsets.symmetric(
                           horizontal: Get.width * 0.08),
                       child: FutureBuilder(
-                        future: data!.get(),
-                        builder: (context, snapshot) {
-                          return ElevatedButton.icon(
-                              onPressed: () {
-                                //
-                                // calories=cal_swimming(h ,selectExerciseTime);
-                                // print(calories);
-                                //  Respond to button press
-                                for (var j = 0; j < exerciseTypes!.length; j++) {
-                                  if (selectExerciseType ==
-                                      exerciseTypes![j]["name"]){
-                                    print(exerciseTypes![j]["name"]);
-                                    print(exerciseTypes![j]["met"]);
-                                    selectExerciseTime= double.parse(selectExerciseTime);
-                                    //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
-
-                                    calories= ((milliseconds/60000 )* exerciseTypes![j]["met"]*3.5*_w/_l);
-
-                                    // calories= double.parse(calories);
-                                    print("befor:");
-                                    print( calories);
-                                    print("wwwww") ;
-                                    print(_w) ;
-                                    //  calo= calories.toInt();
-                                    calo= calories/500;
-                                    print(calo);
-                                    calories= double.parse((calories). toStringAsFixed(2));
-                                    print(calories);
-                                    add_ex(selectExerciseType,calories, calo);
-                                    NotificationService().showNotification(
-                                        1, "Excirses Time ",
-                                        'Exeirses time is finished ', FinishedTime  );
-                                    initState();
+                          future: data!.get(),
+                          builder: (context, snapshot) {
+                            return ElevatedButton.icon(
+                                onPressed: () {
+                                  if(exerciseTypes==null || selectExerciseTime ==null ){
+                                    AwesomeDialog(
+                                      context: context,
+                                      dialogType: DialogType.ERROR,
+                                      animType: AnimType.BOTTOMSLIDE,
+                                      title: 'Error',
+                                      desc: 'You must fill all the information',
+                                      btnOkOnPress: () {},
+                                    )..show();
                                   }
+                                  else
+                                    for (var j = 0; j < exerciseTypes!.length; j++) {
+                                      if (selectExerciseType ==
+                                          exerciseTypes![j]["name"]){
+                                        print(exerciseTypes![j]["name"]);
+                                        print(exerciseTypes![j]["met"]);
+                                        selectExerciseTime= double.parse(selectExerciseTime);
+                                        //  calories = selectExerciseTime * exerciseTypes![j]["met"] * 3.5 * 53/200 *60;
 
-                                }
+                                        calories= ((milliseconds/60000 )* exerciseTypes![j]["met"]*3.5*_w/_l);
 
-                              },
-                              icon: Icon(Icons.add, size: 30),
-                              label: Text("Calculate"),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5A9379),)
-                          );
-                        }
+                                        // calories= double.parse(calories);
+                                        print("befor:");
+                                        print( calories);
+                                        print("wwwww") ;
+                                        print(_w) ;
+                                        //  calo= calories.toInt();
+                                        calo= calories/500;
+                                        print(calo);
+                                        calories= double.parse((calories). toStringAsFixed(2));
+                                        print(calories);
+                                        add_ex(selectExerciseType,calories, calo);
+                                        NotificationService().showNotification(
+                                            1, "Excirses Time ",
+                                            'Exeirses time is finished ', FinishedTime  );
+                                        initState();
+                                      }
+
+                                    }
+
+                                },
+                                icon: Icon(Icons.add, size: 30),
+                                label: Text("Calculate"),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFE5A9379),)
+                            );
+                          }
                       )
 
                     //  )

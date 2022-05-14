@@ -8,19 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:test_saja/const/colors.dart';
 import 'package:test_saja/controller/healthinfo_controller.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '../widgets/navbar.dart';
-import 'bottom_bar_screens/home.dart';
 
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
 
-  late String selectedSalutation ;
-
-
+  late String selectedSalutation;
 
   @override
   Widget build(BuildContext context) {
@@ -37,140 +33,134 @@ class HealthInfoScreen extends StatelessWidget {
             color: Colors.black54,
           ),
           onPressed: () {
-            Navigator.pop(context) ; // return to the Nav bar
+            Navigator.pop(context); // return to the Nav bar
           },
         ),
         title: Text(
-          'Health Information',
+          LocaleKeys.health_info.tr,
           style: TextStyle(color: Colors.black, fontSize: 20),
         ),
       ),
       body: FutureBuilder(
         future: controller.Health_info!.get(),
-        builder: (context,snapshot){
-          if(!snapshot.hasData){
-            return  Center(
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
               child: SpinKitCircle(
                 color: Colors.amber,
               ),
             );
-          }else{
+          } else {
             return ListView(
-              padding: EdgeInsets.all(
-                  Get.width * 0.03
-              ),
+              padding: EdgeInsets.all(Get.width * 0.03),
               children: [
                 DropdownButtonFormField(
                   decoration: InputDecoration(
-                      labelText: "Gender:",
-                      border: OutlineInputBorder()
-                  ),
-                  items: ["Male", "Female"]
+                      labelText: LocaleKeys.gender.tr,
+                      border: OutlineInputBorder()),
+                  items: [LocaleKeys.male.tr, LocaleKeys.female.tr]
                       .map((e) => DropdownMenuItem(
                     child: Text("$e"),
                     value: e,
                   ))
                       .toList(),
                   onChanged: (val) {
-                    controller.g = val ;
+                    controller.g = val;
                   },
-                    // checking if its the first time or display the saved info
-                  hint: Text(
-                      controller.g==null ?
-                      'Gender:':
-                      "${controller.g}"
-                  ),
+                  // checking if its the first time or display the saved info
+                  hint: Text(controller.g == null
+                      ? LocaleKeys.gender.tr
+                      : "${controller.g}"),
                 ),
-                SizedBox(height: Get.width * 0.05,),
+                SizedBox(
+                  height: Get.width * 0.05,
+                ),
                 TextFormField(
-                  initialValue: controller.w == 0?"": controller.w,
+                  initialValue: controller.w == 0 ? "" : controller.w,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Weight",
+                    labelText: LocaleKeys.weight.tr,
                   ),
-                  onChanged: (val){
-                    controller.w= val  ;
-
+                  onChanged: (val) {
+                    controller.w = val;
                   },
                 ),
-                SizedBox(height: Get.width * 0.05,),
+                SizedBox(
+                  height: Get.width * 0.05,
+                ),
                 TextFormField(
-                  initialValue:  controller.h == null ? "": controller.h,
+                  initialValue: controller.h == null ? "" : controller.h,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Height",
+                    labelText: LocaleKeys.height.tr,
                   ),
-                  onChanged: (val){
-                    controller.h= val ;
+                  onChanged: (val) {
+                    controller.h = val;
                   },
                 ),
-                SizedBox(height: Get.width * 0.05,),
+                SizedBox(
+                  height: Get.width * 0.05,
+                ),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
-                    labelText: "Diabetes Type:",
-                      border: OutlineInputBorder()
-                  ),
-                  items: ["Type 1", "Type 2", "Gestational"]
+                      labelText: LocaleKeys.diabetes_type.tr,
+                      border: OutlineInputBorder()),
+                  items: [
+                    LocaleKeys.type1.tr,
+                    LocaleKeys.type2.tr,
+                    LocaleKeys.gestational.tr
+                  ]
                       .map((e) => DropdownMenuItem(
                     child: Text("$e"),
                     value: e,
                   ))
                       .toList(),
                   onChanged: (val) {
-                    controller.DT = val ;
+                    controller.DT = val;
                   },
-
                   hint: Text(
                     // checking if its the first time or display the saved info
-                      controller.DT==null ?
-                      'Diabetes Type:':
-                      "${controller.DT}"
-                  ),
+                      controller.DT == null
+                          ? LocaleKeys.diabetes_type.tr
+                          : "${controller.DT}"),
                 ),
-                SizedBox(height: Get.width * 0.05,),
-
-                SizedBox(height: Get.width * 0.05,),
+                SizedBox(
+                  height: Get.width * 0.05,
+                ),
+                SizedBox(
+                  height: Get.width * 0.05,
+                ),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          if(  (controller.g!= null  &&  controller.w.isNotEmpty
-                              &&controller.h.isNotEmpty   && controller.DT!= null  )){
-                            addData() ;
+                          if ((controller.g != null &&
+                              controller.w.isNotEmpty &&
+                              controller.h.isNotEmpty &&
+                              controller.DT != null)) {
+                            addData();
                             Get.snackbar(
-                                "Data Saved Successfully" ,
-                                ""
-                            );Timer(
-                             Duration(
-                                 seconds: 2
-                             ) ,
-                                 () {
-
-                               Navigator.pop(context) ; // return to the main page
-                             }
-                         ) ;
-
-                          }
-                          else
+                                LocaleKeys.data_saved_successfully.tr, "");
+                            Timer(Duration(seconds: 2), () {
+                              Navigator.pop(context); // return to the main page
+                            });
+                          } else
                             AwesomeDialog(
                               context: context,
                               dialogType: DialogType.ERROR,
                               animType: AnimType.BOTTOMSLIDE,
-                              title: 'Error',
-                              desc: 'You must fill all the information',
+                              title: LocaleKeys.error.tr,
+                              desc: LocaleKeys.you_must_fill_fields.tr,
                               btnOkOnPress: () {},
                             )..show();
                         },
                         icon: Icon(Icons.done, size: 30),
-                        label: Text("Save Information"),
+                        label: Text(LocaleKeys.data_saved_successfully.tr),
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE5A9379),)
-                    )
-
-
-                )
+                          primary: Color(0xFFE5A9379),
+                        )))
               ],
             );
           }
@@ -178,21 +168,18 @@ class HealthInfoScreen extends StatelessWidget {
       ),
     );
   }
+
 // Sending the data to firebase
-  addData() async{
-    var user = FirebaseAuth.instance.currentUser ;
-    CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
-    Health_info.doc(user!.uid).set(
-        {
-          "Email" : user.email.toString() ,
-          "Gender" : controller.g,
-          "Weight" : controller.w,
-          "Height" : controller.h,
-          "Diabetes_Type" : controller.DT,
-        }
-    ) ;
-
+  addData() async {
+    var user = FirebaseAuth.instance.currentUser;
+    CollectionReference Health_info =
+    FirebaseFirestore.instance.collection("Health_Info");
+    Health_info.doc(user!.uid).set({
+      "Email": user.email.toString(),
+      "Gender": controller.g,
+      "Weight": controller.w,
+      "Height": controller.h,
+      "Diabetes_Type": controller.DT,
+    });
   }
-
-
 }

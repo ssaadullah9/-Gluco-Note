@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class LocaleKeys {
+  static const account = 'account';
   static const login = 'login';
   static const login_email = 'login_email';
   static const login_password = 'login_password';
@@ -82,6 +83,7 @@ abstract class LocaleKeys {
   static const you_must_fill_fields = 'you_must_fill_fields';
   static const ok = 'ok';
   static const field_required = 'field_required';
+  static const loading_file = 'loading_file';
   static const glucose_recorder = 'glucose_recorder';
   static const enter_glucose_result = 'enter_glucose_result';
   static const do_you_want_to_save_your_result =
@@ -124,6 +126,9 @@ abstract class LocaleKeys {
   static const try_again = 'try_again';
   static const every_day = 'every_day';
   static const every_week = 'every_week';
+  static const about_descripption = 'about_descripption';
+  static const support = 'support';
+  static const gluco_team = 'gluco_team';
   ///////////////////////////////////////////Home
   static const dayly_progress = 'dayly_progress' ;
   static const  glucos_today = 'glucose_today';
@@ -132,7 +137,20 @@ abstract class LocaleKeys {
   static const glu_level = 'glu_level' ;
   //////////////////////////Reminders
   static const no_reminder ='no_reminder' ;
+  static const reminder ='reminder' ;
   static const msg_add_reminder = 'msg_add_reminder';
   static const msg_delete_reminder = 'msg_delete_reminder';
+  static const msg_set_notification = 'msg_set_notification';
+  static const normal = 'normal';
+  static const Underweighted = 'Underweighted';
+  static const Overweighted = 'Overweighted';
+  static const your_BMI = 'your_BMI';
+  static const Before_Breakfast = 'Before_Breakfast';
+  static const After_Breakfast = 'After_Breakfast';
+  static const Before_Lunch = 'Before_Lunch';
+  static const After_Lunch = 'After_Lunch';
+  static const Before_Dinner = 'Before_Dinner';
+  static const After_Dinner = 'After_Dinner';
+  static const Before_Sleep = 'Before_Sleep';
 
 }

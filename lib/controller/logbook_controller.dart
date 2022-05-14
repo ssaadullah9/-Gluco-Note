@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 import '/model.dart';
 class LogBookController extends GetxController{
   var user = FirebaseAuth.instance.currentUser ;
@@ -39,9 +40,7 @@ class LogBookController extends GetxController{
     pdfGrid1.columns.add(count: column.length);
     pdfGrid1.headers.add(1);
     PdfGridRow header1 = pdfGrid1.headers[0];
-    // header.cells[0].value = 'Hello';
-    // header.cells[1].value = 'Hello1';
-    // header.cells[2].value = 'Hello2';
+
     for(int i = 0 ; i < column.length ; i++){
       header1.cells[i].value = column[i];
     }
@@ -61,7 +60,7 @@ class LogBookController extends GetxController{
 
 
     saveAndLaunchFile(bytes, 'Output.pdf');
-    Get.snackbar("Downloading file", "message",
+    Get.snackbar(LocaleKeys.loading_file.tr, "",
        showProgressIndicator: true
     ) ;
 

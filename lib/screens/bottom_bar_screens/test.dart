@@ -13,6 +13,7 @@ import '/bmi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 
 class TestScreen extends StatelessWidget {
   final controller = Get.put(TestBMIController());
@@ -43,7 +44,7 @@ class TestScreen extends StatelessWidget {
                             duration: Duration(milliseconds: 500),
                             alignment: Alignment.center,
                             child: Text(
-                              'BMI Calcolator ',
+                              LocaleKeys.bmi.tr,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -69,7 +70,7 @@ class TestScreen extends StatelessWidget {
                             duration: Duration(milliseconds: 500),
                             alignment: Alignment.center,
                             child: Text(
-                              'Glucose Recorder',
+                              LocaleKeys.glucose_recorder.tr,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -128,11 +129,11 @@ class TestScreen extends StatelessWidget {
                                           .onUserInteraction,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
-                                        labelText: "Height (cm)",
+                                        labelText:  LocaleKeys.height.tr,
                                       ),
                                       validator: (val) {
                                         return val!.trim().isEmpty
-                                            ? 'can\'t be empty'
+                                            ? LocaleKeys.field_required.tr
                                             : null;
                                       },
                                       onChanged: (val) {
@@ -149,11 +150,11 @@ class TestScreen extends StatelessWidget {
                                       TextInputType.number,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
-                                        labelText: "Weight (kg)",
+                                        labelText: LocaleKeys.weight.tr,
                                       ),
                                       validator: (val) {
                                         return val!.trim().isEmpty
-                                            ? 'can\'t be empty'
+                                            ? LocaleKeys.field_required.tr
                                             : null;
                                       },
                                       onChanged: (value1) {
@@ -168,24 +169,6 @@ class TestScreen extends StatelessWidget {
                                           horizontal: Get.width * 0.1),
                                       child: ElevatedButton.icon(
                                           onPressed: () {
-
-                                            /*if (controller.weightOfUser.value.toString().trim().isEmpty && controller.heightOfUser.value.toString().trim().isEmpty )
-                                                     {
-                                                       Get.snackbar(
-                                                           " added successfully ! " ,
-                                                           ""
-                                                       );
-                                                     }else {
-                                                     AwesomeDialog(
-                                                       context: context,
-                                                       dialogType: DialogType.ERROR,
-                                                       animType: AnimType.BOTTOMSLIDE,
-                                                       title: 'Error',
-                                                       desc: 'You must fill all the information',
-                                                       btnOkOnPress: () {},
-                                                     )..show();
-                                                   }*/
-
 
                                             if (controller.keyForm.value.currentState!.validate()) {
                                               controller.bmi1
@@ -213,7 +196,7 @@ class TestScreen extends StatelessWidget {
                                                             .bmi1.value,
                                                         isNormal: true,
                                                         comments:
-                                                        " Normal");
+                                                     LocaleKeys.normal.tr);
                                               } else if (controller
                                                   .bmi1.value <
                                                   18.5) {
@@ -225,7 +208,7 @@ class TestScreen extends StatelessWidget {
                                                             .roundToDouble(),
                                                         isNormal: false,
                                                         comments:
-                                                        " Underweighted");
+                                                LocaleKeys.Underweighted.tr);
                                               } else {
                                                 controller.bmiModel
                                                     .value =
@@ -234,7 +217,7 @@ class TestScreen extends StatelessWidget {
                                                             .bmi1.value,
                                                         isNormal: false,
                                                         comments:
-                                                        " Overweighted");
+                                                    LocaleKeys.Overweighted.tr);
                                               }
                                               Get.dialog(
                                                   Center(
@@ -253,7 +236,7 @@ class TestScreen extends StatelessWidget {
                                                           crossAxisAlignment: CrossAxisAlignment.stretch,
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
-                                                            Text('Result',
+                                                            Text(LocaleKeys.result.tr,
                                                               textAlign: TextAlign.center,
                                                               style: TextStyle(
                                                                   color: Colors.black,
@@ -261,7 +244,7 @@ class TestScreen extends StatelessWidget {
                                                                   fontSize: 20.0
                                                               ),),
                                                             SizedBox(height: 10,),
-                                                            Text("Your BMI is ${controller.bmiModel.value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel.value.comments}",textAlign: TextAlign.center,style: TextStyle(
+                                                            Text(" ${LocaleKeys.your_BMI.tr} ${controller.bmiModel.value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel.value.comments}",textAlign: TextAlign.center,style: TextStyle(
                                                                 fontSize: 18.0
                                                             ),),
                                                             Row(
@@ -274,7 +257,7 @@ class TestScreen extends StatelessWidget {
                                                                       .currentState
                                                                   !.reset();
                                                                   Get.back();
-                                                                }, child: Text('ok',style: TextStyle(
+                                                                }, child: Text(LocaleKeys.ok.tr,style: TextStyle(
                                                                     color: Colors.black
                                                                 ),))
                                                               ],
@@ -285,51 +268,22 @@ class TestScreen extends StatelessWidget {
                                                     ),
                                                   )
                                               );
-                                              // showDialog(
-                                              //   context: context,
-                                              //   builder: (context) =>
-                                              //       CustomDialogBox(
-                                              //     title: " RESULT",
-                                              //     descriptions:
-                                              //         "Your BMI is ${controller.bmiModel.value.bmi.toStringAsFixed(2)} \n ${controller.bmiModel.value.comments}",
-                                              //     text: "Ok",
-                                              //     actions: [
-                                              //       ElevatedButton(
-                                              //           onPressed: () {
-                                              //             /*       add_bmi();
-                                              //       print(controller.bmiModel
-                                              //           .value.comments);
-                                              //       print(controller.time.value);
-                                              //       print(controller.bmiModel
-                                              //           .value.bmi);*/
-                                              //             print("xx");
-                                              //
-                                              //             Navigator.pop(
-                                              //                 context);
-                                              //             /*print('${controller.bmiModel
-                                              //                 .value.bmi.toStringAsFixed(2)}'+ '\n' + '${controller.bmiModel
-                                              //                 .value.comments}');*/
-                                              //           },
-                                              //           child:
-                                              //               Text('OK')),
-                                              //     ],
-                                              //   ),
-                                              // );
+
                                             }
                                             else{
                                                   AwesomeDialog(
                                                     context: context,
                                                     dialogType: DialogType.ERROR,
                                                     animType: AnimType.BOTTOMSLIDE,
-                                                    title: 'Error',
-                                                    desc: 'You must fill all the information',
+                                                    title: LocaleKeys.error_occurred.tr,
+                                                    desc: LocaleKeys.you_must_fill_fields.tr,
                                                     btnOkOnPress: () {},
                                                   )..show();
                                             }
                                           }, // End OnPressesd
 
                                           label:
-                                          const Text('CALCULATE'),
+                                           Text(LocaleKeys.calculate.tr),
                                           icon: const Icon(Icons.done),
                                           style: ElevatedButton.styleFrom(
                                               primary:
@@ -348,7 +302,7 @@ class TestScreen extends StatelessWidget {
                                           border: Border.all(
                                               color: Colors.blueGrey)),
                                       child: ExpansionTile(
-                                        title: Text('show'),
+                                        title: Text(LocaleKeys.show.tr),
                                         children: [
                                           //ToDO Firebase
                                       FutureBuilder(
@@ -418,7 +372,7 @@ class TestScreen extends StatelessWidget {
                               height: Get.width * 0.3,
                             ),
                             Text(
-                              'Enter your glucose result',
+                              LocaleKeys.enter_glucose_result.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 20),
                             ),
@@ -472,13 +426,13 @@ class TestScreen extends StatelessWidget {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder()),
                               items: [
-                                "Before Breakfast",
-                                "After Breakfast",
-                                "Before Lunch",
-                                "After Lunch",
-                                "Before Dinner",
-                                "After Dinner",
-                                "Before Sleep"
+                                LocaleKeys.Before_Breakfast.tr,
+                                LocaleKeys.After_Breakfast.tr,
+                                LocaleKeys.Before_Lunch.tr,
+                                LocaleKeys.After_Lunch.tr,
+                                LocaleKeys.Before_Dinner.tr,
+                                LocaleKeys.After_Dinner.tr,
+                                LocaleKeys.Before_Sleep.tr
                               ]
                                   .map((e) => DropdownMenuItem(
                                 child: Text("$e"),
@@ -490,7 +444,7 @@ class TestScreen extends StatelessWidget {
                                 val as String;
                                 //ToDO Firebase
                               },
-                              hint: Text("test period"),
+                              hint: Text(LocaleKeys.test_period.tr),
                               icon: Icon(
                                 Icons.keyboard_arrow_down_outlined,
                                 size: 20,
@@ -514,49 +468,13 @@ class TestScreen extends StatelessWidget {
                                     );
                               },
                               decoration: InputDecoration(
-                                  //label: Text('Select Time'),
+
                                   border: OutlineInputBorder(),
                                   suffixIcon: Icon(Icons.access_time),
                                   hintText:
                                   '${controller.time.value.format(context)}'),
                             ),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //
-                            //   },
-                            //   child: Container(
-                            //       // padding: EdgeInsets.only(left: 15, right: 15),
-                            //       height: Get.width * 0.15,
-                            //       decoration: BoxDecoration(
-                            //         border: Border.all(
-                            //             color: Colors.grey, width: 1),
-                            //         borderRadius: BorderRadius.circular(5),
-                            //       ),
-                            //       child: Padding(
-                            //         padding:
-                            //             const EdgeInsets.only(right: 10.0,left: 15.0),
-                            //         child: Row(
-                            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //           children: <Widget>[
-                            //             Text(
-                            //               controller.time.value
-                            //                   .format(context)==null?'test time':controller.time.value
-                            //                   .format(context),
-                            //               textAlign: TextAlign.end,
-                            //               style: TextStyle(
-                            //                   fontWeight:
-                            //                       FontWeight.normal,
-                            //                   fontSize: Get.width * 0.04,
-                            //                   fontStyle:
-                            //                       FontStyle.normal),
-                            //             ),
-                            //             Icon(
-                            //               Icons.access_time,
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       )),
-                            // ),
+
                             Container(
                                 margin: EdgeInsets.symmetric(
                                     horizontal: Get.width * 0.15,
@@ -570,8 +488,8 @@ class TestScreen extends StatelessWidget {
                                       {
 
                                         Get.snackbar(
-                                            'do you want save it?',
-                                            'it will be show in the logbook',
+                                         LocaleKeys.do_you_want_to_save_your_result.tr,
+                                            LocaleKeys.it_will_saved_logbook.tr,
                                             snackPosition: SnackPosition.BOTTOM,
                                             borderRadius: 0,
                                             duration: Duration(milliseconds: 4500),
@@ -580,7 +498,7 @@ class TestScreen extends StatelessWidget {
                                                 onPressed: () {
                                                   add_glu(context);
 
-                                                }, child: Text('Save',
+                                                }, child: Text(LocaleKeys.save.tr,
                                               style: TextStyle(
                                                   color: Colors.blue
                                               ),))
@@ -590,8 +508,8 @@ class TestScreen extends StatelessWidget {
                                           context: context,
                                           dialogType: DialogType.ERROR,
                                           animType: AnimType.BOTTOMSLIDE,
-                                          title: 'Error',
-                                          desc: 'You must fill all the information',
+                                          title: LocaleKeys.error_occurred.tr,
+                                          desc: LocaleKeys.you_must_fill_fields.tr,
                                           btnOkOnPress: () {
                                             Get.back();
                                           },
@@ -601,7 +519,7 @@ class TestScreen extends StatelessWidget {
                                       // Respond to button press
                                     },
                                     icon: Icon(Icons.done, size: 30),
-                                    label: Text("Save Information"),
+                                    label: Text(LocaleKeys.save_info.tr),
                                     style: ElevatedButton.styleFrom(
                                       primary: Color(0xFFE5A9379),
                                     ))),
@@ -643,9 +561,9 @@ class TestScreen extends StatelessWidget {
   }
 
   List<String> Bmicolumn = [
-    'Date',
-    'Result ',
-    'Status ',
+    LocaleKeys.date.tr,
+    LocaleKeys.result.tr,
+    LocaleKeys.status.tr,
   ];
 
 

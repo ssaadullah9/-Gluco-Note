@@ -5,6 +5,7 @@ class ChangeLanguage extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
         'ar_SA': {
+          "account": "الحساب" ,
           "login": "تسجيل الدخول",
           "login_email": "البريد الإلكتروني",
           "login_password": "كلمة المرور",
@@ -129,6 +130,12 @@ class ChangeLanguage extends Translations {
           "try_again": "يرجى إعادة المحاولة",
           "every_week": "أسبوعيا",
           "every_day": "يومياً",
+          "loading_file" : "جاري تحميل الملف" ,
+          "about_descripption":
+          " غالبا مايكون مرضى السكري مشغولين ولا يمكنهم الذهاب الى العيادات لمراقبة مستويات السكر في الدم أو نسيان أخذ أدويتهم مما يؤثر سلباً على صحتهم. لذلك فكرة التطبيق هي مساعدة مرضى السكري في ادارة مرض السكري لديهم. GlucoNote هو تطبيق بسيط ومباشر يسمح للمستخدم بحفظ قراءات السكر في الدم ومتابعتها باستخدام الهاتف الجوال",
+          "support":
+          "اذا واجهتك مشكلة في استخدام التطبيق يرجى مراسلتنا عبر البريد الإلكتروني \n GlucoNote218@gmail.com",
+          "gluco_team": "فريق GlucoNote" ,
           //////////////Home
           "dayly_progress": "التقدم اليومي" ,
           "glucose_today": "نسبة السكر اليوم ",
@@ -136,14 +143,30 @@ class ChangeLanguage extends Translations {
           "glu_week": "نسبة السكر الاسبوعية" ,
           "glu_level" : "نسبة السكر" ,
           /////////////////reminder
-          "no_reminder" : "ليس هناك تذكيرات ! ",
+          "no_reminder" : "لاتوجد تذكيرات ! ",
           "msg_add_reminder" : "تم اضافة التذكير بنجاح",
           "msg_delete_reminder" : "تم حذف التذكير بنجاح",
+          "msg_set_notification" : "يجب عليك تشفيل التذكير ",
+          "reminder": "تذكير" ,
+          /// Test
+          "normal": "طبيعي",
+          "Underweighted": "ناقص الوزن",
+          "Overweighted": "زائد الوزن",
+          "your_BMI": "كتلة الوزن هي: ",
+          "Before_Breakfast" : "قبل الإفطار ",
+          "After_Breakfast" : "بعد الإفطار",
+          "Before_Lunch": "قبل الغداء",
+          "After_Lunch": "بعد الغداء",
+          "Before_Dinner": "قبل العشاء",
+          "After_Dinner": "بعد العشاء",
+          "Before_Sleep":"قبل النوم",
+
 
 
 
         },
         'en_US': {
+          "account": "account" ,
           "login": "Login",
           "login_email": "Enter Email",
           "login_password": "Enter Password",
@@ -238,6 +261,8 @@ class ChangeLanguage extends Translations {
           "medication": "Medication",
           "register_now": "Register Now",
           "email_sent": "Email Sent",
+          "loading_file" : "Downloading file" ,
+          "reminder": "Reminder" ,
           "please_check_your_email": "Please Check your Mail Box or Junk Mail ",
           "invalid_email": "Invalid Email",
           "please_enter_correct_account": "Please Enter a Correct Account",
@@ -259,8 +284,13 @@ class ChangeLanguage extends Translations {
           "username_must_entered": "Username Must be Entered",
           "date_not_selected": "Date is not Selected",
           "data_saved_successfully": "Data Saved Successfully",
-          "nutrition": "Nuttition",
+          "nutrition": "Nutrition",
           "enter_date": "Please Enter date",
+          "about_descripption":
+          "Diabetic patients often are too busy to go to clinics to monitor blood glucose levels or forget to take their medicine, which can adversely affect their health. Thus, the idea of the application is to to assess diabetic patients managing their  blood sugar. GlucoNote is a simple and straightforward app that allows you to log your blood sugar readings and keep track of them from the convenience of your phone.",
+          "support":
+          "If you have any issue please contact us via our email address \n GlucoNote218@gmail.com.",
+          "gluco_team": "GlucoNote Team",
           "pass_change_success": "Password Changed Successfully",
           "please_enter_email": "Please Enter your email",
           "wrong_entry": "Wrong Entry",
@@ -276,6 +306,18 @@ class ChangeLanguage extends Translations {
           "no_reminder" : "No Reminders !" ,
           "msg_add_reminder" : "Reminder Added Successfully",
           "msg_delete_reminder" : "Reminder Deleted Successfully",
+          "msg_set_notification" : "You have to set the reminder on ",
+          "normal": "normal",
+          "Underweighted": "Underweighted",
+          "Overweighted": "Overweighted",
+          "your_BMI": "Your BMI is:",
+          "Before_Breakfast" : "Before Breakfast",
+          "After_Breakfast" : "After Breakfast",
+          "Before_Lunch": "Before Lunch",
+          "After_Lunch": "After Lunch",
+          "Before_Dinner": "Before Dinner",
+         "After_Dinner": "After Dinner",
+         "Before_Sleep": "Before Sleep",
 
         },
       };

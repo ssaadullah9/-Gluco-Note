@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:test_saja/controller/navbar_controller.dart';
 import 'package:test_saja/screens/about.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 import '../screens/bottom_bar_screens/home.dart';
 import '../screens/health_info.dart';
 import '../screens/profile.dart';
@@ -39,7 +40,7 @@ class NavBar extends StatelessWidget {
     ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text(LocaleKeys.home.tr),
             onTap:  (){
            //  Get.to(()=>Home());
               Navigator.pop(context) ;
@@ -51,7 +52,7 @@ class NavBar extends StatelessWidget {
           ),*/
           ListTile(
             leading: Icon(Icons.account_box),
-            title: Text('Profile'),
+            title: Text(LocaleKeys.account.tr),
             onTap:  (){
               Navigator.push(context, MaterialPageRoute
                 (builder: (ctx)=>ProfileScreen()));
@@ -63,7 +64,7 @@ class NavBar extends StatelessWidget {
           ),*/
           ListTile(
             leading: Icon(Icons.receipt),
-            title: Text('Health Record'),
+            title: Text(LocaleKeys.health_info.tr),
             onTap:  (){
               Get.to(()=>HealthRecordScreen());
             },
@@ -74,7 +75,7 @@ class NavBar extends StatelessWidget {
           ),*/
           ListTile(
             leading: Icon(Icons.insert_drive_file),
-            title: Text('Health Information'),
+            title: Text(LocaleKeys.health_record.tr),
             onTap:  (){
               Get.to(()=>HealthInfoScreen());
             },
@@ -84,7 +85,7 @@ class NavBar extends StatelessWidget {
           ),
           ListTile(
               leading: Icon(Icons.info),
-              title: Text('About'),
+              title: Text(LocaleKeys.about.tr),
               onTap:() {
            Get.to(AboutScreen());
 
@@ -95,7 +96,7 @@ class NavBar extends StatelessWidget {
           ),*/
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text('Logout'),
+            title: Text(LocaleKeys.logout.tr),
             onTap:() {
             Get.off(()=>LoginScreen());
           }),

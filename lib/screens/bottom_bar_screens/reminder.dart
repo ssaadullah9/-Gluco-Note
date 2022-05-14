@@ -161,7 +161,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                             c.doc(element.id) // <-- Doc ID to be deleted.
                                                 .delete() // <-- Delete
                                                 .then((_) {
-                                              Get.snackbar(LocaleKeys.msg_delete_reminder, '');
+                                              Get.snackbar(LocaleKeys.msg_delete_reminder.tr, '');
                                             })
                                                 .catchError((error) => print('Delete failed: $error'));
                                             setState(() {
@@ -186,7 +186,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                             print(SelectedMineuts) ;
                                             // Taking reminder details AND (Selected Mins to start the notification)
                                             NotificationService().showNotification(
-                                                2, '${snapshot.data!.docs[numReminder[index]]['Reminder_Type']} Reminder',
+                                                2, '${snapshot.data!.docs[numReminder[index]]['Reminder_Type']} ${LocaleKeys.reminder.tr}',
                                                 '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}', SelectedMineuts  );
                                             setState(() {
 

@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:test_saja/controller/addnewreminder_controller.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '../const/colors.dart';
 import 'bottom_bar_screens/reminder.dart';
@@ -48,7 +49,7 @@ class _AddnewReminderState extends State<AddnewReminder> {
           },
         ),
         title: Text(
-          'Add New Reminder',
+          LocaleKeys.add_new_reminder.tr,
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         centerTitle: true,
@@ -88,9 +89,9 @@ class _AddnewReminderState extends State<AddnewReminder> {
                   maxLines: data==null? null :4,
                  // initialValue :data== null? " " : "Medicine Name: ${data[0]} \nHow often: ${data[1]} \nType: ${data[2]} \nAmount: ${data[3]}." ,
                   decoration: InputDecoration(
-                    label: Text('Reminder description'),
+                    label: Text(LocaleKeys.reminder_discription.tr),
                     border: OutlineInputBorder(),
-                    hintText: 'Reminder description',
+                    hintText: LocaleKeys.reminder_discription.tr,
                   ),
 
                   onChanged: (val){
@@ -115,7 +116,6 @@ class _AddnewReminderState extends State<AddnewReminder> {
                     print(controller.time.value.hour);
                   },
                   decoration: InputDecoration(
-                    //  label: Text('Select Reminder Time'),
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.access_time),
                       hintText:
@@ -126,15 +126,15 @@ class _AddnewReminderState extends State<AddnewReminder> {
                 DropdownButtonFormField(
 
                     decoration: InputDecoration(
-                      labelText: "Reminder type",
+                      labelText: LocaleKeys.reminder_type.tr,
                         border: OutlineInputBorder(
 
                         )
                     ),
                     items: [
-                      "Medication",
-                      "Exercise",
-                      "Appointments"
+                    LocaleKeys.medication.tr,
+                      LocaleKeys.exercise.tr,
+                      LocaleKeys.appointment.tr
                     ].map((e) => DropdownMenuItem(
                       child: Text(e),
                       value: e,
@@ -154,8 +154,8 @@ class _AddnewReminderState extends State<AddnewReminder> {
                             print( "${controller.description.text}");
                             addReminder(context);
                             Get.snackbar(
-                              "Reminder added successfully ! " ,
-                              "You have to set the reminder on " ,
+                              LocaleKeys.msg_add_reminder.tr,
+                              LocaleKeys.msg_set_notification.tr,
 
                             );
                             Timer(
@@ -174,14 +174,14 @@ class _AddnewReminderState extends State<AddnewReminder> {
                               context: context,
                               dialogType: DialogType.ERROR,
                               animType: AnimType.BOTTOMSLIDE,
-                              title: 'Error',
-                              desc: 'You must fill all the information',
+                              title: LocaleKeys.error_occurred.tr,
+                              desc: LocaleKeys.you_must_fill_fields.tr,
                               btnOkOnPress: () {},
                             )..show();
                           }
                         },
                         icon: Icon(Icons.done, size: 30),
-                        label: Text("Save Information"),
+                        label: Text(LocaleKeys.save_info.tr),
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xFFE5A9379),)
                     )
