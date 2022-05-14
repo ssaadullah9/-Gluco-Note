@@ -76,7 +76,7 @@ class _AddnewReminderState extends State<AddnewReminder> {
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  maxLines: 4,
+                  maxLines: data==null? null :4,
                   initialValue :data== null? " " : "Medicine Name: ${data[0]} \nHow often: ${data[1]} \nType: ${data[2]} \nAmount: ${data[3]}." ,
                   decoration: InputDecoration(
                     label: Text('Reminder description'),
