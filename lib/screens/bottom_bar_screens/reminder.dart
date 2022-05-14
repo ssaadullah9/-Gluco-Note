@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 import 'package:test_saja/widgets/notificationService.dart';
 import '../../controller/reminder_controller.dart';
 import '../addreminder.dart';
@@ -39,7 +40,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Text('Reminders',style: TextStyle(
+        title: Text(LocaleKeys.reminders.tr,style: TextStyle(
           color: Colors.black , fontSize: 20,
         ),),
         centerTitle: true,
@@ -103,7 +104,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                     ?Center(child: Column(
                   children: [
                     SizedBox(height: Get.width * 0.5,),
-                    Text('No Reminders ',style: TextStyle(
+                    Text(LocaleKeys.no_reminder.tr,style: TextStyle(
                         fontSize: Get.width * 0.1
                     ),),
                   ],
@@ -160,7 +161,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                             c.doc(element.id) // <-- Doc ID to be deleted.
                                                 .delete() // <-- Delete
                                                 .then((_) {
-                                              Get.snackbar("Reminder Deleted Successfully", '');
+                                              Get.snackbar(LocaleKeys.msg_delete_reminder, '');
                                             })
                                                 .catchError((error) => print('Delete failed: $error'));
                                             setState(() {

@@ -124,4 +124,15 @@ abstract class LocaleKeys {
   static const try_again = 'try_again';
   static const every_day = 'every_day';
   static const every_week = 'every_week';
+  ///////////////////////////////////////////Home
+  static const dayly_progress = 'dayly_progress' ;
+  static const  glucos_today = 'glucose_today';
+  static const cal_burned = 'cal_burned' ;
+  static const glu_week = 'glu_week';
+  static const glu_level = 'glu_level' ;
+  //////////////////////////Reminders
+  static const no_reminder ='no_reminder' ;
+  static const msg_add_reminder = 'msg_add_reminder';
+  static const msg_delete_reminder = 'msg_delete_reminder';
+
 }

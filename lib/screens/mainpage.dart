@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 import '/const/colors.dart';
 import '/controller/main_controller.dart';
 import '../widgets/navbar.dart';
@@ -37,7 +38,7 @@ class MainScreen extends StatelessWidget {
               builder: (ctx,snapShot){
                 if(snapShot.hasData){
                   return Text(
-                    'Hi  ${controller.Name.toString() == null ? "" : controller.Name} ,',
+                    '${LocaleKeys.hi.tr}  ${controller.Name.toString() == null ? "" : controller.Name} ,',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
                   );

@@ -128,7 +128,20 @@ class ChangeLanguage extends Translations {
           "wrong_entry": "ادخال خاطئ",
           "try_again": "يرجى إعادة المحاولة",
           "every_week": "أسبوعيا",
-          "every_day": "يومياً"
+          "every_day": "يومياً",
+          //////////////Home
+          "dayly_progress": "التقدم اليومي" ,
+          "glucose_today": "نسبة السكر اليوم ",
+          "cal_burned": "السعرات الحرارية المحترقة",
+          "glu_week": "نسبة السكر الاسبوعية" ,
+          "glu_level" : "نسبة السكر" ,
+          /////////////////reminder
+          "no_reminder" : "ليس هناك تذكيرات ! ",
+          "msg_add_reminder" : "تم اضافة التذكير بنجاح",
+          "msg_delete_reminder" : "تم حذف التذكير بنجاح",
+
+
+
         },
         'en_US': {
           "login": "Login",
@@ -253,7 +266,17 @@ class ChangeLanguage extends Translations {
           "wrong_entry": "Wrong Entry",
           "try_again": "Please Try Again",
           "every_week": "Every Week",
-          "every_day": "Every Day"
+          "every_day": "Every Day",
+          //////////////////////////
+         "dayly_progress": "Daily Progress" ,
+          "glucose_today": "Your glucose today",
+          "cal_burned": "Calories burned ",
+          "glu_week":"Glucose, Week Average" ,
+          "glu_level" : "Glucose Level ",
+          "no_reminder" : "No Reminders !" ,
+          "msg_add_reminder" : "Reminder Added Successfully",
+          "msg_delete_reminder" : "Reminder Deleted Successfully",
+
         },
       };
 }

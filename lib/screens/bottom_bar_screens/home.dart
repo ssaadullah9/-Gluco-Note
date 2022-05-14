@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '../../controller/home_controller.dart';
 import '../mainpage.dart';
@@ -29,7 +30,7 @@ class Home extends StatelessWidget {
                 horizontal: Get.width * 0.02,
                 vertical: Get.width * 0.05
             ),
-            child: Text('Daily Progress' , style: TextStyle(
+            child: Text( LocaleKeys.daily_progress.tr , style: TextStyle(
               color: Colors.black,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class Home extends StatelessWidget {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Your glucose today' ,style: TextStyle(
+                      Text(LocaleKeys.glucos_today.tr ,style: TextStyle(
                           fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                       ),),
                       SizedBox(height: Get.width * 0.015,),
@@ -109,7 +110,7 @@ class Home extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Calories burned ' ,style: TextStyle(
+                Text( LocaleKeys.cal_burned.tr,style: TextStyle(
                     fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                 )),
                 StreamBuilder(
@@ -145,7 +146,7 @@ class Home extends StatelessWidget {
             ),
           ) ,
           Divider(),
-          Text('  Glucose, Week Average' , style: TextStyle(
+          Text(LocaleKeys.glu_week.tr , style: TextStyle(
             color: Colors.black,
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -172,7 +173,7 @@ class Home extends StatelessWidget {
                         primaryYAxis: NumericAxis(),
                         series: <ChartSeries>[
                           ScatterSeries<GlucoseData,dynamic>(
-                            name : "Glucose Level ",
+                            name : LocaleKeys.glu_level.tr,
                               enableTooltip: true,
                             color: Color(0xFF9F87BF),
                               dataSource: controller.ChartList ,

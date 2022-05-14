@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:test_saja/controller/logbook_controller.dart';
 import 'package:test_saja/model.dart';
-
+import 'package:test_saja/translations/locale_keys.g.dart';
 import '../../widgets/build_section_calorises.dart';
 
 class LogBookScreen extends StatefulWidget {
@@ -40,7 +40,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
           elevation: 0,
           leading: null,
           backgroundColor: Colors.blueGrey,
-          title: Text('Logbook', style: TextStyle(
+          title: Text(LocaleKeys.logbook.tr, style: TextStyle(
               color: Colors.white
           ),),
 
@@ -82,7 +82,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                         TextButton(onPressed: (){
                                           Get.back();
                                         },
-                                            child: Text("OK",style: TextStyle(
+                                            child: Text(LocaleKeys.ok.tr,style: TextStyle(
                                                 color: Colors.black
                                             ),))
                                       ],
@@ -139,7 +139,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                     TextButton(onPressed: (){
                                       Get.back();
                                     },
-                                        child: Text("OK",style: TextStyle(
+                                        child: Text(LocaleKeys.ok.tr,style: TextStyle(
                                             color: Colors.black
                                         ),))
                                   ],
@@ -181,7 +181,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                   children: [
 
                     BuildCaloriseAndClucoseWidget(
-                      label: 'Lowest Caloriess',
+                      label: LocaleKeys.lowest_calories.tr,
                       // To check if zreo or display the accurate value
                       amount:  controller.HighestCal.length== 0 ? " 0 Cal" :'${
                           controller.HighestCal[0].toString()
@@ -190,7 +190,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                     ),
                     SizedBox(width: size.width *0.05,),
                     BuildCaloriseAndClucoseWidget(
-                      label: 'Highest Caloriess',
+                      label: LocaleKeys.highest_calories.tr,
                       // To check if zreo or display the accurate value
                       amount:  controller.HighestCal.length== 0 ? " 0 Cal" :'${
                           controller.HighestCal[controller.HighestCal.length-1].toString()
@@ -228,11 +228,11 @@ class _LogBookScreenState extends State<LogBookScreen> {
                     )
                 ),
                 child: ExpansionTile(
-                  title: Text('Caloriess' , style: TextStyle(
+                  title: Text(LocaleKeys.calories.tr , style: TextStyle(
                     color: Colors.black
                   ),),
                   trailing: FlatButton.icon(
-                      onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
+                      onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text(LocaleKeys.show.tr)),
                   children: [
                     SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -279,14 +279,14 @@ class _LogBookScreenState extends State<LogBookScreen> {
                 child: Row(
                   children: [
                     BuildCaloriseAndClucoseWidget(
-                      label: 'Lowest Glucose Level',
+                      label: LocaleKeys.lowest_glucose_level.tr,
                       // To check if zreo or display the accurate value
                       amount: controller.HighestGlu.length==0 ? "0 mg/dl" : controller.HighestGlu[0].toString()+  'mg/dl',
                       color: Colors.green,
                     ),
                     SizedBox(width: size.width *0.05,),
                     BuildCaloriseAndClucoseWidget(
-                      label: 'Highest Glucose Level' ,
+                      label: LocaleKeys.highest_glucose.tr ,
                       // To check if zreo or display the accurate value
                       amount:controller.HighestGlu.length==0 ? "0 mg/dl" : controller.HighestGlu[controller.HighestGlu.length-1].toString()+  'mg/dl',
                       color: Colors.red,
@@ -322,9 +322,9 @@ class _LogBookScreenState extends State<LogBookScreen> {
                   ),
 
                   child: ExpansionTile(
-                    title: Text('Glucose'),
+                    title: Text(LocaleKeys.glucose.tr),
                     trailing: FlatButton.icon(
-                        onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text('Show')),
+                        onPressed: null, icon: Icon(Icons.keyboard_arrow_down_outlined), label: Text(LocaleKeys.show.tr)),
                     children: [
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -371,16 +371,16 @@ class _LogBookScreenState extends State<LogBookScreen> {
   }
 
   List<String> Calcolumn = [
-    'Type',
-    'category',
-    'Quantity',
-    'Calories',
+    LocaleKeys.type.tr,
+    LocaleKeys.category.tr,
+    LocaleKeys.quantity.tr,
+    LocaleKeys.calories.tr,
   ].obs;
 
   List<String> Glucolumn = [
-    'Result',
-    'Test_preiod',
-    'Time',
-    'Date'
+    LocaleKeys.result.tr,
+    LocaleKeys.test_period.tr,
+    LocaleKeys.time.tr,
+    LocaleKeys.date.tr
   ].obs;
 }
