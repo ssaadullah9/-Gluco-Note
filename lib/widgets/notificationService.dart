@@ -27,7 +27,7 @@ class NotificationService{
       id,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: x)),
+      tz.TZDateTime.now(tz.local).add(Duration(minutes: x)),
       const NotificationDetails(
         android: AndroidNotificationDetails(
             'main_channel',

@@ -1,6 +1,7 @@
 
 
- import 'package:firebase_core/firebase_core.dart';
+ import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
  import 'package:get/get.dart';
 import 'package:test_saja/screens/bottom_bar_screens/home.dart';
@@ -20,8 +21,8 @@ import 'package:test_saja/widgets/notificationService.dart';
  Future main() async {
    WidgetsFlutterBinding.ensureInitialized();
    NotificationService().initNotification();
-   //WidgetsFlutterBinding.ensureInitialized();
    await  Firebase.initializeApp() ;
+
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -32,26 +33,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryColor,
       ),
-      home: SplashScreen(),
-      // initialRoute: '/',
-      //   routes: {
-         //  '/': (context) => SplashScreen(),
-         // '/mainpage': (context) => const main_page(),
-         //  '/reminder': (context) => const alet(),
-         //  '/new_reminder': (context) =>  AddnewReminder(),
-         //  '/logbook': (context) =>  logbook(),
-         //  '/health_info': (context) =>  health_info(),
-         //  '/profile': (context) =>  profile(),
-         //  '/intakes': (context) => intakes(),
-         //  '/health_record': (context) => health_record(),
-         //  // splash
-         //  '/splash': (context) => SplashScreen(),
-         //  // login
-         //  '/login': (context) => LoginScreen(),
-         //  //signup
-         //  '/SignUp': (context) => SignUpScreen(),
-         //  '/tests': (context) => MyPage(),
-        // },
+      home:  SplashScreen(),
+
       );
 
   }

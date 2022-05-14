@@ -74,6 +74,7 @@ class Home extends StatelessWidget {
                           fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold
                       ),),
                       SizedBox(height: Get.width * 0.015,),
+                      // To check if the Value is zero or no
                       Text(controller.GlucoseVal.length== 0 ? "0 mg/dl" : "${controller.GlucoseVal.last} mg/dl"   ,style: TextStyle(
                           fontSize: 15 , color: Colors.orangeAccent , fontWeight: FontWeight.bold
                       )),
@@ -127,7 +128,7 @@ class Home extends StatelessWidget {
                           child: CircularPercentIndicator(
                             radius: Get.width * 0.15,
                             lineWidth: 10.0,
-                           // percent: double.parse(controller.CalPer.first.toString()),     //FireBase
+                         // Retrieve the data from firebase , checking if Calories per is zero or no
                          percent: controller.CalPer.length == 0 ? 0 :double.parse(controller.CalPer.last.toString()),
                             animation: true,
                             animationDuration: 2000,
@@ -174,17 +175,12 @@ class Home extends StatelessWidget {
                             name : "Glucose Level ",
                               enableTooltip: true,
                             color: Color(0xFF9F87BF),
-
-                            markerSettings: MarkerSettings(isVisible: true),
                               dataSource: controller.ChartList ,
                               xValueMapper: (GlucoseData data,_)
+                              // EEE = dispalying only weekdays
                               => intl.DateFormat.EEEE().format(
                                 DateTime.parse(data.GDay )),
                               yValueMapper: (GlucoseData data,_)=> int.tryParse(data.Glevel),
-                             /* dataLabelSettings: DataLabelSettings(
-                                  isVisible: true,
-                                  labelPosition: ChartDataLabelPosition.inside
-                              ),*/
 
                           )
                           ,

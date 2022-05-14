@@ -17,8 +17,7 @@ import 'bottom_bar_screens/home.dart';
 
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
-  final _formKey = GlobalKey<FormState>();
-  bool _autovalidate = false;
+
   late String selectedSalutation ;
 
 
@@ -38,7 +37,7 @@ class HealthInfoScreen extends StatelessWidget {
             color: Colors.black54,
           ),
           onPressed: () {
-            Navigator.pop(context) ;
+            Navigator.pop(context) ; // return to the Nav bar
           },
         ),
         title: Text(
@@ -61,7 +60,6 @@ class HealthInfoScreen extends StatelessWidget {
                   Get.width * 0.03
               ),
               children: [
-
                 DropdownButtonFormField(
                   decoration: InputDecoration(
                       labelText: "Gender:",
@@ -76,7 +74,7 @@ class HealthInfoScreen extends StatelessWidget {
                   onChanged: (val) {
                     controller.g = val ;
                   },
-
+                    // checking if its the first time or display the saved info
                   hint: Text(
                       controller.g==null ?
                       'Gender:':
@@ -125,7 +123,7 @@ class HealthInfoScreen extends StatelessWidget {
                   },
 
                   hint: Text(
-
+                    // checking if its the first time or display the saved info
                       controller.DT==null ?
                       'Diabetes Type:':
                       "${controller.DT}"
@@ -150,7 +148,7 @@ class HealthInfoScreen extends StatelessWidget {
                              ) ,
                                  () {
 
-                               Navigator.pop(context) ;
+                               Navigator.pop(context) ; // return to the main page
                              }
                          ) ;
 
@@ -171,7 +169,6 @@ class HealthInfoScreen extends StatelessWidget {
                           primary: Color(0xFFE5A9379),)
                     )
 
-                  //  )
 
                 )
               ],
@@ -181,7 +178,7 @@ class HealthInfoScreen extends StatelessWidget {
       ),
     );
   }
-
+// Sending the data to firebase
   addData() async{
     var user = FirebaseAuth.instance.currentUser ;
     CollectionReference Health_info = FirebaseFirestore.instance.collection("Health_Info") ;
@@ -189,7 +186,7 @@ class HealthInfoScreen extends StatelessWidget {
         {
           "Email" : user.email.toString() ,
           "Gender" : controller.g,
-          "Weight" : controller.w.toString(),
+          "Weight" : controller.w,
           "Height" : controller.h,
           "Diabetes_Type" : controller.DT,
         }

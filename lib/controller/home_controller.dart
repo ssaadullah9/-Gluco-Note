@@ -60,14 +60,14 @@ List<GlucoseData> ChartList = [
      Chartref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
-        print('helllllo Charts');
+        print('Dispaying Charts');
         print('${element['Date']}');
         print('${element['Result']}');
         ChartList.add(GlucoseData(
             element['Date'],
             element['Result']
         ));
-        print('helllllo End Charts');
+        print(' End Charts');
      // ChartList.add(GlucoseData(element['Date'] , element['Result'])) ;
 
       });

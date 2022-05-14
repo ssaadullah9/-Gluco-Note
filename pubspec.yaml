@@ -51,6 +51,7 @@ dependencies:
   date_time_picker:
   day_night_time_picker: ^1.0.5
   get:
+  get_storage: ^2.0.3
   syncfusion_flutter_pdf:
   path_provider:
   open_file:

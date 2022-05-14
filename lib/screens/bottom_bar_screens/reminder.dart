@@ -84,8 +84,9 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                 );
               }
               else{
-                bool dontFound = false;
                 List<int> numReminder=[];
+
+                // Checling if the selected date = reminder date
                 for(int i=0;i<controller.remindersref.docs.length;i++){
                   if(DateFormat.yMd().format(controller.d.value)==DateFormat.yMd().format(
                       DateTime.parse(controller.remindersref.docs[i]
@@ -97,6 +98,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                   }
                 }
                 print(numReminder);
+                // check if the list is empty or not
                 return numReminder.isEmpty
                     ?Center(child: Column(
                   children: [
@@ -128,7 +130,6 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                       radius: 30,
                                       backgroundColor :Color(0xffEA9363),
                                       child: Text(
-                                        //   '${reminderList[index]['Reminder_Date']}'),
                                         '${
                                             (
                                                 snapshot.data!.docs[index]['Reminder_Time']
@@ -136,10 +137,10 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                         }' , style: TextStyle(
                                         fontSize: 14 , color: Colors.white ,
                                       ), textAlign: TextAlign.center, ),
-                                      //  backgroundColor: Colors.grey[200],
+
                                     ),
                                     title: Text(
-                                      // '${reminderList[index]['Reminder_Date']}'),
+
                                         '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}' , style: TextStyle(
                                       fontSize: 13 ,
                                     ) , textAlign: TextAlign.left,),
@@ -148,14 +149,14 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                 ),
                                 Column(
                                   children: [
-                                    //IconButton(onPressed: () {}, icon: Icon(Icons.edit, color)),
+
                                     IconButton(onPressed: () async{
                                       var  c= FirebaseFirestore.instance.collection("Reminders");
                                       c.get().then((value){
                                         value.docs.forEach((element) {
                                           if(
                                           element['Remindnder_Description'] == snapshot.data!.docs[numReminder[index]]['Remindnder_Description']){
-                                            print('Yesss');
+                                            print('Delete');
                                             c.doc(element.id) // <-- Doc ID to be deleted.
                                                 .delete() // <-- Delete
                                                 .then((_) {
@@ -166,7 +167,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
 
                                             });
                                           }else{
-                                            print('Nooo');
+                                            print('Cant Delete');
                                           }
                                         });
                                       });}, icon: Icon(Icons.delete, color: Colors.red)),
@@ -182,6 +183,7 @@ class _ReminderScreeenState extends State<ReminderScreeen> {
                                             _duration = resultingDuration!;
                                             SelectedMineuts = resultingDuration.inMinutes  ;
                                             print(SelectedMineuts) ;
+                                            // Taking reminder details AND (Selected Mins to start the notification)
                                             NotificationService().showNotification(
                                                 2, '${snapshot.data!.docs[numReminder[index]]['Reminder_Type']} Reminder',
                                                 '${snapshot.data!.docs[numReminder[index]]['Remindnder_Description']}', SelectedMineuts  );

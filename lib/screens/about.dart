@@ -31,32 +31,35 @@ class _AboutScreenState extends State<AboutScreen> {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 90,) ,
+          SizedBox(height: 70,) ,
           Center(
-            child: Card(
+            child: Container(
+              height: 200,
                 color: Colors.white,
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(10.0),
                   child: TextField(
                     enabled: false,
                     readOnly: true,
-                    maxLines: 11,
+                    maxLines: 12,
                     decoration: InputDecoration(
                         hintMaxLines: null ,
                         hintText: "Diabetic patients often are too busy to go to clinics to monitor blood glucose levels or forget"
                        " take their medicine, which can adversely affect their health. Thus, the idea of application is to"
                        " develop a mobile application in order to assess diabetic patients managing their  blood sugar .\n"
-                     "   GlucoNote is a simple and straightforward app that allows you to log your blood sugar readings"
-                        " and keep track of them from the convenience of your phone."
-                    ,
+                     "GlucoNote is a simple and straightforward app that allows you to log your blood sugar readings"
+                        "and keep track of them from the convenience of your phone."
+                    ,  hintStyle: TextStyle(
+                      fontSize: 13 , letterSpacing: 1 ,
+                    )
+
                   ),
-                ) ,
-
-            )
-            ),
-
-          ) ,
-          SizedBox(height: 100,) ,
+                ) ,)),) ,
+          SizedBox(height: 40,) ,
+          Center(child: Text(" If you have any issue please contact us via our email address \n GlucoNote218@gmail.com." , style: TextStyle(
+              color: Colors.black , fontSize: 12
+          ),)) ,
+          SizedBox(height: 20,) ,
           Center(child: Text(" GlucoNote Team." , style: TextStyle(
             color: Colors.black , fontSize: 12
           ),)) ,

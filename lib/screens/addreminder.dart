@@ -15,11 +15,16 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import '../const/colors.dart';
 import 'bottom_bar_screens/reminder.dart';
 
-class AddnewReminder extends StatelessWidget {
-  final controller = Get.put(AddNewReminderController());
-  var data = Get.arguments;
-  var user = FirebaseAuth.instance.currentUser ;
+class AddnewReminder extends StatefulWidget {
+  @override
+  State<AddnewReminder> createState() => _AddnewReminderState();
+}
 
+class _AddnewReminderState extends State<AddnewReminder> {
+  final controller = Get.put(AddNewReminderController());
+
+  var data = Get.arguments; // Recieving the data from Midication Sceen
+  var user = FirebaseAuth.instance.currentUser ;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +58,6 @@ class AddnewReminder extends StatelessWidget {
               children: [
                 Container(
                   child: TableCalendar(
-                    //  controller.selected_date ,
                     onDaySelected: (x, y) {
                       controller.selected_date.value = x;
                       controller.focsed_date.value = y;
@@ -66,14 +70,14 @@ class AddnewReminder extends StatelessWidget {
                     calendarStyle: CalendarStyle(
                       selectedTextStyle: TextStyle(color: Colors.black54),
                     ),
-                    shouldFillViewport: false,
+                    shouldFillViewport: false, // Not to fill the entire screen
                     daysOfWeekHeight: 15.0,
                   ),
                 ),
                 SizedBox(height: Get.width*0.05,),
                 TextFormField(
-                  maxLines: null,
-                  initialValue :data==null? "" : "Medicine Name: ${data[0]} \nHow often: ${data[1]} \nType: ${data[2]} \nAmount: ${data[3]}  " ,
+                  maxLines: 4,
+                  initialValue :data== null? " " : "Medicine Name: ${data[0]} \nHow often: ${data[1]} \nType: ${data[2]} \nAmount: ${data[3]}." ,
                   decoration: InputDecoration(
                     label: Text('Reminder description'),
                     border: OutlineInputBorder(),
@@ -83,24 +87,13 @@ class AddnewReminder extends StatelessWidget {
 
                   onChanged: (val){
                     controller.description=val ;
+                    setState(() {
+
+                    });
                   },
                 ),
                 SizedBox(height: Get.width * 0.05,),
-                /*    TextFormField(
-                                    onTap: (){
-                    controller.selectedTime(context);
-                  },
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    label: Text('Reminder Time'),
-                    hintText: "${controller.selected_time.value.format(context)}",
-                    suffixIcon: Icon(Icons.access_time),
-                      border: OutlineInputBorder()
-                  ),
-                  onChanged: (val){
-                    controller.selected_time.value=val as TimeOfDay ;
-                  },
-                ),*/
+
                 TextFormField(
                   readOnly: true,
                   onTap: () {
@@ -111,7 +104,6 @@ class AddnewReminder extends StatelessWidget {
                             value: controller.time.value,
                             onChange: controller.onTimeChanged,
                             minuteInterval: MinuteInterval.FIVE,
-                            minHour: double.parse("${controller.time.value.hour}" ),
                           ), // showpicker
                         );
                     print(controller.time.value.hour);
@@ -126,9 +118,6 @@ class AddnewReminder extends StatelessWidget {
                 SizedBox(height: Get.width*0.05,),
 
                 DropdownButtonFormField(
-                   /* hint: Text("Reminder type",style: TextStyle(
-                        color: Colors.black
-                    ),),*/
 
                     decoration: InputDecoration(
                       labelText: "Reminder type",
@@ -145,13 +134,9 @@ class AddnewReminder extends StatelessWidget {
                       value: e,
                     )).toList(),
                     onChanged: (val) {
-                      controller.selectedType = val ;
+                controller.selectedType = val  ;
                     },
-                    /*validator: (val){
-                      if (val == null) {
-                        return 'Selecting type is required';
-                      }
-                    }*/
+
                 ),
                 SizedBox(height: Get.width*0.05,),
                 Container(
@@ -160,6 +145,7 @@ class AddnewReminder extends StatelessWidget {
                         onPressed: () {
                           if( controller.description!=null
                              && controller.selectedType!=null){
+                            print(controller.description);
                             addReminder(context);
                             Get.snackbar(
                               "Reminder added successfully ! " ,
@@ -173,9 +159,11 @@ class AddnewReminder extends StatelessWidget {
                                     () {
 
                                   Navigator.pop(context ,ReminderScreeen()) ;
+
                                 }
                             ) ;
                           }else {
+                            print(controller.description);
                             AwesomeDialog(
                               context: context,
                               dialogType: DialogType.ERROR,
@@ -201,8 +189,7 @@ class AddnewReminder extends StatelessWidget {
       ),
     );
   }
-
-
+// Sending the data to firebase
   addReminder(context) async{
     CollectionReference newReminder = FirebaseFirestore.instance.collection("Reminders");
     newReminder.add(
@@ -216,6 +203,4 @@ class AddnewReminder extends StatelessWidget {
     ) ;
 
   }
-
-
 } // end of the class

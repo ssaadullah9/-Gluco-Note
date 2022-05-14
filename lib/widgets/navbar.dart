@@ -86,7 +86,8 @@ class NavBar extends StatelessWidget {
               leading: Icon(Icons.info),
               title: Text('About'),
               onTap:() {
-                Get.off(()=>AboutScreen());
+           Get.to(AboutScreen());
+
               }),
           Spacer() ,
           /*Divider(

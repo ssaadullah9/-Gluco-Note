@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +12,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
 
-class TestScreen extends StatelessWidget {
-  final controller = Get.put(TestBMIController());
+class TestScreen extends StatefulWidget {
+  @override
+  State<TestScreen> createState() => _TestScreenState();
+}
 
+class _TestScreenState extends State<TestScreen> {
+  final controller = Get.put(TestBMIController());
 
   //
   @override
@@ -43,7 +45,7 @@ class TestScreen extends StatelessWidget {
                             duration: Duration(milliseconds: 500),
                             alignment: Alignment.center,
                             child: Text(
-                              'BMI Calcolator ',
+                              'BMI',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -69,7 +71,7 @@ class TestScreen extends StatelessWidget {
                             duration: Duration(milliseconds: 500),
                             alignment: Alignment.center,
                             child: Text(
-                              'Glucose Recorder',
+                              'Glucose Measurement',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -268,11 +270,12 @@ class TestScreen extends StatelessWidget {
                                                               mainAxisAlignment: MainAxisAlignment.end,
                                                               children: [
                                                                 TextButton(onPressed: (){
-                                                                  add_bmi();
+                                                                  /*  add_bmi();
                                                                   controller
                                                                       .keyForm.value
                                                                       .currentState
                                                                   !.reset();
+                                                                  Get.back();*/
                                                                   Get.back();
                                                                 }, child: Text('ok',style: TextStyle(
                                                                     color: Colors.black
@@ -315,16 +318,22 @@ class TestScreen extends StatelessWidget {
                                               //     ],
                                               //   ),
                                               // );
+                                              add_bmi();
+                                              controller
+                                                  .keyForm.value
+                                                  .currentState
+                                              !.reset();
+
                                             }
                                             else{
-                                                  AwesomeDialog(
-                                                    context: context,
-                                                    dialogType: DialogType.ERROR,
-                                                    animType: AnimType.BOTTOMSLIDE,
-                                                    title: 'Error',
-                                                    desc: 'You must fill all the information',
-                                                    btnOkOnPress: () {},
-                                                  )..show();
+                                              AwesomeDialog(
+                                                context: context,
+                                                dialogType: DialogType.ERROR,
+                                                animType: AnimType.BOTTOMSLIDE,
+                                                title: 'Error',
+                                                desc: 'You must fill all the information',
+                                                btnOkOnPress: () {},
+                                              )..show();
                                             }
                                           }, // End OnPressesd
 
@@ -351,42 +360,42 @@ class TestScreen extends StatelessWidget {
                                         title: Text('show'),
                                         children: [
                                           //ToDO Firebase
-                                      FutureBuilder(
-                                     future: controller.Bmiref!.get(),
-                                      builder: (context,AsyncSnapshot snapshot)
-                                      {
-                                      if(!snapshot.hasData){
-                                      return Center(
-                                      child: SpinKitCircle(
-                                      color: Colors.amber,
-                                      ),
-                                      );
-                                      }
-                                      else { return
-                                        DataTable(
-                                            headingRowColor:
-                                            MaterialStateProperty
-                                                .all(Colors
-                                                .blueGrey),
-                                            //ToDO Firebase
-                                            columns:  Bmicolumn.map((e) => DataColumn(
-                                              label: Text(e),
-                                            )).toList(),
+                                          FutureBuilder(
+                                              future: controller.Bmiref!.get(),
+                                              builder: (context,AsyncSnapshot snapshot)
+                                              {
+                                                if(!snapshot.hasData){
+                                                  return Center(
+                                                    child: SpinKitCircle(
+                                                      color: Colors.amber,
+                                                    ),
+                                                  );
+                                                }
+                                                else { return
+                                                  DataTable(
+                                                      headingRowColor:
+                                                      MaterialStateProperty
+                                                          .all(Colors
+                                                          .blueGrey),
+                                                      //ToDO Firebase
+                                                      columns:  Bmicolumn.map((e) => DataColumn(
+                                                        label: Text(e),
+                                                      )).toList(),
 
-                                            rows: controller.Bmirow.map((e) {
-                                              return DataRow(
-                                                  cells: e.map((e){
-                                                    return DataCell(
-                                                        Text('$e')
-                                                    );
-                                                  }).toList()
-                                              );
-                                            }).toList()
+                                                      rows: controller.Bmirow.map((e) {
+                                                        return DataRow(
+                                                            cells: e.map((e){
+                                                              return DataCell(
+                                                                  Text('$e')
+                                                              );
+                                                            }).toList()
+                                                        );
+                                                      }).toList()
 
-                                        );
-                                      }
-                                      }
-                                      ), // future builder
+                                                  );
+                                                }
+                                              }
+                                          ), // future builder
                                         ],
                                       ),
                                     )
@@ -503,8 +512,10 @@ class TestScreen extends StatelessWidget {
                             TextFormField(
                               readOnly: true,
                               onTap: () {
+
                                 controller.date =
                                     Navigator.of(context).push(
+
                                       showPicker(
                                         context: context,
                                         value: controller.time.value,
@@ -514,7 +525,7 @@ class TestScreen extends StatelessWidget {
                                     );
                               },
                               decoration: InputDecoration(
-                                  //label: Text('Select Time'),
+                                //label: Text('Select Time'),
                                   border: OutlineInputBorder(),
                                   suffixIcon: Icon(Icons.access_time),
                                   hintText:
@@ -566,7 +577,8 @@ class TestScreen extends StatelessWidget {
                                     {
                                       //add_glu(context);
 
-                                      if(controller.valueHolder.value !=0 && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
+
+                                      if(controller.valueHolder.value != 0 && controller.selectedval.value.isNotEmpty && controller.time.value != 0)
                                       {
 
                                         Get.snackbar(
@@ -579,6 +591,13 @@ class TestScreen extends StatelessWidget {
                                             mainButton: TextButton(
                                                 onPressed: () {
                                                   add_glu(context);
+                                                  /*  controller.keyForm.value.currentState!.reset();
+                                                  Get.back();*/
+                                                  Get.to(()=>LogBookScreen())!.then((value) {
+                                                    setState(() {
+
+                                                    });
+                                                  });
 
                                                 }, child: Text('Save',
                                               style: TextStyle(
@@ -593,8 +612,11 @@ class TestScreen extends StatelessWidget {
                                           title: 'Error',
                                           desc: 'You must fill all the information',
                                           btnOkOnPress: () {
+                                            // controller.keyForm.value.currentState!.reset();
+
                                             Get.back();
                                           },
+
                                         )..show();
                                       }
 
@@ -647,8 +669,6 @@ class TestScreen extends StatelessWidget {
     'Result ',
     'Status ',
   ];
-
-
 }
 
 /////

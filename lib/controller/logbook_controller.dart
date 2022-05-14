@@ -20,19 +20,11 @@ class LogBookController extends GetxController{
 
   List<List<String>> Calrow  = [
   ];
-
-
   List<List<String>> Glurow =[
-
   ];
   List  HighestGlu =[] ;
-
-
   List HighestCal = [
-
   ] ;
-
-
 
   Future<void> createPDF(List column,List rows) async {
     PdfDocument document =  PdfDocument();
@@ -75,7 +67,7 @@ class LogBookController extends GetxController{
 
   }
 
-  getGtableData() async {
+  Future<void>  getGtableData() async {
     Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
     await Glucoref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
      print (snapShot.docs);
@@ -119,7 +111,7 @@ class LogBookController extends GetxController{
   }
 
 
-  Future<void> getCalData() async {
+  Future<void>  getCalData() async {
     HCalref = FirebaseFirestore.instance.collection("intakes");
     await HCalref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
       print(snapShot.docs.length);
@@ -140,7 +132,7 @@ class LogBookController extends GetxController{
 
   }
 
-   getCtableData() async{
+  Future<void>   getCtableData() async{
     Calref = FirebaseFirestore.instance.collection("intakes");
     await Calref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot)
     {
