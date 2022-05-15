@@ -157,7 +157,7 @@ class HealthInfoScreen extends StatelessWidget {
                             )..show();
                         },
                         icon: Icon(Icons.done, size: 30),
-                        label: Text(LocaleKeys.data_saved_successfully.tr),
+                        label: Text(LocaleKeys.save_info.tr),
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xFFE5A9379),
                         )))

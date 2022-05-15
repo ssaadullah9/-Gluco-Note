@@ -105,7 +105,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               )),
-              Obx(() => Container(
+        /*      Obx(() => Container(
                 margin: EdgeInsets.only(left: 20, right: 20, top: 15),
                 child: TextFormField(
                   onChanged: (val) {
@@ -149,7 +149,7 @@ class SignUpScreen extends StatelessWidget {
                         borderSide: BorderSide(color: Colors.transparent)),
                   ),
                 ),
-              )),
+              )),*/
               GestureDetector(
                 onTap: () {
                   if (controller.keyForm.currentState!.validate()) {

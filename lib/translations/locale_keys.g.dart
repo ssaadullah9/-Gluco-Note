@@ -46,7 +46,7 @@ abstract class LocaleKeys {
   static const antidiabetic = 'antidiabetic';
   static const insulin = 'insulin';
   static const nutrition = 'nutrition';
-  static const injectable = 'injectable ?';
+  static const injectable = 'injectable';
   static const tg = 'tg';
   static const tg_date = 'tg_date';
   static const ldl = 'ldl';
@@ -115,6 +115,7 @@ abstract class LocaleKeys {
   static const new_user = 'new_user';
   static const enter_valid_mobile = 'enter_valid_mobile';
   static const mobile_must_entered = 'mobile_must_entered';
+  static const change_lang = 'change_lang';
   static const mobile_should_start_05 = 'mobile_should_start_05';
   static const username_must_entered = 'username_must_entered';
   static const date_not_selected = 'date_not_selected';

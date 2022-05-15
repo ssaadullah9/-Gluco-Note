@@ -18,27 +18,45 @@ class LoginScreen extends StatelessWidget {
   final controller = Get.put(LoginController());
   final languageController = Get.put(LanguageController());
 
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+
         body: Form(
           key: controller.keyForm,
           child: ListView(
             children: [
-              Container(
-                alignment: Alignment.center,
-                height: size.width / 4,
-                decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.only(bottomLeft: Radius.circular(90)),
-                    /*color:  Color(0xff0E5E5A)*/
-                    color: Colors.blueGrey),
-                child: Text(
-                  LocaleKeys.login.tr,
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+              Stack(
+                children: [
+               Container(
+                  alignment: Alignment.center,
+                  height: size.width / 4,
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.only(bottomLeft: Radius.circular(90)),
+                      color: Colors.blueGrey),
+                  child: Text(
+                    LocaleKeys.login.tr,
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
                 ),
+                  PopupMenuButton<int>(
+                        onSelected: (item) => onSelected(context , item),
+                      icon : Icon(Icons.language , color: Colors.white, size: 30,),
+                      itemBuilder:(context) => [
+                        PopupMenuItem<int>(
+                          child: Text("English"),
+                          value:0,
+                        ), PopupMenuItem<int>(
+                          child: Text("العربية"),
+                          value: 1,
+                        ),
+
+                      ]),]
               ),
+
               TextFormFiledWidget(
                 hintText: LocaleKeys.login_email.tr,
                 icon: Icons.email,
@@ -108,43 +126,12 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blueGrey,
-                      onPrimary: Colors.white,
-                    ),
-                    onPressed: () {
-                      languageController.changeLanguage('en', 'US');
-                    },
-                    child: Text(
-                      "English",
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blueGrey,
-                      onPrimary: Colors.white,
-                    ),
-                    onPressed: () {
-                      languageController.changeLanguage('ar', 'SA');
-                    },
-                    child: Text(
-                      "العربية",
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(
                 height: 15.0,
               ),
               GestureDetector(
                 onTap: () async {
                   if (controller.keyForm.currentState!.validate()) {
-                    Get.snackbar(LocaleKeys.logged_in_successfully.tr, "",
-                        showProgressIndicator: true);
                     await controller.login(
                         email: controller.email.value,
                         password: controller.passWord.value);
@@ -198,5 +185,17 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  onSelected(BuildContext context, int item) {
+    switch(item){
+      case 0:
+        languageController.changeLanguage('en', 'US');
+        break;
+      case 1:
+        languageController.changeLanguage('ar', 'SA');
+        break;
+
+    }
   }
 }

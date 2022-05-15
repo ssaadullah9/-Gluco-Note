@@ -89,11 +89,13 @@ class SignUpController extends GetxController {
 
 //d
   String? validationPassword(String val) {
-    if (val.trim().isEmpty || val.length < 8) {
-      return LocaleKeys.password_is_too_short.tr;
-    } else {
-      return null;
+    if(val.trim().isEmpty) {
+      return LocaleKeys.pass_must_entered.tr;
     }
+    if ( val.length < 8) {
+      return LocaleKeys.password_is_too_short.tr;
+    }
+    else null ;
   }
 
   String? validationNumberPhone(String value) {

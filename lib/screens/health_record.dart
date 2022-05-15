@@ -147,16 +147,14 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                 ),
                 TextFormField(
                   initialValue:
-                  controller.user_LDL == null ? "" : controller.user_LDL,
+                  controller.user_LDL == null ? " " : controller.user_LDL,
                   style: TextStyle(color: Colors.black),
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: LocaleKeys.ldl.tr,
                   ),
-                  /* validator: (val) {
-                      return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                    },*/
+
                   onChanged: (val) {
                     controller.user_LDL = val;
                   },
@@ -183,9 +181,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     border: OutlineInputBorder(),
                     labelText: LocaleKeys.tg.tr,
                   ),
-                  /* validator: (val) {
-                      return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                    },*/
+
                   onChanged: (val) {
                     controller.user_TG = val;
                     // print(controller.tg.value);
@@ -214,9 +210,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                     border: OutlineInputBorder(),
                     labelText: LocaleKeys.albumin.tr,
                   ),
-                  /*   validator: (val) {
-                      return val!.trim().isEmpty ? 'can\'t be empty' : null;
-                    },*/
+
                   onChanged: (val) {
                     controller.user_ALBUMIN = val;
                     //  print(controller.albumin.value);
