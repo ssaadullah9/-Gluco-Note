@@ -168,9 +168,9 @@ class _LogBookScreenState extends State<LogBookScreen> {
                         BuildCaloriseAndClucoseWidget(
                           label: LocaleKeys.lowest_calories.tr,
                           // To check if zreo or display the accurate value
-                          amount: controller.HighestCal.length == 0
+                          amount: controller.HighestCal!.length == 0
                               ? " 0 Cal"
-                              : '${controller.HighestCal[0].toString()} Cal',
+                              : '${controller.HighestCal![0].toString()} Cal',
                           color: Colors.green,
                         ),
                         SizedBox(
@@ -179,9 +179,9 @@ class _LogBookScreenState extends State<LogBookScreen> {
                         BuildCaloriseAndClucoseWidget(
                           label: LocaleKeys.highest_calories.tr,
                           // To check if zreo or display the accurate value
-                          amount: controller.HighestCal.length == 0
+                          amount: controller.HighestCal!.length == 0
                               ? " 0 Cal"
-                              : '${controller.HighestCal[controller.HighestCal.length - 1].toString()} Cal',
+                              : '${controller.HighestCal![controller.HighestCal!.length - 1].toString()} Cal',
 
                           color: Colors.red,
                         ),
@@ -262,9 +262,10 @@ class _LogBookScreenState extends State<LogBookScreen> {
                           BuildCaloriseAndClucoseWidget(
                             label: LocaleKeys.lowest_glucose_level.tr,
                             // To check if zreo or display the accurate value
-                            amount: controller.HighestGlu.length == 0
+                            amount: controller.HighestGlu!.length == 0
                                 ? "0 mg/dl"
-                                : controller.HighestGlu[0].toString() + 'mg/dl',
+                                : controller.HighestGlu![0].toString() +
+                                    'mg/dl',
                             color: Colors.green,
                           ),
                           SizedBox(
@@ -273,10 +274,10 @@ class _LogBookScreenState extends State<LogBookScreen> {
                           BuildCaloriseAndClucoseWidget(
                             label: LocaleKeys.highest_glucose.tr,
                             // To check if zreo or display the accurate value
-                            amount: controller.HighestGlu.length == 0
+                            amount: controller.HighestGlu!.length == 0
                                 ? "0 mg/dl"
-                                : controller.HighestGlu[
-                                            controller.HighestGlu.length - 1]
+                                : controller.HighestGlu![
+                                            controller.HighestGlu!.length - 1]
                                         .toString() +
                                     'mg/dl',
                             color: Colors.red,
@@ -290,16 +291,18 @@ class _LogBookScreenState extends State<LogBookScreen> {
             StreamBuilder(
                 stream: controller.tableData,
                 builder:
-                    (context, AsyncSnapshot<List<GlocuMeasurement>>? snapshot) {
-                  if (snapshot != null || !snapshot!.hasData) {
-                    print("snapshot.data:${snapshot.data}");
+                    (context, AsyncSnapshot<List<GlocuMeasurement>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print(
+                        "snapshot.data:${snapshot.connectionState == ConnectionState.active}");
                     return Center(
                       child: SpinKitCircle(
                         color: Colors.amber,
                       ),
                     );
                   } else {
-                    print("snapshot.data:${snapshot.data}");
+                    print("snapshot.data:$snapshot");
+                    print("snapshot.data:${snapshot.data?.length}");
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
                       decoration: BoxDecoration(
@@ -332,9 +335,14 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                   rows:
                                       // get Rows List
                                       //fireBAse
-                                      controller.glocuMeaurements
-                                          .map((e) => DataRow(
-                                              cells: [DataCell(Text(e.email))]))
+                                      snapshot.data!
+                                          .map((e) => DataRow(cells: [
+                                                DataCell(Text(e.result!)),
+                                                DataCell(Text(e.date!)),
+                                                DataCell(
+                                                    Text(e.testPeriod ?? '')),
+                                                DataCell(Text(e.result!)),
+                                              ]))
                                           .toList()
                                   /*  controller.Glurow.map((ee) {
                                     return DataRow(

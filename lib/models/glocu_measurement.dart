@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class GlocuMeasurement {
-  final String date;
-  final String email;
-  final String result;
-  final String testPeriod;
-  final String time;
+  final String? date;
+  final String? email;
+  final String? result;
+  final String? testPeriod;
+  final String? time;
 
   const GlocuMeasurement({
     required this.date,
@@ -18,13 +16,12 @@ class GlocuMeasurement {
     return const GlocuMeasurement(
         date: '', email: '', result: '', testPeriod: '', time: '');
   }
-  factory GlocuMeasurement.fromDoc(DocumentSnapshot dataDoc) {
-    var data = dataDoc.data() as Map<String, dynamic>;
+  factory GlocuMeasurement.fromDoc(Map<String, dynamic> dataDoc) {
     return GlocuMeasurement(
-        date: data['Date'],
-        email: data['Email'],
-        result: data['Result'],
-        testPeriod: data['Test_period'],
-        time: data['Time']);
+        date: dataDoc['Date'],
+        email: dataDoc['Email'],
+        result: dataDoc['Result'],
+        testPeriod: dataDoc['Test_period'],
+        time: dataDoc['Time']);
   }
 }

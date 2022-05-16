@@ -23,8 +23,8 @@ class LogBookController extends GetxController {
   List<List<String>> Calrow = [];
   List<List<String>> Glurow = [];
   List<GlocuMeasurement> glocuMeaurements = [];
-  List HighestGlu = [];
-  List HighestCal = [];
+  List? HighestGlu = [];
+  List? HighestCal = [];
 
   Future<void> createPDF(List column, List rows) async {
     PdfDocument document = PdfDocument();
@@ -61,19 +61,25 @@ class LogBookController extends GetxController {
               isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
           .snapshots()
           .map((QuerySnapshot? snapShot) {
-        /*   glocuMeaurements.clear();*/
-        if (snapShot != null) {
-          if (snapShot.docs.isNotEmpty) {
-            for (var doc in snapShot.docs) {
-              if (doc.data() != null) {
-                glocuMeaurements.add(GlocuMeasurement.fromDoc(doc));
-              }
-            }
-            print("glocuMeaurements[0].email:${glocuMeaurements[0].email}");
-            return glocuMeaurements;
-          }
+        print(FirebaseAuth.instance.currentUser!.email);
+        print("snapShot!.docs.length: ${snapShot!.docs.length}");
+        glocuMeaurements.clear();
 
-          /*for (var i = 0; i < snapShot.docs.length; i++) {
+        if (snapShot.docs.isNotEmpty) {
+          print("snapShot.docs.length:${snapShot.docs.length}");
+          for (var doc in snapShot.docs) {
+            print('doc: ${doc.id}');
+
+            var data = doc.data() as Map<String, dynamic>;
+            print("data['Email']:${data['Email']}");
+            glocuMeaurements.add(GlocuMeasurement.fromDoc(data));
+          }
+          print("glocuMeaurements[0].email:${glocuMeaurements[0].email}");
+          return glocuMeaurements;
+        }
+        return [];
+
+        /*for (var i = 0; i < snapShot.docs.length; i++) {
           Glurow.add([]);
           for (var j = 0; j < 3; j++) {
             Glurow[i].add(snapShot.docs[i]['Result'].toString());
@@ -85,9 +91,6 @@ class LogBookController extends GetxController {
             break;
           }
         }*/
-
-        }
-        return [];
       });
 
   Future<void> getGtableData() async {
@@ -125,15 +128,15 @@ class LogBookController extends GetxController {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["Result"]);
-        HighestGlu.add(element['Result']);
+        HighestGlu!.add(element['Result']);
       });
     });
     print("^^^^^^^^^^^^^^^^");
     print(HighestGlu);
-    HighestGlu = HighestGlu.map((e) => int.parse(e)).toList();
+    HighestGlu = HighestGlu!.map((e) => int.parse(e)).toList();
 
     print("Sorted");
-    HighestGlu = HighestGlu.sort() as List;
+    HighestGlu = HighestGlu!.sort() as List;
     print(HighestGlu);
   }
 
@@ -146,20 +149,20 @@ class LogBookController extends GetxController {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["intakes_Cal"]);
-        HighestCal.add(element['intakes_Cal']);
+        HighestCal!.add(element['intakes_Cal']);
       });
     });
     print("^^caal");
-    print(HighestCal.length);
+    print(HighestCal!.length);
     print(HighestCal);
-    HighestCal = HighestCal.map((e) {
+    HighestCal = HighestCal!.map((e) {
       if (e != null) {
         int.parse(e);
       }
     }).toList();
 
     print("Sorted");
-    HighestCal.sort();
+    HighestCal!.sort();
     print(HighestCal);
   }
 
