@@ -349,8 +349,8 @@ class TestScreen extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ))
-                      ],
+                        ),),
+                      ]
                     ),
 
                     // second page

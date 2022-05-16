@@ -1,82 +1,111 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'dart:convert';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:test_saja/models/glocu_measurement.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
+
 import '/model.dart';
-class LogBookController extends GetxController{
-  var user = FirebaseAuth.instance.currentUser ;
+
+class LogBookController extends GetxController {
+  var user = FirebaseAuth.instance.currentUser;
   var currentSortColumn = 0.obs;
   var isAscending = true.obs;
   CollectionReference? Glucoref;
   CollectionReference? Calref;
-  CollectionReference?  HGlucoref;
-  CollectionReference?  HCalref;
+  CollectionReference? HGlucoref;
+  CollectionReference? HCalref;
 
-  List<List<String>> Calrow  = [
-  ];
-  List<List<String>> Glurow =[
-  ];
-  List  HighestGlu =[] ;
-  List HighestCal = [
-  ] ;
+  List<List<String>> Calrow = [];
+  List<List<String>> Glurow = [];
+  List<GlocuMeasurement> glocuMeaurements = [];
+  List HighestGlu = [];
+  List HighestCal = [];
 
-  Future<void> createPDF(List column,List rows) async {
-    PdfDocument document =  PdfDocument();
+  Future<void> createPDF(List column, List rows) async {
+    PdfDocument document = PdfDocument();
     PdfGrid pdfGrid1 = PdfGrid();
-    pdfGrid1.style = PdfGridStyle(
-        cellPadding: PdfPaddings(
-            left: 5,
-            top: 2,
-            bottom: 2
-        )
-    );
+    pdfGrid1.style =
+        PdfGridStyle(cellPadding: PdfPaddings(left: 5, top: 2, bottom: 2));
     pdfGrid1.columns.add(count: column.length);
     pdfGrid1.headers.add(1);
     PdfGridRow header1 = pdfGrid1.headers[0];
 
-    for(int i = 0 ; i < column.length ; i++){
+    for (int i = 0; i < column.length; i++) {
       header1.cells[i].value = column[i];
     }
     PdfGridRow row1;
-    for(int i = 0 ; i < rows.length ; i ++){
+    for (int i = 0; i < rows.length; i++) {
       row1 = pdfGrid1.rows.add();
-      for(int j = 0 ; j < rows[i].length ; j++){
+      for (int j = 0; j < rows[i].length; j++) {
         row1.cells[j].value = rows[i][j];
       }
     }
 
-    pdfGrid1.draw(page: document.pages.add(),
-        bounds:  Rect.fromLTWH( 0, 0, 0,0)
-    );
+    pdfGrid1.draw(
+        page: document.pages.add(), bounds: Rect.fromLTWH(0, 0, 0, 0));
     List<int> bytes = document.save();
     document.dispose();
 
-
     saveAndLaunchFile(bytes, 'Output.pdf');
-    Get.snackbar(LocaleKeys.loading_file.tr, "",
-       showProgressIndicator: true
-    ) ;
-
+    Get.snackbar(LocaleKeys.loading_file.tr, "", showProgressIndicator: true);
   }
 
-  Future<void>  getGtableData() async {
+  Stream<List<GlocuMeasurement>>? get tableData => FirebaseFirestore.instance
+          .collection("Gluco_Measurment")
+          .where("Email",
+              isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
+          .snapshots()
+          .map((QuerySnapshot? snapShot) {
+        /*   glocuMeaurements.clear();*/
+        if (snapShot != null) {
+          if (snapShot.docs.isNotEmpty) {
+            for (var doc in snapShot.docs) {
+              if (doc.data() != null) {
+                glocuMeaurements.add(GlocuMeasurement.fromDoc(doc));
+              }
+            }
+            print("glocuMeaurements[0].email:${glocuMeaurements[0].email}");
+            return glocuMeaurements;
+          }
+
+          /*for (var i = 0; i < snapShot.docs.length; i++) {
+          Glurow.add([]);
+          for (var j = 0; j < 3; j++) {
+            Glurow[i].add(snapShot.docs[i]['Result'].toString());
+            Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+            Glurow[i].add(snapShot.docs[i]['Time'].toString());
+            Glurow[i].add(DateFormat.yMd()
+                .format(DateTime.parse(snapShot.docs[i]['Date']))
+                .toString());
+            break;
+          }
+        }*/
+
+        }
+        return [];
+      });
+
+  Future<void> getGtableData() async {
     Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await Glucoref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
-     print (snapShot.docs);
+    await Glucoref!
+        .where("Email", isEqualTo: user!.email.toString())
+        .get()
+        .then((snapShot) {
+      print(snapShot.docs);
       for (var i = 0; i < snapShot.docs.length; i++) {
         Glurow.add([]);
         for (var j = 0; j < 3; j++) {
           Glurow[i].add(snapShot.docs[i]['Result'].toString());
           Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
           Glurow[i].add(snapShot.docs[i]['Time'].toString());
-          Glurow[i].add(DateFormat.yMd().format(DateTime.parse(snapShot.docs[i]['Date'])).toString());
+          Glurow[i].add(DateFormat.yMd()
+              .format(DateTime.parse(snapShot.docs[i]['Date']))
+              .toString());
           break;
         }
       }
@@ -84,60 +113,65 @@ class LogBookController extends GetxController{
     print('glurow is');
     print(Glurow);
 
-
     update();
-
   }
 
   Future<void> getGluData() async {
-    HGlucoref  = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await HGlucoref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+    HGlucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await HGlucoref!
+        .where("Email", isEqualTo: user!.email.toString())
+        .get()
+        .then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["Result"]);
         HighestGlu.add(element['Result']);
       });
-
     });
-   print("^^^^^^^^^^^^^^^^") ;
-   print(HighestGlu);
-    HighestGlu=HighestGlu.map((e)=>int.parse(e)).toList();
+    print("^^^^^^^^^^^^^^^^");
+    print(HighestGlu);
+    HighestGlu = HighestGlu.map((e) => int.parse(e)).toList();
 
-    print("Sorted") ;
-    HighestGlu= HighestGlu.sort() as List;
-    print(HighestGlu) ;
-
+    print("Sorted");
+    HighestGlu = HighestGlu.sort() as List;
+    print(HighestGlu);
   }
 
-
-  Future<void>  getCalData() async {
+  Future<void> getCalData() async {
     HCalref = FirebaseFirestore.instance.collection("intakes");
-    await HCalref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot) {
+    await HCalref!
+        .where("Email", isEqualTo: user!.email.toString())
+        .get()
+        .then((snapShot) {
       print(snapShot.docs.length);
       snapShot.docs.forEach((element) {
         print(element["intakes_Cal"]);
         HighestCal.add(element['intakes_Cal']);
       });
-
     });
-    print("^^caal") ;
+    print("^^caal");
     print(HighestCal.length);
     print(HighestCal);
-    HighestCal=HighestCal.map((e)=>int.parse(e)).toList();
+    HighestCal = HighestCal.map((e) {
+      if (e != null) {
+        int.parse(e);
+      }
+    }).toList();
 
-    print("Sorted") ;
+    print("Sorted");
     HighestCal.sort();
-    print(HighestCal) ;
-
+    print(HighestCal);
   }
 
-  Future<void>   getCtableData() async{
+  Future<void> getCtableData() async {
     Calref = FirebaseFirestore.instance.collection("intakes");
-    await Calref!.where("Email" , isEqualTo: user!.email.toString()).get().then((snapShot)
-    {
-      for(var i = 0 ; i < snapShot.docs.length ; i++){
+    await Calref!
+        .where("Email", isEqualTo: user!.email.toString())
+        .get()
+        .then((snapShot) {
+      for (var i = 0; i < snapShot.docs.length; i++) {
         Calrow.add([]);
-        for(var j = 0 ; j<4;j++ ){
+        for (var j = 0; j < 4; j++) {
           Calrow[i].add(snapShot.docs[i]['intakes_type'].toString());
           Calrow[i].add(snapShot.docs[i]['intakes_category'].toString());
           Calrow[i].add(snapShot.docs[i]['intakes_Quantity'].toString());

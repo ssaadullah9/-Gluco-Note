@@ -1,17 +1,20 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
 import '/screens/login.dart';
+import '../screens/mainpage.dart';
 
 class SplashController extends GetxController {
-
-  void startTimer(){
+  void startTimer() {
     Timer(Duration(seconds: 6), () {
-      Get.off(()=>LoginScreen());
+      Get.off(() => FirebaseAuth.instance.currentUser?.uid != null
+          ? MainScreen()
+          : LoginScreen());
     });
-
   }
+
   @override
   void onInit() {
     startTimer();
