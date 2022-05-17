@@ -1,18 +1,16 @@
+import 'package:flutter/material.dart';
 
 import '/constant.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class CustomDialogBox extends StatefulWidget {
   final String title, descriptions, text;
 
   const CustomDialogBox(
       {Key? key,
-        required this.title,
-        required this.descriptions,
-        required this.text,
-        required List<ElevatedButton> actions})
+      required this.title,
+      required this.descriptions,
+      required this.text,
+      required List<ElevatedButton> actions})
       : super(key: key);
 
   @override
@@ -36,53 +34,57 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
               left: Constants.padding,
               top: Constants.avatarRadius + Constants.padding,
               right: Constants.padding,
               bottom: Constants.padding),
-          margin: EdgeInsets.only(top: Constants.avatarRadius),
+          margin: const EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(Constants.padding),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
-              ]),
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(0, 10),
+                blurRadius: 10,
+              ),
+            ],
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
                 widget.title,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               Text(
                 widget.descriptions,
-                style: TextStyle(fontSize: 14),
+                style: const TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 22,
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      widget.text,
-                      style: TextStyle(fontSize: 18),
-                    )),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    widget.text,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
               ),
             ],
           ),
         ),
-        Positioned(
+        const Positioned(
           left: Constants.padding,
           right: Constants.padding,
           child: CircleAvatar(

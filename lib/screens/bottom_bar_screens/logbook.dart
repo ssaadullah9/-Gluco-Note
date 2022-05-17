@@ -19,7 +19,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
 
   List<List<String>> Finish_PDF_LIST = [];
   var x;
-  final divider = Divider(
+  final divider = const Divider(
     color: Colors.blueGrey,
   );
 
@@ -34,7 +34,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
         backgroundColor: Colors.blueGrey,
         title: Text(
           LocaleKeys.logbook.tr,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
 
         // PDF PART
@@ -73,7 +73,8 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                       },
                                       child: Text(
                                         LocaleKeys.ok.tr,
-                                        style: TextStyle(color: Colors.black),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ))
                                 ],
                               )
@@ -85,12 +86,12 @@ class _LogBookScreenState extends State<LogBookScreen> {
                   } else {
                     var c;
                     print(DateFormat.yMd().format(value));
-                    for (var i = 0; i < controller.Glurow.length; i++) {
+                    for (var i = 0; i < controller.gluRow.length; i++) {
                       if (DateFormat.yMd().format(value) ==
-                          controller.Glurow[i][3]) {
-                        Finish_PDF_LIST.add(controller.Glurow[i]);
-                        print(controller.Glurow[i]);
-                        x = controller.Glurow[i][3];
+                          controller.gluRow[i][3]) {
+                        Finish_PDF_LIST.add(controller.gluRow[i]);
+                        print(controller.gluRow[i]);
+                        x = controller.gluRow[i][3];
                         continue;
                       }
                     }
@@ -123,7 +124,8 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                         },
                                         child: Text(
                                           LocaleKeys.ok.tr,
-                                          style: TextStyle(color: Colors.black),
+                                          style: const TextStyle(
+                                              color: Colors.black),
                                         ))
                                   ],
                                 )
@@ -136,7 +138,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                   }
                 });
               }, // on pressed
-              icon: Icon(
+              icon: const Icon(
                 Icons.upload_file,
                 color: Colors.white70,
               ),
@@ -151,10 +153,10 @@ class _LogBookScreenState extends State<LogBookScreen> {
           children: <Widget>[
             // Calories Numbers
             FutureBuilder(
-              future: controller.HCalref!.get(),
+              future: controller.hCalRef!.get(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: SpinKitCircle(
                       color: Colors.amber,
                     ),
@@ -168,9 +170,9 @@ class _LogBookScreenState extends State<LogBookScreen> {
                         BuildCaloriseAndClucoseWidget(
                           label: LocaleKeys.lowest_calories.tr,
                           // To check if zreo or display the accurate value
-                          amount: controller.HighestCal!.length == 0
+                          amount: controller.highestCal!.length == 0
                               ? " 0 Cal"
-                              : '${controller.HighestCal![0].toString()} Cal',
+                              : '${controller.highestCal![0].toString()} Cal',
                           color: Colors.green,
                         ),
                         SizedBox(
@@ -179,9 +181,9 @@ class _LogBookScreenState extends State<LogBookScreen> {
                         BuildCaloriseAndClucoseWidget(
                           label: LocaleKeys.highest_calories.tr,
                           // To check if zreo or display the accurate value
-                          amount: controller.HighestCal!.length == 0
+                          amount: controller.highestCal!.length == 0
                               ? " 0 Cal"
-                              : '${controller.HighestCal![controller.HighestCal!.length - 1].toString()} Cal',
+                              : '${controller.highestCal![controller.highestCal!.length - 1].toString()} Cal',
 
                           color: Colors.red,
                         ),
@@ -193,29 +195,29 @@ class _LogBookScreenState extends State<LogBookScreen> {
             ),
             // Calories  Table
             FutureBuilder(
-              future: controller.Calref!.get(),
+              future: controller.calRef!.get(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: SpinKitCircle(
                       color: Colors.amber,
                     ),
                   );
                 } else {
                   return Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: const BoxDecoration(
                         border: Border(
                       top: BorderSide(color: Colors.blueGrey, width: 2),
                     )),
                     child: ExpansionTile(
                       title: Text(
                         LocaleKeys.calories.tr,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
-                      trailing: FlatButton.icon(
+                      trailing: TextButton.icon(
                           onPressed: null,
-                          icon: Icon(Icons.keyboard_arrow_down_outlined),
+                          icon: const Icon(Icons.keyboard_arrow_down_outlined),
                           label: Text(LocaleKeys.show.tr)),
                       children: [
                         SingleChildScrollView(
@@ -228,7 +230,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                 columns: Calcolumn.map((e) => DataColumn(
                                       label: Text(e),
                                     )).toList(),
-                                rows: controller.Calrow.map((e) {
+                                rows: controller.calRow.map((e) {
                                   return DataRow(
                                       cells: e.map((e) {
                                     return DataCell(Text('$e'));
@@ -244,16 +246,18 @@ class _LogBookScreenState extends State<LogBookScreen> {
 // ######################################################################################
 
 // Glucose Numbers
-            FutureBuilder(
-                future: controller.HGlucoref!.get(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
+            StreamBuilder(
+                stream: controller.getHighGlu,
+                builder:
+                    (context, AsyncSnapshot<List<GlocuMeasurement>> snapshot) {
+                  print("snapshot.data?.length => ${snapshot.data?.length}");
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
                       child: SpinKitCircle(
                         color: Colors.amber,
                       ),
                     );
-                  } else
+                  } else {
                     return Container(
                       padding: const EdgeInsets.all(12.0),
                       height: Get.width * 0.3,
@@ -262,10 +266,9 @@ class _LogBookScreenState extends State<LogBookScreen> {
                           BuildCaloriseAndClucoseWidget(
                             label: LocaleKeys.lowest_glucose_level.tr,
                             // To check if zreo or display the accurate value
-                            amount: controller.HighestGlu!.length == 0
+                            amount: snapshot.data == null
                                 ? "0 mg/dl"
-                                : controller.HighestGlu![0].toString() +
-                                    'mg/dl',
+                                : snapshot.data![0].result.toString() + 'mg/dl',
                             color: Colors.green,
                           ),
                           SizedBox(
@@ -274,10 +277,10 @@ class _LogBookScreenState extends State<LogBookScreen> {
                           BuildCaloriseAndClucoseWidget(
                             label: LocaleKeys.highest_glucose.tr,
                             // To check if zreo or display the accurate value
-                            amount: controller.HighestGlu!.length == 0
+                            amount: snapshot.data == null
                                 ? "0 mg/dl"
-                                : controller.HighestGlu![
-                                            controller.HighestGlu!.length - 1]
+                                : snapshot
+                                        .data![snapshot.data!.length - 1].result
                                         .toString() +
                                     'mg/dl',
                             color: Colors.red,
@@ -285,6 +288,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                         ],
                       ),
                     );
+                  }
                 }),
 
             // Glucose Table
@@ -295,7 +299,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     print(
                         "snapshot.data:${snapshot.connectionState == ConnectionState.active}");
-                    return Center(
+                    return const Center(
                       child: SpinKitCircle(
                         color: Colors.amber,
                       ),
@@ -304,16 +308,18 @@ class _LogBookScreenState extends State<LogBookScreen> {
                     print("snapshot.data:$snapshot");
                     print("snapshot.data:${snapshot.data?.length}");
                     return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      decoration: BoxDecoration(
-                          border: Border(
-                        top: BorderSide(color: Colors.blueGrey, width: 2),
-                      )),
+                      margin: const EdgeInsets.symmetric(vertical: 10.0),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.blueGrey, width: 2),
+                        ),
+                      ),
                       child: ExpansionTile(
                         title: Text(LocaleKeys.glucose.tr),
-                        trailing: FlatButton.icon(
+                        trailing: TextButton.icon(
                             onPressed: null,
-                            icon: Icon(Icons.keyboard_arrow_down_outlined),
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
                             label: Text(LocaleKeys.show.tr)),
                         children: [
                           SingleChildScrollView(
@@ -326,23 +332,30 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                       controller.currentSortColumn.value,
                                   sortAscending: controller.isAscending.value,
                                   headingRowColor: MaterialStateProperty.all(
-                                      Colors.blueGrey),
+                                    Colors.blueGrey,
+                                  ),
                                   columns:
                                       //send column List
-                                      Glucolumn.map((e) => DataColumn(
-                                            label: Text('$e'),
-                                          )).toList(),
+                                      Glucolumn.map(
+                                    (e) => DataColumn(
+                                      label: Text('$e'),
+                                    ),
+                                  ).toList(),
                                   rows:
                                       // get Rows List
                                       //fireBAse
                                       snapshot.data!
-                                          .map((e) => DataRow(cells: [
+                                          .map(
+                                            (e) => DataRow(
+                                              cells: [
                                                 DataCell(Text(e.result!)),
-                                                DataCell(Text(e.date!)),
                                                 DataCell(
                                                     Text(e.testPeriod ?? '')),
-                                                DataCell(Text(e.result!)),
-                                              ]))
+                                                DataCell(Text(e.time ?? '')),
+                                                DataCell(Text(e.date!)),
+                                              ],
+                                            ),
+                                          )
                                           .toList()
                                   /*  controller.Glurow.map((ee) {
                                     return DataRow(

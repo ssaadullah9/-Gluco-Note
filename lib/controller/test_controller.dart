@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +13,7 @@ class TestBMIController extends GetxController {
   var comments = "".obs;
   var heightOfUser = 5.0.obs;
   var weightOfUser = 5.0.obs;
-  var date;
+  dynamic date;
   var time = TimeOfDay.now().obs;
   var Date = DateTime.now().obs;
   var Date1 = DateTime.now().obs;
@@ -59,7 +58,7 @@ class TestBMIController extends GetxController {
           break;
         }
       }
-      print(Bmirow);
+      // print(Bmirow);
     });
     update();
   }

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:test_saja/controller/healthinfo_controller.dart';
@@ -16,7 +14,9 @@ import '../widgets/navbar.dart';
 class HealthInfoScreen extends StatelessWidget {
   final controller = Get.put(HealthInfoController());
 
-  late String selectedSalutation;
+  late final String selectedSalutation;
+
+  HealthInfoScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class HealthInfoScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black54,
           ),
@@ -38,14 +38,14 @@ class HealthInfoScreen extends StatelessWidget {
         ),
         title: Text(
           LocaleKeys.health_info.tr,
-          style: TextStyle(color: Colors.black, fontSize: 20),
+          style: const TextStyle(color: Colors.black, fontSize: 20),
         ),
       ),
       body: FutureBuilder(
-        future: controller.Health_info!.get(),
+        future: controller.healthInfo!.get(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: SpinKitCircle(
                 color: Colors.amber,
               ),
@@ -57,12 +57,12 @@ class HealthInfoScreen extends StatelessWidget {
                 DropdownButtonFormField(
                   decoration: InputDecoration(
                       labelText: LocaleKeys.gender.tr,
-                      border: OutlineInputBorder()),
+                      border: const OutlineInputBorder()),
                   items: [LocaleKeys.male.tr, LocaleKeys.female.tr]
                       .map((e) => DropdownMenuItem(
-                    child: Text("$e"),
-                    value: e,
-                  ))
+                            child: Text(e),
+                            value: e,
+                          ))
                       .toList(),
                   onChanged: (val) {
                     controller.g = val;
@@ -77,9 +77,9 @@ class HealthInfoScreen extends StatelessWidget {
                 ),
                 TextFormField(
                   initialValue: controller.w == 0 ? "" : controller.w,
-                  keyboardType: TextInputType.numberWithOptions(),
+                  keyboardType: const TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     labelText: LocaleKeys.weight.tr,
                   ),
                   onChanged: (val) {
@@ -90,10 +90,10 @@ class HealthInfoScreen extends StatelessWidget {
                   height: Get.width * 0.05,
                 ),
                 TextFormField(
-                  initialValue: controller.h == null ? "" : controller.h,
-                  keyboardType: TextInputType.numberWithOptions(),
+                  initialValue: controller.h ?? "",
+                  keyboardType: const TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     labelText: LocaleKeys.height.tr,
                   ),
                   onChanged: (val) {
@@ -106,25 +106,25 @@ class HealthInfoScreen extends StatelessWidget {
                 DropdownButtonFormField(
                   decoration: InputDecoration(
                       labelText: LocaleKeys.diabetes_type.tr,
-                      border: OutlineInputBorder()),
+                      border: const OutlineInputBorder()),
                   items: [
                     LocaleKeys.type1.tr,
                     LocaleKeys.type2.tr,
                     LocaleKeys.gestational.tr
                   ]
                       .map((e) => DropdownMenuItem(
-                    child: Text("$e"),
-                    value: e,
-                  ))
+                            child: Text(e),
+                            value: e,
+                          ))
                       .toList(),
                   onChanged: (val) {
-                    controller.DT = val;
+                    controller.dT = val;
                   },
                   hint: Text(
-                    // checking if its the first time or display the saved info
-                      controller.DT == null
+                      // checking if its the first time or display the saved info
+                      controller.dT == null
                           ? LocaleKeys.diabetes_type.tr
-                          : "${controller.DT}"),
+                          : "${controller.dT}"),
                 ),
                 SizedBox(
                   height: Get.width * 0.05,
@@ -133,34 +133,36 @@ class HealthInfoScreen extends StatelessWidget {
                   height: Get.width * 0.05,
                 ),
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
-                    child: ElevatedButton.icon(
-                        onPressed: () {
-                          if ((controller.g != null &&
-                              controller.w.isNotEmpty &&
-                              controller.h.isNotEmpty &&
-                              controller.DT != null)) {
-                            addData();
-                            Get.snackbar(
-                                LocaleKeys.data_saved_successfully.tr, "");
-                            Timer(Duration(seconds: 2), () {
-                              Navigator.pop(context); // return to the main page
-                            });
-                          } else
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.ERROR,
-                              animType: AnimType.BOTTOMSLIDE,
-                              title: LocaleKeys.error.tr,
-                              desc: LocaleKeys.you_must_fill_fields.tr,
-                              btnOkOnPress: () {},
-                            )..show();
-                        },
-                        icon: Icon(Icons.done, size: 30),
-                        label: Text(LocaleKeys.save_info.tr),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE5A9379),
-                        )))
+                  margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      if ((controller.g != null &&
+                          controller.w.isNotEmpty &&
+                          controller.h.isNotEmpty &&
+                          controller.dT != null)) {
+                        addData();
+                        Get.snackbar(LocaleKeys.data_saved_successfully.tr, "");
+                        Timer(const Duration(seconds: 2), () {
+                          Navigator.pop(context); // return to the main page
+                        });
+                      } else {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.ERROR,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: LocaleKeys.error.tr,
+                          desc: LocaleKeys.you_must_fill_fields.tr,
+                          btnOkOnPress: () {},
+                        ).show();
+                      }
+                    },
+                    icon: const Icon(Icons.done, size: 30),
+                    label: Text(LocaleKeys.save_info.tr),
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFFE5A937),
+                    ),
+                  ),
+                ),
               ],
             );
           }
@@ -172,14 +174,14 @@ class HealthInfoScreen extends StatelessWidget {
 // Sending the data to firebase
   addData() async {
     var user = FirebaseAuth.instance.currentUser;
-    CollectionReference Health_info =
-    FirebaseFirestore.instance.collection("Health_Info");
-    Health_info.doc(user!.uid).set({
+    CollectionReference healthInfo =
+        FirebaseFirestore.instance.collection("Health_Info");
+    healthInfo.doc(user!.uid).set({
       "Email": user.email.toString(),
       "Gender": controller.g,
       "Weight": controller.w,
       "Height": controller.h,
-      "Diabetes_Type": controller.DT,
+      "Diabetes_Type": controller.dT,
     });
   }
 }

@@ -15,16 +15,17 @@ class LogBookController extends GetxController {
   var user = FirebaseAuth.instance.currentUser;
   var currentSortColumn = 0.obs;
   var isAscending = true.obs;
-  CollectionReference? Glucoref;
-  CollectionReference? Calref;
-  CollectionReference? HGlucoref;
-  CollectionReference? HCalref;
+  CollectionReference? glucoRef;
+  CollectionReference? calRef;
+  CollectionReference? hGlucoRef;
+  CollectionReference? hCalRef;
 
-  List<List<String>> Calrow = [];
-  List<List<String>> Glurow = [];
-  List<GlocuMeasurement> glocuMeaurements = [];
-  List? HighestGlu = [];
-  List? HighestCal = [];
+  List<List<String>> calRow = [];
+  List<List<String>> gluRow = [];
+  List<GlocuMeasurement> glocuMeasurements = [];
+  List<GlocuMeasurement> gHigh = [];
+  List? highestGlu = [];
+  List? highestCal = [];
 
   Future<void> createPDF(List column, List rows) async {
     PdfDocument document = PdfDocument();
@@ -47,7 +48,7 @@ class LogBookController extends GetxController {
     }
 
     pdfGrid1.draw(
-        page: document.pages.add(), bounds: Rect.fromLTWH(0, 0, 0, 0));
+        page: document.pages.add(), bounds: const Rect.fromLTWH(0, 0, 0, 0));
     List<int> bytes = document.save();
     document.dispose();
 
@@ -61,128 +62,168 @@ class LogBookController extends GetxController {
               isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
           .snapshots()
           .map((QuerySnapshot? snapShot) {
-        print(FirebaseAuth.instance.currentUser!.email);
-        print("snapShot!.docs.length: ${snapShot!.docs.length}");
-        glocuMeaurements.clear();
+        // print(FirebaseAuth.instance.currentUser!.email);
+        // print("snapShot!.docs.length: ${snapShot!.docs.length}");
+        glocuMeasurements.clear();
 
-        if (snapShot.docs.isNotEmpty) {
-          print("snapShot.docs.length:${snapShot.docs.length}");
+        if (snapShot != null && snapShot.docs.isNotEmpty) {
+          // print("snapShot.docs.length:${snapShot.docs.length}");
           for (var doc in snapShot.docs) {
-            print('doc: ${doc.id}');
+            // print('doc: ${doc.id}');
 
             var data = doc.data() as Map<String, dynamic>;
-            print("data['Email']:${data['Email']}");
-            glocuMeaurements.add(GlocuMeasurement.fromDoc(data));
+            // print("data['Email']:${data['Email']}");
+            glocuMeasurements.add(GlocuMeasurement.fromDoc(data));
           }
-          print("glocuMeaurements[0].email:${glocuMeaurements[0].email}");
-          return glocuMeaurements;
+          // print("glocuMeasurements[0].email:${glocuMeasurements[0].email}");
+          return glocuMeasurements;
         }
         return [];
 
-        /*for (var i = 0; i < snapShot.docs.length; i++) {
-          Glurow.add([]);
-          for (var j = 0; j < 3; j++) {
-            Glurow[i].add(snapShot.docs[i]['Result'].toString());
-            Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
-            Glurow[i].add(snapShot.docs[i]['Time'].toString());
-            Glurow[i].add(DateFormat.yMd()
-                .format(DateTime.parse(snapShot.docs[i]['Date']))
-                .toString());
-            break;
+        // for (var i = 0; i < snapShot.docs.length; i++) {
+        //   gluRow.add([]);
+        //   for (var j = 0; j < 3; j++) {
+        //     gluRow[i].add(snapShot.docs[i]['Result'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Time'].toString());
+        //     gluRow[i].add(DateFormat.yMd()
+        //         .format(DateTime.parse(snapShot.docs[i]['Date']))
+        //         .toString());
+        //     break;
+        //   }
+        // }
+      });
+  Stream<List<GlocuMeasurement>>? get getHighGlu => FirebaseFirestore.instance
+          .collection("Gluco_Measurment")
+          .where("Email",
+              isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
+          .snapshots()
+          .map((QuerySnapshot? snapShot) {
+        // print(FirebaseAuth.instance.currentUser!.email);
+        // print("snapShot!.docs.length: ${snapShot!.docs.length}");
+        gHigh.clear();
+
+        if (snapShot != null && snapShot.docs.isNotEmpty) {
+          // print("snapShot.docs.length:${snapShot.docs.length}");
+          for (var doc in snapShot.docs) {
+            // print('doc: ${doc.id}');
+
+            var data = doc.data() as Map<String, dynamic>;
+            print("data['Email']:${data['Email']}");
+            gHigh.add(GlocuMeasurement.fromDoc(data));
           }
-        }*/
+          // print("gHigh[0].email:${gHigh[0].email}");
+          print("gHigh[0].result: ${gHigh[0].result}");
+          gHigh.sort((x, y) => x.result!.compareTo(y.result!));
+
+          return gHigh;
+        }
+        return [];
+
+        // for (var i = 0; i < snapShot.docs.length; i++) {
+        //   gluRow.add([]);
+        //   for (var j = 0; j < 3; j++) {
+        //     gluRow[i].add(snapShot.docs[i]['Result'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Time'].toString());
+        //     gluRow[i].add(DateFormat.yMd()
+        //         .format(DateTime.parse(snapShot.docs[i]['Date']))
+        //         .toString());
+        //     break;
+        //   }
+        // }
       });
 
   Future<void> getGtableData() async {
-    Glucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await Glucoref!
+    glucoRef = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await glucoRef!
         .where("Email", isEqualTo: user!.email.toString())
         .get()
         .then((snapShot) {
-      print(snapShot.docs);
+      // print(snapShot.docs);
       for (var i = 0; i < snapShot.docs.length; i++) {
-        Glurow.add([]);
+        gluRow.add([]);
         for (var j = 0; j < 3; j++) {
-          Glurow[i].add(snapShot.docs[i]['Result'].toString());
-          Glurow[i].add(snapShot.docs[i]['Test_preiod'].toString());
-          Glurow[i].add(snapShot.docs[i]['Time'].toString());
-          Glurow[i].add(DateFormat.yMd()
+          gluRow[i].add(snapShot.docs[i]['Result'].toString());
+          gluRow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+          gluRow[i].add(snapShot.docs[i]['Time'].toString());
+          gluRow[i].add(DateFormat.yMd()
               .format(DateTime.parse(snapShot.docs[i]['Date']))
               .toString());
           break;
         }
       }
     });
-    print('glurow is');
-    print(Glurow);
+    // print('gluRow is');
+    // print(gluRow);
 
     update();
   }
 
   Future<void> getGluData() async {
-    HGlucoref = FirebaseFirestore.instance.collection("Gluco_Measurment");
-    await HGlucoref!
+    hGlucoRef = FirebaseFirestore.instance.collection("Gluco_Measurment");
+    await hGlucoRef!
         .where("Email", isEqualTo: user!.email.toString())
         .get()
         .then((snapShot) {
-      print(snapShot.docs.length);
-      snapShot.docs.forEach((element) {
-        print(element["Result"]);
-        HighestGlu!.add(element['Result']);
-      });
+      // print(snapShot.docs.length);
+      for (var element in snapShot.docs) {
+        // print(element["Result"]);
+        highestGlu!.add(element['Result']);
+      }
     });
-    print("^^^^^^^^^^^^^^^^");
-    print(HighestGlu);
-    HighestGlu = HighestGlu!.map((e) => int.parse(e)).toList();
+    // print("^^^^^^^^^^^^^^^^");
+    // print(highestGlu);
+    highestGlu = highestGlu!.map((e) => int.parse(e)).toList();
 
-    print("Sorted");
-    HighestGlu = HighestGlu!.sort() as List;
-    print(HighestGlu);
+    // print("Sorted");
+    highestGlu = highestGlu!.sort() as List;
+    // print(highestGlu);
   }
 
   Future<void> getCalData() async {
-    HCalref = FirebaseFirestore.instance.collection("intakes");
-    await HCalref!
+    hCalRef = FirebaseFirestore.instance.collection("intakes");
+    await hCalRef!
         .where("Email", isEqualTo: user!.email.toString())
         .get()
         .then((snapShot) {
-      print(snapShot.docs.length);
-      snapShot.docs.forEach((element) {
-        print(element["intakes_Cal"]);
-        HighestCal!.add(element['intakes_Cal']);
-      });
+      // print(snapShot.docs.length);
+      for (var element in snapShot.docs) {
+        // print(element["intakes_Cal"]);
+        highestCal!.add(element['intakes_Cal']);
+      }
     });
-    print("^^caal");
-    print(HighestCal!.length);
-    print(HighestCal);
-    HighestCal = HighestCal!.map((e) {
+    // print("^^cal");
+    // print(highestCal!.length);
+    // print(highestCal);
+    highestCal = highestCal!.map((e) {
       if (e != null) {
         int.parse(e);
       }
     }).toList();
 
-    print("Sorted");
-    HighestCal!.sort();
-    print(HighestCal);
+    // print("Sorted");
+    highestCal!.sort();
+    // print(highestCal);
   }
 
   Future<void> getCtableData() async {
-    Calref = FirebaseFirestore.instance.collection("intakes");
-    await Calref!
+    calRef = FirebaseFirestore.instance.collection("intakes");
+    await calRef!
         .where("Email", isEqualTo: user!.email.toString())
         .get()
         .then((snapShot) {
       for (var i = 0; i < snapShot.docs.length; i++) {
-        Calrow.add([]);
+        calRow.add([]);
         for (var j = 0; j < 4; j++) {
-          Calrow[i].add(snapShot.docs[i]['intakes_type'].toString());
-          Calrow[i].add(snapShot.docs[i]['intakes_category'].toString());
-          Calrow[i].add(snapShot.docs[i]['intakes_Quantity'].toString());
-          Calrow[i].add(snapShot.docs[i]['intakes_Cal'].toString());
+          calRow[i].add(snapShot.docs[i]['intakes_type'].toString());
+          calRow[i].add(snapShot.docs[i]['intakes_category'].toString());
+          calRow[i].add(snapShot.docs[i]['intakes_Quantity'].toString());
+          calRow[i].add(snapShot.docs[i]['intakes_Cal'].toString());
           break;
         }
       }
-      print(Calrow);
+      // print(calRow);
     });
     update();
   }

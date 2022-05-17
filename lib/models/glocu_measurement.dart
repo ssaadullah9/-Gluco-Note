@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class GlocuMeasurement {
   final String? date;
   final String? email;
@@ -18,10 +20,12 @@ class GlocuMeasurement {
   }
   factory GlocuMeasurement.fromDoc(Map<String, dynamic> dataDoc) {
     return GlocuMeasurement(
-        date: dataDoc['Date'],
+        date: DateFormat.yMd().format(DateTime.parse(
+          dataDoc['Date'],
+        )),
         email: dataDoc['Email'],
         result: dataDoc['Result'],
-        testPeriod: dataDoc['Test_period'],
+        testPeriod: dataDoc['Test_preiod'],
         time: dataDoc['Time']);
   }
 }

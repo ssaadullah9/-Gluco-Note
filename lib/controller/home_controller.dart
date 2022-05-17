@@ -56,7 +56,7 @@ class HomeController extends GetxController {
   }
 
   getChartData() async {
-    Chartref = await FirebaseFirestore.instance.collection("Gluco_Measurment");
+    Chartref = FirebaseFirestore.instance.collection("Gluco_Measurment");
     Chartref!
         .where("Email", isEqualTo: user!.email.toString())
         .get()
