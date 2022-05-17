@@ -24,7 +24,7 @@ class Home extends StatelessWidget {
                 horizontal: Get.width * 0.02, vertical: Get.width * 0.05),
             child: Text(
               LocaleKeys.daily_progress.tr,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -44,14 +44,14 @@ class Home extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black.withOpacity(.23),
-                      offset: Offset(0, 8),
+                      offset: const Offset(0, 8),
                       blurRadius: 5.0)
                 ]),
             child: StreamBuilder(
               stream: controller.Glucose?.snapshots(),
               builder: (context, snapshot) {
                 if (controller.Glucose == null || !snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: SpinKitCircle(
                       color: Colors.amber,
                     ),
@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
                     children: [
                       Text(
                         LocaleKeys.glucos_today.tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18,
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
@@ -72,10 +72,10 @@ class Home extends StatelessWidget {
                       ),
                       // To check if the Value is zero or no
                       Text(
-                          controller.GlucoseVal.length == 0
+                          controller.GlucoseVal.isEmpty
                               ? "0 mg/dl"
                               : "${controller.GlucoseVal.last} mg/dl",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 15,
                               color: Colors.orangeAccent,
                               fontWeight: FontWeight.bold)),
@@ -96,7 +96,7 @@ class Home extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black.withOpacity(.23),
-                      offset: Offset(0, 8),
+                      offset: const Offset(0, 8),
                       blurRadius: 5.0)
                 ]),
             height: Get.width * 0.6,
@@ -104,7 +104,7 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(LocaleKeys.cal_burned.tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         color: Colors.black,
                         fontWeight: FontWeight.bold)),
@@ -112,8 +112,8 @@ class Home extends StatelessWidget {
                     stream: controller.IndecatorRef!.snapshots(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (!snapshot.hasData) {
-                        return Center(
-                          child: SpinKitCircle(
+                        return const Center(
+                          child: const SpinKitCircle(
                             color: Colors.amber,
                           ),
                         );
@@ -134,9 +134,9 @@ class Home extends StatelessWidget {
                               controller.CalVal.length == 0
                                   ? "0"
                                   : controller.CalVal.last.toStringAsFixed(2),
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
-                            progressColor: Color(0xFFEA9363),
+                            progressColor: const Color(0xFFEA9363),
                           ),
                         );
                       }
@@ -144,10 +144,10 @@ class Home extends StatelessWidget {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           Text(
             LocaleKeys.glu_week.tr,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -159,8 +159,8 @@ class Home extends StatelessWidget {
                 stream: controller.Chartref?.snapshots(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (controller.Chartref == null || !snapshot.hasData) {
-                    return Center(
-                      child: SpinKitCircle(
+                    return const Center(
+                      child: const SpinKitCircle(
                         color: Colors.amber,
                       ),
                     );
@@ -177,7 +177,7 @@ class Home extends StatelessWidget {
                           ScatterSeries<GlucoseData, dynamic>(
                             name: LocaleKeys.glu_level.tr,
                             enableTooltip: true,
-                            color: Color(0xFF9F87BF),
+                            color: const Color(0xFF9F87BF),
                             dataSource: controller.ChartList,
                             xValueMapper: (GlucoseData data, _)
                                 // EEE = dispalying only weekdays

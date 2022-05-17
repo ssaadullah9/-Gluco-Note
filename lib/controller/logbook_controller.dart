@@ -56,7 +56,8 @@ class LogBookController extends GetxController {
     Get.snackbar(LocaleKeys.loading_file.tr, "", showProgressIndicator: true);
   }
 
-  Stream<List<GlocuMeasurement>>? get tableData => FirebaseFirestore.instance
+  Stream<List<GlocuMeasurement>>? get glucoTableData =>
+      FirebaseFirestore.instance
           .collection("Gluco_Measurment")
           .where("Email",
               isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
@@ -109,11 +110,8 @@ class LogBookController extends GetxController {
             // print('doc: ${doc.id}');
 
             var data = doc.data() as Map<String, dynamic>;
-            print("data['Email']:${data['Email']}");
             gHigh.add(GlocuMeasurement.fromDoc(data));
           }
-          // print("gHigh[0].email:${gHigh[0].email}");
-          print("gHigh[0].result: ${gHigh[0].result}");
           gHigh.sort((x, y) => x.result!.compareTo(y.result!));
 
           return gHigh;

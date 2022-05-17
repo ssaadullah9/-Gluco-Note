@@ -293,7 +293,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
 
             // Glucose Table
             StreamBuilder(
-                stream: controller.tableData,
+                stream: controller.glucoTableData,
                 builder:
                     (context, AsyncSnapshot<List<GlocuMeasurement>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -346,13 +346,16 @@ class _LogBookScreenState extends State<LogBookScreen> {
                                       //fireBAse
                                       snapshot.data!
                                           .map(
-                                            (e) => DataRow(
+                                            (glocu) => DataRow(
                                               cells: [
-                                                DataCell(Text(e.result!)),
                                                 DataCell(
-                                                    Text(e.testPeriod ?? '')),
-                                                DataCell(Text(e.time ?? '')),
-                                                DataCell(Text(e.date!)),
+                                                    Text(glocu.result ?? '')),
+                                                DataCell(Text(
+                                                    glocu.testPeriod ?? '')),
+                                                DataCell(
+                                                    Text(glocu.time ?? '')),
+                                                DataCell(
+                                                    Text(glocu.date ?? '')),
                                               ],
                                             ),
                                           )
