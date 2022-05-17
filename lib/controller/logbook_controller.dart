@@ -10,6 +10,7 @@ import 'package:test_saja/models/glocu_measurement.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '/model.dart';
+import '../models/intakes_model.dart';
 
 class LogBookController extends GetxController {
   var user = FirebaseAuth.instance.currentUser;
@@ -24,6 +25,8 @@ class LogBookController extends GetxController {
   List<List<String>> gluRow = [];
   List<GlocuMeasurement> glocuMeasurements = [];
   List<GlocuMeasurement> gHigh = [];
+  List<Intakes> caloriesIntakes = [];
+  List<Intakes> calHigh = [];
   List? highestGlu = [];
   List? highestCal = [];
 
@@ -115,6 +118,81 @@ class LogBookController extends GetxController {
           gHigh.sort((x, y) => x.result!.compareTo(y.result!));
 
           return gHigh;
+        }
+        return [];
+
+        // for (var i = 0; i < snapShot.docs.length; i++) {
+        //   gluRow.add([]);
+        //   for (var j = 0; j < 3; j++) {
+        //     gluRow[i].add(snapShot.docs[i]['Result'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Time'].toString());
+        //     gluRow[i].add(DateFormat.yMd()
+        //         .format(DateTime.parse(snapShot.docs[i]['Date']))
+        //         .toString());
+        //     break;
+        //   }
+        // }
+      });
+
+  Stream<List<Intakes>>? get calTableData => FirebaseFirestore.instance
+          .collection("intakes")
+          .where("Email",
+              isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
+          .snapshots()
+          .map((QuerySnapshot? snapShot) {
+        // print(FirebaseAuth.instance.currentUser!.email);
+        // print("snapShot!.docs.length: ${snapShot!.docs.length}");
+        caloriesIntakes.clear();
+
+        if (snapShot != null && snapShot.docs.isNotEmpty) {
+          // print("snapShot.docs.length:${snapShot.docs.length}");
+          for (var doc in snapShot.docs) {
+            // print('doc: ${doc.id}');
+
+            var data = doc.data() as Map<String, dynamic>;
+            // print("data['Email']:${data['Email']}");
+            caloriesIntakes.add(Intakes.fromDoc(data));
+          }
+          // print("glocuMeasurements[0].email:${glocuMeasurements[0].email}");
+          return caloriesIntakes;
+        }
+        return [];
+
+        // for (var i = 0; i < snapShot.docs.length; i++) {
+        //   gluRow.add([]);
+        //   for (var j = 0; j < 3; j++) {
+        //     gluRow[i].add(snapShot.docs[i]['Result'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Test_preiod'].toString());
+        //     gluRow[i].add(snapShot.docs[i]['Time'].toString());
+        //     gluRow[i].add(DateFormat.yMd()
+        //         .format(DateTime.parse(snapShot.docs[i]['Date']))
+        //         .toString());
+        //     break;
+        //   }
+        // }
+      });
+  Stream<List<Intakes>>? get getHighCal => FirebaseFirestore.instance
+          .collection("intakes")
+          .where("Email",
+              isEqualTo: FirebaseAuth.instance.currentUser!.email.toString())
+          .snapshots()
+          .map((QuerySnapshot? snapShot) {
+        // print(FirebaseAuth.instance.currentUser!.email);
+        // print("snapShot!.docs.length: ${snapShot!.docs.length}");
+        calHigh.clear();
+
+        if (snapShot != null && snapShot.docs.isNotEmpty) {
+          // print("snapShot.docs.length:${snapShot.docs.length}");
+          for (var doc in snapShot.docs) {
+            // print('doc: ${doc.id}');
+
+            var data = doc.data() as Map<String, dynamic>;
+            calHigh.add(Intakes.fromDoc(data));
+          }
+          calHigh.sort((x, y) => x.cal!.compareTo(y.cal!));
+
+          return calHigh;
         }
         return [];
 

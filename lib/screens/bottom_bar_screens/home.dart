@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '../../controller/home_controller.dart';
+import '../../models/glocu_measurement.dart';
 
 class Home extends StatelessWidget {
   final controller = Get.put(HomeController());
@@ -48,9 +49,10 @@ class Home extends StatelessWidget {
                       blurRadius: 5.0)
                 ]),
             child: StreamBuilder(
-              stream: controller.Glucose?.snapshots(),
-              builder: (context, snapshot) {
-                if (controller.Glucose == null || !snapshot.hasData) {
+              stream: controller.getHighGlu,
+              builder:
+                  (context, AsyncSnapshot<List<GlocuMeasurement>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: SpinKitCircle(
                       color: Colors.amber,
@@ -72,9 +74,11 @@ class Home extends StatelessWidget {
                       ),
                       // To check if the Value is zero or no
                       Text(
-                          controller.GlucoseVal.isEmpty
+                          snapshot.data!.length == 0
                               ? "0 mg/dl"
-                              : "${controller.GlucoseVal.last} mg/dl",
+                              : snapshot.data![snapshot.data!.length - 1].result
+                                      .toString() +
+                                  ' mg/dl',
                           style: const TextStyle(
                               fontSize: 15,
                               color: Colors.orangeAccent,
@@ -112,8 +116,8 @@ class Home extends StatelessWidget {
                     stream: controller.IndecatorRef!.snapshots(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (!snapshot.hasData) {
-                        return const Center(
-                          child: const SpinKitCircle(
+                        return Center(
+                          child: SpinKitCircle(
                             color: Colors.amber,
                           ),
                         );
@@ -134,9 +138,9 @@ class Home extends StatelessWidget {
                               controller.CalVal.length == 0
                                   ? "0"
                                   : controller.CalVal.last.toStringAsFixed(2),
-                              style: const TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 20),
                             ),
-                            progressColor: const Color(0xFFEA9363),
+                            progressColor: Color(0xFFEA9363),
                           ),
                         );
                       }
@@ -156,11 +160,12 @@ class Home extends StatelessWidget {
           Container(
             height: Get.width * 0.8,
             child: StreamBuilder(
-                stream: controller.Chartref?.snapshots(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (controller.Chartref == null || !snapshot.hasData) {
+                stream: controller.getChartData(),
+                builder: (context, AsyncSnapshot<List<GlucoseData>> snapshot) {
+                  print("snapshot.data?.length => ${snapshot.data?.length}");
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
-                      child: const SpinKitCircle(
+                      child: SpinKitCircle(
                         color: Colors.amber,
                       ),
                     );

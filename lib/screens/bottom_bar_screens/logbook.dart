@@ -7,6 +7,7 @@ import 'package:test_saja/controller/logbook_controller.dart';
 import 'package:test_saja/models/glocu_measurement.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
 
+import '../../models/intakes_model.dart';
 import '../../widgets/build_section_calorises.dart';
 
 class LogBookScreen extends StatefulWidget {
@@ -152,96 +153,128 @@ class _LogBookScreenState extends State<LogBookScreen> {
         child: ListView(
           children: <Widget>[
             // Calories Numbers
-            FutureBuilder(
-              future: controller.hCalRef!.get(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: SpinKitCircle(
-                      color: Colors.amber,
-                    ),
-                  );
-                } else {
-                  return Container(
-                    padding: const EdgeInsets.all(12.0),
-                    height: Get.width * 0.3,
-                    child: Row(
-                      children: [
-                        BuildCaloriseAndClucoseWidget(
-                          label: LocaleKeys.lowest_calories.tr,
-                          // To check if zreo or display the accurate value
-                          amount: controller.highestCal!.length == 0
-                              ? " 0 Cal"
-                              : '${controller.highestCal![0].toString()} Cal',
-                          color: Colors.green,
-                        ),
-                        SizedBox(
-                          width: size.width * 0.05,
-                        ),
-                        BuildCaloriseAndClucoseWidget(
-                          label: LocaleKeys.highest_calories.tr,
-                          // To check if zreo or display the accurate value
-                          amount: controller.highestCal!.length == 0
-                              ? " 0 Cal"
-                              : '${controller.highestCal![controller.highestCal!.length - 1].toString()} Cal',
-
-                          color: Colors.red,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
-            // Calories  Table
-            FutureBuilder(
-              future: controller.calRef!.get(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: SpinKitCircle(
-                      color: Colors.amber,
-                    ),
-                  );
-                } else {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      top: BorderSide(color: Colors.blueGrey, width: 2),
-                    )),
-                    child: ExpansionTile(
-                      title: Text(
-                        LocaleKeys.calories.tr,
-                        style: const TextStyle(color: Colors.black),
+            StreamBuilder(
+                stream: controller.getHighCal,
+                builder: (context, AsyncSnapshot<List<Intakes>> snapshot) {
+                  print("snapshot.data?.length => ${snapshot.data?.length}");
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: SpinKitCircle(
+                        color: Colors.amber,
                       ),
-                      trailing: TextButton.icon(
-                          onPressed: null,
-                          icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                          label: Text(LocaleKeys.show.tr)),
-                      children: [
-                        SingleChildScrollView(
+                    );
+                  } else {
+                    return Container(
+                      padding: const EdgeInsets.all(12.0),
+                      height: Get.width * 0.3,
+                      child: Row(
+                        children: [
+                          BuildCaloriseAndClucoseWidget(
+                            label: LocaleKeys.lowest_calories.tr,
+                            // To check if zreo or display the accurate value
+                            amount: snapshot.data!.length == 0
+                                ? "0 mg/dl"
+                                : snapshot.data![0].cal.toString() + 'mg/dl',
+                            color: Colors.green,
+                          ),
+                          SizedBox(
+                            width: size.width * 0.05,
+                          ),
+                          BuildCaloriseAndClucoseWidget(
+                            label: LocaleKeys.highest_calories.tr,
+                            // To check if zreo or display the accurate value
+                            amount: snapshot.data!.length == 0
+                                ? "0 mg/dl"
+                                : snapshot.data![snapshot.data!.length - 1].cal
+                                        .toString() +
+                                    'mg/dl',
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }),
+            // Calories  Table
+            StreamBuilder(
+                stream: controller.calTableData,
+                builder: (context, AsyncSnapshot<List<Intakes>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print(
+                        "snapshot.data:${snapshot.connectionState == ConnectionState.active}");
+                    return const Center(
+                      child: SpinKitCircle(
+                        color: Colors.amber,
+                      ),
+                    );
+                  } else {
+                    print("snapshot.data:$snapshot");
+                    print("snapshot.data:${snapshot.data?.length}");
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10.0),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.blueGrey, width: 2),
+                        ),
+                      ),
+                      child: ExpansionTile(
+                        title: Text(LocaleKeys.glucose.tr),
+                        trailing: TextButton.icon(
+                            onPressed: null,
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
+                            label: Text(LocaleKeys.show.tr)),
+                        children: [
+                          SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                                headingRowColor:
-                                    MaterialStateProperty.all(Colors.blueGrey),
-                                //ToDO Firebase
-                                // Retrieve the value from Firebase
-                                columns: Calcolumn.map((e) => DataColumn(
-                                      label: Text(e),
-                                    )).toList(),
-                                rows: controller.calRow.map((e) {
-                                  return DataRow(
-                                      cells: e.map((e) {
-                                    return DataCell(Text('$e'));
-                                  }).toList());
-                                }).toList())),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: DataTable(
+                                  columnSpacing: size.width * 0.08,
+                                  sortColumnIndex:
+                                      controller.currentSortColumn.value,
+                                  sortAscending: controller.isAscending.value,
+                                  headingRowColor: MaterialStateProperty.all(
+                                    Colors.blueGrey,
+                                  ),
+                                  columns:
+                                      //send column List
+                                      Calcolumn.map(
+                                    (e) => DataColumn(
+                                      label: Text('$e'),
+                                    ),
+                                  ).toList(),
+                                  rows:
+                                      // get Rows List
+                                      //fireBAse
+                                      snapshot.data!
+                                          .map(
+                                            (cal) => DataRow(
+                                              cells: [
+                                                DataCell(Text(cal.type ?? '')),
+                                                DataCell(
+                                                    Text(cal.category ?? '')),
+                                                DataCell(
+                                                    Text("${cal.quantity}")),
+                                                DataCell(Text("${cal.cal}")),
+                                              ],
+                                            ),
+                                          )
+                                          .toList()
+                                  /*  controller.Glurow.map((ee) {
+                                    return DataRow(
+                                        cells: ee.map((el) {
+                                      return DataCell(Text('$el'));
+                                    }).toList());
+                                  }).toList()),*/
+                                  ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                }),
 
 // ######################################################################################
 
@@ -266,7 +299,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                           BuildCaloriseAndClucoseWidget(
                             label: LocaleKeys.lowest_glucose_level.tr,
                             // To check if zreo or display the accurate value
-                            amount: snapshot.data == null
+                            amount: snapshot.data!.length == 0
                                 ? "0 mg/dl"
                                 : snapshot.data![0].result.toString() + 'mg/dl',
                             color: Colors.green,
@@ -277,7 +310,7 @@ class _LogBookScreenState extends State<LogBookScreen> {
                           BuildCaloriseAndClucoseWidget(
                             label: LocaleKeys.highest_glucose.tr,
                             // To check if zreo or display the accurate value
-                            amount: snapshot.data == null
+                            amount: snapshot.data!.length == 0
                                 ? "0 mg/dl"
                                 : snapshot
                                         .data![snapshot.data!.length - 1].result

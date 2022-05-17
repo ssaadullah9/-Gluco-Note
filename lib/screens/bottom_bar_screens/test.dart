@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:test_saja/const/colors.dart';
 import 'package:test_saja/controller/main_controller.dart';
 import 'package:test_saja/controller/test_controller.dart';
+import 'package:test_saja/models/bmi-model.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '/bmi.dart';
@@ -316,7 +317,7 @@ class TestScreen extends StatelessWidget {
                                                 Text(LocaleKeys.calculate.tr),
                                             icon: const Icon(Icons.done),
                                             style: ElevatedButton.styleFrom(
-                                              primary: const Color(0xFFE5A937),
+                                              primary: const Color(0xFF5A9379),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -337,12 +338,14 @@ class TestScreen extends StatelessWidget {
                                           title: Text(LocaleKeys.show.tr),
                                           children: [
                                             //ToDO Firebase
-                                            FutureBuilder(
-                                                future:
-                                                    controller.Bmiref!.get(),
+                                            StreamBuilder(
+                                                stream: controller.bmiTableData,
                                                 builder: (context,
-                                                    AsyncSnapshot snapshot) {
-                                                  if (!snapshot.hasData) {
+                                                    AsyncSnapshot<List<BMI>>
+                                                        snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
                                                     return const Center(
                                                       child: SpinKitCircle(
                                                         color: Colors.amber,
@@ -350,35 +353,41 @@ class TestScreen extends StatelessWidget {
                                                     );
                                                   } else {
                                                     return DataTable(
-                                                      headingRowColor:
-                                                          MaterialStateProperty
-                                                              .all(Colors
-                                                                  .blueGrey),
-                                                      //ToDO Firebase
-                                                      columns: bmiColumn
-                                                          .map(
-                                                            (e) => DataColumn(
-                                                              label: Text(e),
-                                                            ),
-                                                          )
-                                                          .toList(),
-                                                      rows:
-                                                          controller.Bmirow.map(
-                                                        (e) {
-                                                          return DataRow(
-                                                            cells: e.map(
-                                                              (e) {
-                                                                return DataCell(
-                                                                  Text(e),
-                                                                );
-                                                              },
-                                                            ).toList(),
-                                                          );
-                                                        },
-                                                      ).toList(),
-                                                    );
+                                                        headingRowColor:
+                                                            MaterialStateProperty
+                                                                .all(Colors
+                                                                    .blueGrey),
+                                                        //ToDO Firebase
+                                                        columns: bmiColumn
+                                                            .map(
+                                                              (e) => DataColumn(
+                                                                label: Text(e),
+                                                              ),
+                                                            )
+                                                            .toList(),
+                                                        rows:
+                                                            // get Rows List
+                                                            //fireBAse
+                                                            snapshot.data!
+                                                                .map(
+                                                                  (bmi) =>
+                                                                      DataRow(
+                                                                    cells: [
+                                                                      DataCell(Text(
+                                                                          bmi.date ??
+                                                                              '')),
+                                                                      DataCell(Text(
+                                                                          bmi.result ??
+                                                                              '')),
+                                                                      DataCell(Text(
+                                                                          bmi.status ??
+                                                                              '')),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                                .toList());
                                                   }
-                                                }), // future builder
+                                                }),
                                           ],
                                         ),
                                       )
