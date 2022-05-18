@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:test_saja/const/colors.dart';
-import 'package:test_saja/controller/main_controller.dart';
 import 'package:test_saja/controller/test_controller.dart';
 import 'package:test_saja/models/bmi-model.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '/bmi.dart';
+import '../../controller/main_controller.dart';
 
 class TestScreen extends StatelessWidget {
   // final mainController = Get.lazyPut(() => MainController());
@@ -219,7 +219,7 @@ class TestScreen extends StatelessWidget {
                                                     child: Container(
                                                       alignment:
                                                           Alignment.center,
-                                                      height: Get.width * 0.4,
+                                                      height: Get.width * 0.5,
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               horizontal:
@@ -235,13 +235,13 @@ class TestScreen extends StatelessWidget {
                                                               BorderRadius
                                                                   .circular(
                                                                       12.0)),
-                                                      child: Column(
-                                                        crossAxisAlignment:
+                                                      child: ListView(
+                                                        /*crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .stretch,
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .center,
+                                                                .center,*/
                                                         children: [
                                                           Text(
                                                             LocaleKeys
@@ -268,6 +268,7 @@ class TestScreen extends StatelessWidget {
                                                                     fontSize:
                                                                         18.0),
                                                           ),
+                                                          SizedBox(height: 10),
                                                           Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -358,13 +359,22 @@ class TestScreen extends StatelessWidget {
                                                                 .all(Colors
                                                                     .blueGrey),
                                                         //ToDO Firebase
-                                                        columns: bmiColumn
+                                                        columns: /*bmiColumn
                                                             .map(
                                                               (e) => DataColumn(
                                                                 label: Text(e),
                                                               ),
                                                             )
-                                                            .toList(),
+                                                            .toList(),*/
+                                                            bmiColumn
+                                                                .map(
+                                                                  (e) =>
+                                                                      DataColumn(
+                                                                    label:
+                                                                        Text(e),
+                                                                  ),
+                                                                )
+                                                                .toList(),
                                                         rows:
                                                             // get Rows List
                                                             //fireBAse
@@ -613,11 +623,8 @@ class TestScreen extends StatelessWidget {
     });
   }
 
-  final List<String> bmiColumn = [
-    LocaleKeys.date.tr,
-    LocaleKeys.result.tr,
-    LocaleKeys.status.tr,
-  ];
+  List<String> bmiColumn =
+      [LocaleKeys.bmi_d.tr, LocaleKeys.bmi_r.tr, LocaleKeys.bmi_s.tr].obs;
 }
 
 /////

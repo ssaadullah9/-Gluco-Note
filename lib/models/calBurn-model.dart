@@ -1,7 +1,7 @@
 class CalBurned {
   final String? email;
-  final int? cal;
-  final int? per;
+  final double? cal;
+  final double? per;
   final String? type;
 
   const CalBurned({

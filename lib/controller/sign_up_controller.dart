@@ -1,48 +1,11 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-//
-// class SignUpController extends GetxController {
-//   var isShow = true.obs;
-//   var userName = ''.obs;
-//   var email = ''.obs;
-//   var passWord = ''.obs;
-//   final keyForm = GlobalKey<FormState>();
-//
-//   String? validationUserName(String val){
-//     if(val.trim().isEmpty){
-//       return 'username is not correct';
-//     }else{
-//       return null;
-//     }
-//   }
-//
-//   String? validationEmail(String val){
-//     if(val.trim().isEmpty || !(val.isEmail)){
-//       return 'email is not correct';
-//     }else{
-//       return null;
-//     }
-//   }
-//
-//   String? validationPassword(String val){
-//     if(val.trim().isEmpty || val.length < 8){
-//       return 'password is too short';
-//     }else{
-//       return null;
-//     }
-//   }
-//
-//   void stateShowPassword(){
-//     isShow.value = !isShow.value;
-//   }
-// }
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_saja/screens/login.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
+
+import '../screens/verify_email.dart';
 //import package:firebase_database/firebase_database.dart';
 
 class SignUpController extends GetxController {
@@ -57,13 +20,13 @@ class SignUpController extends GetxController {
   Future register({email, password, phone, name, context}) async {
     try {
       UserCredential user =
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       if (user != null) {
         Get.snackbar(LocaleKeys.successful.tr, LocaleKeys.new_user.tr);
-        Get.off(LoginScreen());
+        Get.off(VerifyScreen());
         addData(name, phone);
       }
     } on FirebaseAuthException catch (e) {
@@ -89,13 +52,13 @@ class SignUpController extends GetxController {
 
 //d
   String? validationPassword(String val) {
-    if(val.trim().isEmpty) {
+    if (val.trim().isEmpty) {
       return LocaleKeys.pass_must_entered.tr;
     }
-    if ( val.length < 8) {
+    if (val.length < 8) {
       return LocaleKeys.password_is_too_short.tr;
-    }
-    else null ;
+    } else
+      null;
   }
 
   String? validationNumberPhone(String value) {
@@ -119,7 +82,7 @@ class SignUpController extends GetxController {
   addData(name, phone) async {
     var user = FirebaseAuth.instance.currentUser;
     CollectionReference Health_info =
-    FirebaseFirestore.instance.collection("Acounts");
+        FirebaseFirestore.instance.collection("Acounts");
     Health_info.doc(user!.uid).set({
       "Email": user.email.toString(),
       "Name": name.toString(),

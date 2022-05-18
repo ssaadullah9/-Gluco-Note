@@ -12,9 +12,9 @@ import 'package:get/get.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-//import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:test_saja/screens/add_reminder.dart';
 import 'package:test_saja/screens/bottom_bar_screens/logbook.dart';
+import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '../widgets/notificationService.dart';
 
@@ -34,17 +34,11 @@ class InTaksScreen extends StatefulWidget {
 
 class _InTaksScreenState extends State<InTaksScreen> {
   void getDataFromFireBaseHealthInfo() async {
-    //هنا لازم تتعدل بس تساوو اللوغ ان بحيث يجيب فقط معلزمات هذا اليوزر طيب
-
     data = FirebaseFirestore.instance.collection("Health_Info");
     await data!.get().then((snapShot) {
       _w = int.parse('${snapShot.docs[0]['Weight']}');
       _l = int.parse('${snapShot.docs[0]['Height']}');
-      /*snapShot.docs.forEach((element) {
-          // print(user!.uid);
-          //تمام لما يصير في يوزرات بالفاير بيز تعملو انو يجيب الطول لهذا المستخدم أنا الأن رح أعملها وجيب الثاني بس أما انتو رح تجيبو نفسه بس لليوزر المحدد تمام أصلا ما رح يكون في غير واحد
 
-        });*/
       print(_w);
     });
   }
@@ -105,12 +99,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
   String? selectedValue;
 
   List<String> items = [
-    'Every Day',
-    'Every Week',
-    'Two Times a week',
-    'Three Times a week',
-    'Every two weeks',
-    'Once a month',
+    LocaleKeys.every_day.tr,
+    LocaleKeys.every_week.tr,
+    LocaleKeys.two_times_aweek.tr,
+    LocaleKeys.three_times_aweek.tr,
+    LocaleKeys.every_two_weeks.tr,
+    // LocaleKeys.once_amonth.tr,
   ];
 
   late String dropdownValue;
@@ -123,148 +117,232 @@ class _InTaksScreenState extends State<InTaksScreen> {
     getDataFromFireBaseHealthInfo();
     timep = TimeOfDay.now();
     this.category = [
-      "Fruits",
-      "Meats",
-      "Eggs",
-      "Carbohydrates",
-      "Sweets",
-      "Ice-Cream",
-      "Other", //add new
+      LocaleKeys.Fruits.tr,
+      LocaleKeys.Meats.tr,
+      LocaleKeys.Eggs.tr,
+      LocaleKeys.Carbohydrates.tr,
+      LocaleKeys.Sweets.tr,
+      LocaleKeys.IceCream.tr,
+      LocaleKeys.Other.tr //add new
     ];
     this.categoryType = [
       [
-        {"name": "Apple", "cal": 95, "fat": 0.3, "pro": 0.5},
-        {"name": "Apricot", "cal": 17, "fat": 0.14, "pro": 0.49},
-        {"name": "avocado ", "cal": 322, "fat": 29.47, "pro": 4.02},
-        {"name": "Banana", "cal": 105, "fat": 0.4, "pro": 1.3},
+        {"name": LocaleKeys.Apple.tr, "cal": 95, "fat": 0.3, "pro": 0.5},
+        {"name": LocaleKeys.Apricot.tr, "cal": 17, "fat": 0.14, "pro": 0.49},
+        {"name": LocaleKeys.avocado.tr, "cal": 322, "fat": 29.47, "pro": 4.02},
+        {"name": LocaleKeys.Banana.tr, "cal": 105, "fat": 0.4, "pro": 1.3},
+        {"name": LocaleKeys.olive.tr, "cal": 16, "fat": 1.43, "pro": 0.13},
+        {"name": LocaleKeys.cherry.tr, "cal": 4, "fat": 0.01, "pro": 0.07},
+        {"name": LocaleKeys.dates.tr, "cal": 20, "fat": 0, "pro": 0.2},
+        {"name": LocaleKeys.grape.tr, "cal": 3, "fat": 0.01, "pro": 0.04},
+        {"name": LocaleKeys.Java_Plum.tr, "cal": 5, "fat": 0.02, "pro": 0.06},
+        {"name": LocaleKeys.Kiwifruit.tr, "cal": 46, "fat": 0.4, "pro": 0.87},
+        {"name": LocaleKeys.Lime.tr, "cal": 20, "fat": 0.13, "pro": 0.47},
+        {"name": LocaleKeys.mango.tr, "cal": 135, "fat": 0.56, "pro": 1.06},
+        {"name": LocaleKeys.Orange.tr, "cal": 62, "fat": 0.2, "pro": 1.9},
+        {"name": LocaleKeys.Pineapple.tr, "cal": 40, "fat": 0.1, "pro": 0.45},
         {
-          "name": "Black Olives (1 Greek olive)",
-          "cal": 16,
-          "fat": 1.43,
-          "pro": 0.13
+          "name": LocaleKeys.Pomegranate.tr,
+          "cal": 105,
+          "fat": 0.46,
+          "pro": 1.46
         },
-        {"name": "cherry", "cal": 4, "fat": 0.01, "pro": 0.07},
-        {"name": "dates", "cal": 20, "fat": 0, "pro": 0.2},
-        {"name": "grape", "cal": 3, "fat": 0.01, "pro": 0.04},
-        {"name": "Java Plum (3 fruits) ", "cal": 5, "fat": 0.02, "pro": 0.06},
-        {"name": " Kiwifruit", "cal": 46, "fat": 0.4, "pro": 0.87},
-        {"name": "Lime", "cal": 20, "fat": 0.13, "pro": 0.47},
-        {"name": "mango", "cal": 135, "fat": 0.56, "pro": 1.06},
-        {"name": "Orange", "cal": 62, "fat": 0.2, "pro": 1.9},
-        {"name": "Pineapple (1 slice) ", "cal": 40, "fat": 0.1, "pro": 0.45},
-        {"name": "Pomegranate ", "cal": 105, "fat": 0.46, "pro": 1.46},
-        {"name": "Peach", "cal": 38, "fat": 0.24, "pro": 0.89},
-        {"name": "Pear", "cal": 96, "fat": 0.2, "pro": 0.63},
-        {"name": "strawberry", "cal": 4, "fat": 0.04, "pro": 0.08},
+        {"name": LocaleKeys.Peach.tr, "cal": 38, "fat": 0.24, "pro": 0.89},
+        {"name": LocaleKeys.Pear.tr, "cal": 96, "fat": 0.2, "pro": 0.63},
+        {"name": LocaleKeys.strawberry.tr, "cal": 4, "fat": 0.04, "pro": 0.08},
+        {"name": LocaleKeys.Watermelon.tr, "cal": 46, "fat": 0.23, "pro": 0.93},
         {
-          "name": "Watermelon (1 cup of diced)",
-          "cal": 46,
-          "fat": 0.23,
-          "pro": 0.93
-        },
-        {
-          "name": "Watermelon (1 melon) ",
+          "name": LocaleKeys.Watermelon2.tr,
           "cal": 1355,
           "fat": 6.78,
           "pro": 27.56
         },
       ],
       [
-        {"name": "Chicken (100 g)", "cal": 239, "fat": 14, "pro": 27}, //done
-        {"name": "Fried Fish (10 g) ", "cal": 199, "fat": 11.37, "pro": 16.72},
         {
-          "name": "Grilled Fish (1 fillet) ",
+          "name": LocaleKeys.Chicken.tr,
+          "cal": 239,
+          "fat": 14,
+          "pro": 27
+        }, //done
+        {
+          "name": LocaleKeys.Fried_Fish.tr,
+          "cal": 199,
+          "fat": 11.37,
+          "pro": 16.72
+        },
+        {
+          "name": LocaleKeys.Grilled_Fish.tr,
           "cal": 123,
           "fat": 1.33,
           "pro": 25.53
         }, //done
-        {"name": "Tuna (100 g) ", "cal": 108, "fat": 0.95, "pro": 23.38}, //done
-        {"name": "meat (100 g) ", "cal": 143, "fat": 3.5, "pro": 26}, //done
+        {
+          "name": LocaleKeys.Tuna.tr,
+          "cal": 108,
+          "fat": 0.95,
+          "pro": 23.38
+        }, //done
+        {"name": LocaleKeys.meat.tr, "cal": 143, "fat": 3.5, "pro": 26}, //done
       ],
       [
-        {"name": "Omelet", "cal": 98, "fat": 7.14, "pro": 6.81},
+        {"name": LocaleKeys.Omelet.tr, "cal": 98, "fat": 7.14, "pro": 6.81},
         //done (Fatsecret)
-        {"name": "Fried", "cal": 89, "fat": 6.76, "pro": 6.24},
+        {"name": LocaleKeys.Fried.tr, "cal": 89, "fat": 6.76, "pro": 6.24},
         //done
-        {"name": "Boiled", "cal": 77, "fat": 5.28, "pro": 6.26},
-        //done
-      ],
-      [
-        {"name": "White Bread (1 slice) ", "cal": 66, "fat": 0.82, "pro": 1.91},
-        //done
-        {"name": "Pasta (100g)", "cal": 131, "fat": 1.05, "pro": 5.15},
-        //done
-        {"name": "Spaghetti (100g)", "cal": 157, "fat": 0.92, "pro": 5.76},
-        //done
-        {"name": "Chicken rice (100g)", "cal": 150, "fat": 5.44, "pro": 5.66},
-        //done
-        {"name": "White Rice (100g)", "cal": 129, "fat": 0.28, "pro": 2.66},
-        //done
-        {"name": "Brown Rice (100g)", "cal": 110, "fat": 0.89, "pro": 2.56},
+        {"name": LocaleKeys.Boiled.tr, "cal": 77, "fat": 5.28, "pro": 6.26},
         //done
       ],
       [
-        // {"name":"Oreo","cal":0.5,"fat":0.23,"pro":80},
-        {"name": "Snickers (15g)", "cal": 80, "fat": 4, "pro": 1.5},
+        {
+          "name": LocaleKeys.White_Bread.tr,
+          "cal": 66,
+          "fat": 0.82,
+          "pro": 1.91
+        },
         //done
-        {"name": "Maltesers (37g)", "cal": 180, "fat": 9, "pro": 3},
+        {"name": LocaleKeys.Pasta.tr, "cal": 131, "fat": 1.05, "pro": 5.15},
+        //done
+        {"name": LocaleKeys.Spaghetti.tr, "cal": 157, "fat": 0.92, "pro": 5.76},
+        //done
+        {
+          "name": LocaleKeys.Chicken_rice.tr,
+          "cal": 150,
+          "fat": 5.44,
+          "pro": 5.66
+        },
+        //done
+        {
+          "name": LocaleKeys.White_Rice.tr,
+          "cal": 129,
+          "fat": 0.28,
+          "pro": 2.66
+        },
+        //done
+        {
+          "name": LocaleKeys.Brown_Rice.tr,
+          "cal": 110,
+          "fat": 0.89,
+          "pro": 2.56
+        },
+        //done
+      ],
+      [
+        {"name": LocaleKeys.Snickers.tr, "cal": 80, "fat": 4, "pro": 1.5},
+        //done
+        {"name": LocaleKeys.Maltesers.tr, "cal": 180, "fat": 9, "pro": 3},
         //Done
-        {"name": "Milky Way Bar (52.2g)", "cal": 240, "fat": 9, "pro": 2},
+        {"name": LocaleKeys.Milky_Way.tr, "cal": 240, "fat": 9, "pro": 2},
         //done
-        {"name": "Jellybeans (10 small)", "cal": 41, "fat": 0.01, "pro": 0},
+        {"name": LocaleKeys.Jellybeans.tr, "cal": 41, "fat": 0.01, "pro": 0},
         //done
       ],
       [
-        {"name": "Vanilla (1/2 cup) ", "cal": 145, "fat": 7.92, "pro": 2.52},
+        {"name": LocaleKeys.Vanilla.tr, "cal": 145, "fat": 7.92, "pro": 2.52},
         //done
-        {"name": "Chocolate", "cal": 125, "fat": 6.38, "pro": 2.2},
+        {"name": LocaleKeys.Chocolate.tr, "cal": 125, "fat": 6.38, "pro": 2.2},
         //done
-        {"name": "Strawberry", "cal": 111, "fat": 4.87, "pro": 1.86},
+        {
+          "name": LocaleKeys.Strawberry.tr,
+          "cal": 111,
+          "fat": 4.87,
+          "pro": 1.86
+        },
         //done
       ],
     ];
     this.liquidType = [
-      {"name": "Apple juice", "cal": 117, "fat": 0.27, "pro": 0.15},
-      {"name": "Banana Juice", "cal": 218, "fat": 0.81, "pro": 2.67},
-      {"name": "Carrot Juice", "cal": 94, "fat": 0.35, "pro": 2.24},
-      {"name": "Grape Juice", "cal": 154, "fat": 0.2, "pro": 1.42},
-      {"name": "Grapefruit Juice", "cal": 94, "fat": 0.25, "pro": 1.28},
-      {"name": "Mango Juice", "cal": 140, "fat": 0, "pro": 0},
-      {"name": "Orange juice", "cal": 112, "fat": 0.5, "pro": 1.74},
-      {"name": "Passion fruit juice", "cal": 126, "fat": 0.12, "pro": 0.96},
-      {"name": "Strawberry Juice", "cal": 90, "fat": 1.42, "pro": 0.71},
-      {"name": "Tomato Juice", "cal": 41, "fat": 0.12, "pro": 1.85},
-      {"name": "Tea (Brewed)", "cal": 2, "fat": 0, "pro": 0},
-      {"name": "Green tea", "cal": 2, "fat": 0, "pro": 0},
-      {"name": "Milk", "cal": 122, "fat": 4.88, "pro": 8.03},
-      {"name": "Milk Shake", "cal": 382, "fat": 13.84, "pro": 9.03},
-      {"name": "Chocolate Milk", "cal": 208, "fat": 8.48, "pro": 7.92},
-      {"name": "Coffee with Milk", "cal": 6, "fat": 0.15, "pro": 0.33},
-      {"name": "Caffe Americano (Starbucks)", "cal": 5, "fat": 0, "pro": 0},
-      {"name": "Latte Coffee", "cal": 135, "fat": 5.51, "pro": 8.81},
-      {"name": "Espresso Coffee", "cal": 1, "fat": 0.11, "pro": 0.07},
-      {"name": "Cappuccino", "cal": 56, "fat": 2.99, "pro": 3.06},
-      {"name": "French Vanilla Cafe", "cal": 60, "fat": 2.5, "pro": 0},
-      {"name": "Turkish Coffee", "cal": 46, "fat": 0.02, "pro": 0.13},
-      {"name": "other"},
+      {"name": LocaleKeys.Apple_juice.tr, "cal": 117, "fat": 0.27, "pro": 0.15},
+      {
+        "name": LocaleKeys.Banana_Juice.tr,
+        "cal": 218,
+        "fat": 0.81,
+        "pro": 2.67
+      },
+      {"name": LocaleKeys.Carrot_Juice.tr, "cal": 94, "fat": 0.35, "pro": 2.24},
+      {"name": LocaleKeys.Grape_Juice.tr, "cal": 154, "fat": 0.2, "pro": 1.42},
+      {
+        "name": LocaleKeys.Grapefruit_Juice.tr,
+        "cal": 94,
+        "fat": 0.25,
+        "pro": 1.28
+      },
+      {"name": LocaleKeys.Mango_Juice.tr, "cal": 140, "fat": 0, "pro": 0},
+      {"name": LocaleKeys.Orange_juice.tr, "cal": 112, "fat": 0.5, "pro": 1.74},
+      {
+        "name": LocaleKeys.Passion_fruit_juice.tr,
+        "cal": 126,
+        "fat": 0.12,
+        "pro": 0.96
+      },
+      {
+        "name": LocaleKeys.Strawberry_Juice.tr,
+        "cal": 90,
+        "fat": 1.42,
+        "pro": 0.71
+      },
+      {"name": LocaleKeys.Tomato_Juice.tr, "cal": 41, "fat": 0.12, "pro": 1.85},
+      {"name": LocaleKeys.Tea.tr, "cal": 2, "fat": 0, "pro": 0},
+      {"name": LocaleKeys.Green_tea.tr, "cal": 2, "fat": 0, "pro": 0},
+      {"name": LocaleKeys.Milk.tr, "cal": 122, "fat": 4.88, "pro": 8.03},
+      {"name": LocaleKeys.Milk_Shake.tr, "cal": 382, "fat": 13.84, "pro": 9.03},
+      {
+        "name": LocaleKeys.Chocolate_Milk.tr,
+        "cal": 208,
+        "fat": 8.48,
+        "pro": 7.92
+      },
+      {
+        "name": LocaleKeys.Coffee_with_Milk.tr,
+        "cal": 6,
+        "fat": 0.15,
+        "pro": 0.33
+      },
+      {"name": LocaleKeys.Coffee_Americano.tr, "cal": 5, "fat": 0, "pro": 0},
+      {
+        "name": LocaleKeys.Latte_Coffee.tr,
+        "cal": 135,
+        "fat": 5.51,
+        "pro": 8.81
+      },
+      {
+        "name": LocaleKeys.Espresso_Coffee.tr,
+        "cal": 1,
+        "fat": 0.11,
+        "pro": 0.07
+      },
+      {"name": LocaleKeys.Cappuccino.tr, "cal": 56, "fat": 2.99, "pro": 3.06},
+      {
+        "name": LocaleKeys.French_Vanilla_Coffee.tr,
+        "cal": 60,
+        "fat": 2.5,
+        "pro": 0
+      },
+      {
+        "name": LocaleKeys.Turkish_Coffee.tr,
+        "cal": 46,
+        "fat": 0.02,
+        "pro": 0.13
+      },
+      {"name": LocaleKeys.Other.tr},
     ];
 
     this.exerciseTypes = [
-      {"name": "Aerobics", "met": 6.83},
-      {"name": "Baseball", "met": 5},
-      {"name": "Basketball", "met": 8},
-      {"name": "Billiards", "met": 2.5}, //done
-      {"name": "Bowling", "met": 3},
-      {"name": "Cycling", "met": 9.5},
-      {"name": "Dancing", "met": 4.5},
-      {"name": "Fishing", "met": 4.5},
-      {"name": "Football", "met": 7},
-      {"name": "Hiking", "met": 6},
-      {"name": "Ice skating", "met": 7},
-      {"name": "Racquet sports", "met": 8.5},
-      {"name": "Running", "met": 9.8},
-      {"name": "Swimming", "met": 8},
-      {"name": "Walking", "met": 3.8},
+      {"name": LocaleKeys.Aerobics.tr, "met": 6.83},
+      {"name": LocaleKeys.Baseball.tr, "met": 5},
+      {"name": LocaleKeys.Basketball.tr, "met": 8},
+      {"name": LocaleKeys.Billiards.tr, "met": 2.5}, //done
+      {"name": LocaleKeys.Bowling.tr, "met": 3},
+      {"name": LocaleKeys.Cycling.tr, "met": 9.5},
+      {"name": LocaleKeys.Dancing.tr, "met": 4.5},
+      {"name": LocaleKeys.Fishing.tr, "met": 4.5},
+      {"name": LocaleKeys.Football.tr, "met": 7},
+      {"name": LocaleKeys.Hiking.tr, "met": 6},
+      {"name": LocaleKeys.Ice_skating.tr, "met": 7},
+      {"name": LocaleKeys.Racquet_sports.tr, "met": 8.5},
+      {"name": LocaleKeys.Running.tr, "met": 9.8},
+      {"name": LocaleKeys.Swimming.tr, "met": 8},
+      {"name": LocaleKeys.Walking.tr, "met": 3.8},
     ];
   }
 
@@ -281,17 +359,18 @@ class _InTaksScreenState extends State<InTaksScreen> {
 
   String percent = '0';
   int milliseconds = 5000;
-  Future<void> selectTime(BuildContext context) async {
-    picked = (await showTimePicker(
-        context: context, initialTime: TimeOfDay(hour: 10, minute: 20)))!;
-    if (picked != null) {
-      timep = picked;
-    }
-  }
-
+  // Future<void> selectTime(BuildContext context) async {
+  //   picked = (await showTimePicker(
+  //       context: context,
+  //       initialTime: TimeOfDay(hour: 10, minute: 20)
+  //   ))!;
+  //   if (picked != null) {
+  //     timep = picked;
+  //   }
+  // }
   double circlePrograce = 0.0;
   String selected_Ltype = '';
-  dynamic selected_Lquantity = 0;
+  dynamic selected_Lquantity;
   dynamic solids_result;
   dynamic selected_squantity;
   dynamic L_calories = 0;
@@ -316,16 +395,20 @@ class _InTaksScreenState extends State<InTaksScreen> {
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
           title: Text(
-            'Intakes',
+            LocaleKeys.Intakes.tr,
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
-              Tab(text: 'Solids', icon: Icon(Icons.local_pizza)),
-              Tab(text: 'Liquids', icon: Icon(Icons.emoji_food_beverage)),
-              Tab(text: 'Medication', icon: Icon(Icons.medication)),
-              Tab(text: 'Exercise', icon: Icon(Icons.directions_run)),
+              Tab(text: LocaleKeys.Solids.tr, icon: Icon(Icons.local_pizza)),
+              Tab(
+                  text: LocaleKeys.Liquids.tr,
+                  icon: Icon(Icons.emoji_food_beverage)),
+              Tab(text: LocaleKeys.Medication.tr, icon: Icon(Icons.medication)),
+              Tab(
+                  text: LocaleKeys.Exercise.tr,
+                  icon: Icon(Icons.directions_run)),
             ],
             unselectedLabelColor: Colors.grey,
             labelColor: Colors.white,
@@ -347,7 +430,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Category: ',
+                      LocaleKeys.Category.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -359,7 +442,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
               ),
               DropdownButtonFormField(
                   decoration: InputDecoration(
-                      hintText: 'SelectCategory', border: OutlineInputBorder()),
+                      hintText: LocaleKeys.SelectCategory.tr,
+                      border: OutlineInputBorder()),
                   items: category!.map((e) {
                     return DropdownMenuItem(
                       child: Text('$e'),
@@ -384,7 +468,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Type: ',
+                      LocaleKeys.Type_r.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -396,12 +480,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
               ),
               isLoading
                   ? Center(child: CircularProgressIndicator())
-                  : selectCategory == "Other"
+                  : selectCategory == LocaleKeys.Other.tr
                       ? TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: "Enter the calories",
+                            hintText: LocaleKeys.enter_cal.tr,
                           ),
                           onChanged: (val) {
                             other = int.parse(val);
@@ -415,7 +499,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             }
                           },
                           decoration: InputDecoration(
-                              hintText: 'SelectType',
+                              hintText: LocaleKeys.SelectType.tr,
                               border: OutlineInputBorder()),
                           items: categoryType![indexType].map((e) {
                             return DropdownMenuItem(
@@ -437,7 +521,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
               Column(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Quantity", style: TextStyle(fontSize: 18)),
+                    Text(LocaleKeys.Quantity.tr,
+                        style: TextStyle(fontSize: 18)),
                     SizedBox(
                       height: Get.width * 0.05,
                     ),
@@ -463,16 +548,18 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildContainerSolids(
-                      label: 'Calories', amount: Scal, module: 'cal'),
+                      label: LocaleKeys.calories.tr,
+                      amount: Scal,
+                      module: 'cal'),
                   _buildContainerSolids(
-                      label: 'Fat', amount: sfat, module: 'g'),
+                      label: LocaleKeys.Fat.tr, amount: sfat, module: 'g'),
                   _buildContainerSolids(
-                      label: 'Protein', amount: spro, module: 'g'),
+                      label: LocaleKeys.Protein.tr, amount: spro, module: 'g'),
                 ],
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                    horizontal: Get.width * 0.1, vertical: Get.width * 0.1),
+                    horizontal: Get.width * 0.01, vertical: Get.width * 0.1),
                 child: ElevatedButton.icon(
                     onPressed: () {
                       if (selectCategory == null ||
@@ -482,22 +569,23 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           context: context,
                           dialogType: DialogType.ERROR,
                           animType: AnimType.BOTTOMSLIDE,
-                          title: 'Error',
-                          desc: 'You must fill all the information',
+                          title: LocaleKeys.error.tr,
+                          desc: LocaleKeys.e_fill.tr,
                           btnOkOnPress: () {},
                         )..show();
                       } else {
-                        if (selectCategory == "other") {
+                        if (selectCategory == LocaleKeys.Other.tr) {
                           Scal = other * selected_squantity;
                           print(Scal);
                         }
 
                         for (var i = 0; i < categoryType!.length; i++) {
-                          if (selectCategory == "Other") {
+                          if (selectCategory == LocaleKeys.Other.tr) {
                             Scal = other * selected_squantity;
                             sfat = 0;
                             spro = 0;
                           }
+
                           for (var j = 0; j < categoryType![i].length; j++) {
                             if (selectCategoryType ==
                                 categoryType![i][j]["name"]) {
@@ -518,8 +606,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             }
                           }
                         }
-                        Get.snackbar('do you want save it?',
-                            'it will be show in the logbook',
+                        Get.snackbar(LocaleKeys.D_save.tr, LocaleKeys.s_log.tr,
                             snackPosition: SnackPosition.BOTTOM,
                             borderRadius: 0,
                             duration: Duration(milliseconds: 4500),
@@ -542,13 +629,13 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                   setState(() {});
                                 },
                                 child: Text(
-                                  'Save',
+                                  LocaleKeys.save.tr,
                                   style: TextStyle(color: Colors.blue),
                                 )));
                       }
                     },
                     icon: Icon(Icons.add, size: 30),
-                    label: Text("Calculate"),
+                    label: Text(LocaleKeys.calculate.tr),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE5A9379),
                     )),
@@ -561,7 +648,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Liquid type: ',
+                      LocaleKeys.Liquid_type.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -573,7 +660,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
               ),
               DropdownButtonFormField(
                   decoration: InputDecoration(
-                      hintText: 'Select liquid type',
+                      hintText: LocaleKeys.s_liq.tr,
                       border: OutlineInputBorder()),
                   items: liquidType!.map((e) {
                     return DropdownMenuItem(
@@ -596,39 +683,40 @@ class _InTaksScreenState extends State<InTaksScreen> {
               ),
               isLoading2
                   ? Center(child: CircularProgressIndicator())
-                  : selectliquidType == "other"
+                  : selectliquidType == LocaleKeys.Other.tr
                       ? TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: "Enter the calories",
+                            hintText: LocaleKeys.enter_cal.tr,
                           ),
                           onChanged: (val) {
                             other2 = int.parse(val);
                           },
                         )
                       : SizedBox(),
-              Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Quantity", style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      height: Get.width * 0.05,
-                    ),
-                    NumberInputWithIncrementDecrement(
-                      controller: TextEditingController(),
-                      min: 1,
-                      onDecrement: (val) {
-                        selected_Lquantity = val;
-                      },
-                      onIncrement: (val) {
-                        selected_Lquantity = val;
-                      },
-                      onChanged: (val) {
-                        selected_Lquantity = val;
-                      },
-                    )
-                  ]),
+              SizedBox(height: 10),
+              Column(children: <Widget>[
+                //Spacer(flex:1,),
+                Text(LocaleKeys.quantity.tr, style: TextStyle(fontSize: 18)),
+
+                SizedBox(
+                  height: Get.width * 0.05,
+                ),
+                NumberInputWithIncrementDecrement(
+                  controller: TextEditingController(),
+                  min: 1,
+                  onDecrement: (val) {
+                    selected_Lquantity = val;
+                  },
+                  onIncrement: (val) {
+                    selected_Lquantity = val;
+                  },
+                  onChanged: (val) {
+                    selected_Lquantity = val;
+                  },
+                )
+              ]),
               SizedBox(
                 height: Get.width * 0.1,
               ),
@@ -636,11 +724,13 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildContainerlequids(
-                      label: 'Calories', amount: liquid_result, module: 'cal'),
+                      label: LocaleKeys.calories.tr,
+                      amount: liquid_result,
+                      module: 'cal'),
                   _buildContainerSolids(
-                      label: 'Fat', amount: fat_l, module: 'g'),
+                      label: LocaleKeys.Fat.tr, amount: fat_l, module: 'g'),
                   _buildContainerSolids(
-                      label: 'Protein', amount: pro_l, module: 'g'),
+                      label: LocaleKeys.Protein.tr, amount: pro_l, module: 'g'),
                 ],
               ),
               SizedBox(
@@ -649,21 +739,23 @@ class _InTaksScreenState extends State<InTaksScreen> {
               Container(
                 child: ElevatedButton.icon(
                     onPressed: () {
-                      if (liquidType == null ||
-                          selectliquidType == null ||
-                          selected_Lquantity == null) {
+                      if (selectliquidType == null ||
+                          selected_Lquantity == null ||
+                          other2 == null) {
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.ERROR,
                           animType: AnimType.BOTTOMSLIDE,
-                          title: 'Error',
-                          desc: 'You must fill all the information',
+                          title: LocaleKeys.error.tr,
+                          desc: LocaleKeys.e_fill.tr,
                           btnOkOnPress: () {},
                         )..show();
                       } else {
-                        for (var i = 0; i < liquidType!.length; i++) {
-                          if (selectliquidType == "Other") {
+                        for (var i = 0; i < selectliquidType!.length; i++) {
+                          if (selectliquidType == LocaleKeys.Other.tr) {
                             liquid_result = other2 * selected_Lquantity;
+                            fat_l = 0;
+                            pro_l = 0;
                           } else if (selectliquidType ==
                               liquidType![i]["name"]) {
                             cal_l = liquidType![i]["cal"];
@@ -678,36 +770,43 @@ class _InTaksScreenState extends State<InTaksScreen> {
                             liquid_result = cal_l * selected_Lquantity;
                             print(liquid_result);
                           }
-
-                          liquid_result = liquid_result.toStringAsFixed(2);
-                          pro_l = pro_l.toStringAsFixed(2);
-                          fat_l = fat_l.toStringAsFixed(2);
-                          setState(() {});
-
-                          Get.snackbar('do you want save it?',
-                              'it will be show in the logbook',
-                              snackPosition: SnackPosition.BOTTOM,
-                              borderRadius: 0,
-                              duration: Duration(milliseconds: 4500),
-                              margin: EdgeInsets.zero,
-                              mainButton: TextButton(
-                                  onPressed: () {
-                                    add_intakes("liquids", liquid_result,
-                                        selected_Lquantity, selected_Ltype);
-                                    liquid_result = 0;
-                                    pro_l = 0;
-                                    fat_l = 0;
-                                    setState(() {});
-                                  },
-                                  child: Text(
-                                    'Save',
-                                    style: TextStyle(color: Colors.blue),
-                                  )));
                         }
+                        // liquid_result = liquid_result.toStringAsFixed(2);
+                        // pro_l = pro_l.toStringAsFixed(2);
+                        // fat_l = fat_l.toStringAsFixed(2);
+                        setState(() {});
+
+                        Get.snackbar(LocaleKeys.D_save.tr, LocaleKeys.s_log.tr,
+                            snackPosition: SnackPosition.BOTTOM,
+                            borderRadius: 0,
+                            duration: Duration(milliseconds: 4500),
+                            margin: EdgeInsets.zero,
+                            mainButton: TextButton(
+                                onPressed: () {
+                                  add_intakes("liquids", liquid_result,
+                                      selected_Lquantity, selectliquidType);
+                                  liquid_result = 0;
+                                  pro_l = 0;
+                                  fat_l = 0;
+                                  // Timer(
+                                  //     Duration(
+                                  //         seconds: 2
+                                  //     ) ,
+                                  //         () {
+                                  //
+                                  //       Navigator.pop(context ,LogBookScreen()) ;
+                                  //     }
+                                  // ) ;
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  LocaleKeys.save.tr,
+                                  style: TextStyle(color: Colors.blue),
+                                )));
                       }
                     },
                     icon: Icon(Icons.add, size: 30),
-                    label: Text("Calculate"),
+                    label: Text(LocaleKeys.calculate.tr),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE5A9379),
                     )),
@@ -721,7 +820,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   TextFormField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Name',
+                        labelText: LocaleKeys.name.tr,
                       ),
                       onChanged: (val) {
                         med_name = val as String;
@@ -738,7 +837,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                 value: e,
                               ))
                           .toList(),
-                      hint: Text('How Often'),
+                      hint: Text(LocaleKeys.How_Often.tr),
                       onChanged: (val) {
                         med_time = val as String;
                       }),
@@ -747,7 +846,12 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   ),
                   DropdownButtonFormField(
                     decoration: InputDecoration(border: OutlineInputBorder()),
-                    items: ["Pill", "Injection", "Topical", "Liquid"]
+                    items: [
+                      LocaleKeys.pill.tr,
+                      LocaleKeys.Injection.tr,
+                      LocaleKeys.Topical.tr,
+                      LocaleKeys.Liquidd.tr
+                    ]
                         .map((e) => DropdownMenuItem(
                               child: Text('$e'),
                               value: e,
@@ -756,13 +860,13 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     onChanged: (val) {
                       med_type = val as String;
                     },
-                    hint: Text('Type'),
+                    hint: Text(LocaleKeys.type.tr),
                   ),
                   SizedBox(
                     height: Get.width * 0.05,
                   ),
                   Text(
-                    'Amount',
+                    LocaleKeys.quantity.tr,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -801,7 +905,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       primary: Color(0xFFE5A9379),
                     ),
                     onPressed: () {
-                      if (med_name == null ||
+                      if (med_name.isEmpty ||
                           med_time == null ||
                           med_type == null ||
                           med_q == null) {
@@ -809,8 +913,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
                           context: context,
                           dialogType: DialogType.ERROR,
                           animType: AnimType.BOTTOMSLIDE,
-                          title: 'Error',
-                          desc: 'You must fill all the information',
+                          title: LocaleKeys.error.tr,
+                          desc: LocaleKeys.e_fill.tr,
                           btnOkOnPress: () {},
                         )..show();
                       } else {
@@ -825,7 +929,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       }
                     },
                     icon: Icon(Icons.add, size: 30),
-                    label: Text("Add reminder"),
+                    label: Text(LocaleKeys.add_new_reminder.tr),
                   )
                 ]),
             //screen 4
@@ -835,7 +939,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'All Exercises ',
+                      LocaleKeys.All_Exercises.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -847,7 +951,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
               ),
               DropdownButtonFormField(
                   decoration: InputDecoration(
-                      hintText: 'SelectType', border: OutlineInputBorder()),
+                      hintText: LocaleKeys.e_type.tr,
+                      border: OutlineInputBorder()),
                   items: exerciseTypes!.map((e) {
                     return DropdownMenuItem(
                       child: Text('${e['name']}'),
@@ -873,7 +978,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Minutes Performed ',
+                      LocaleKeys.Minutes_Performed.tr,
                       style: TextStyle(
                         color: Colors.black,
                         //fontWeight: FontWeight.bold,
@@ -894,7 +999,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                       ],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'e.g. 30',
+                        hintText: LocaleKeys.m.tr,
                       ),
                       onChanged: (val) {
                         selectExerciseTime = val;
@@ -938,7 +1043,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Calories burned ',
+                      LocaleKeys.cal_burned.tr,
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
@@ -982,7 +1087,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     Expanded(
                       child: Container(
                         child: Text(
-                          'Exercise Time ',
+                          LocaleKeys.e_timee.tr,
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.black,
@@ -1016,22 +1121,6 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                         selectExerciseTime == '0')
                                     ? 0
                                     : 1,
-                                /*  onAnimationEnd: (){
-                                if(selectExerciseTime !=null||selectExerciseTime != '0'){
-                                  AwesomeDialog(
-                                      context: context,
-                                      dialogType: DialogType.SUCCES,
-                                      desc: 'Exercies is finish',
-                                      btnOkOnPress: () {
-                                        selectExerciseTime = '0';
-                                        milliseconds = 5000;
-                                        percent = '0';
-                                        (context as Element).reassemble();
-                                      }
-                                  )..show();
-
-                                }
-                              },*/
                                 center: Text('${percent}%'),
                                 barRadius: const Radius.circular(16),
                                 progressColor: Colors.red,
@@ -1046,7 +1135,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                 height: Get.width * 0.05,
               ),
               Container(
-                  margin: EdgeInsets.symmetric(horizontal: Get.width * 0.08),
+                  margin: EdgeInsets.symmetric(horizontal: Get.width * 0.01),
                   child: FutureBuilder(
                       future: data!.get(),
                       builder: (context, snapshot) {
@@ -1058,8 +1147,8 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                   context: context,
                                   dialogType: DialogType.ERROR,
                                   animType: AnimType.BOTTOMSLIDE,
-                                  title: 'Error',
-                                  desc: 'You must fill all the information',
+                                  title: LocaleKeys.error.tr,
+                                  desc: LocaleKeys.e_fill.tr,
                                   btnOkOnPress: () {},
                                 )..show();
                               } else
@@ -1080,12 +1169,6 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                         _w /
                                         _l);
 
-                                    // calories= double.parse(calories);
-                                    print("befor:");
-                                    print(calories);
-                                    print("wwwww");
-                                    print(_w);
-                                    //  calo= calories.toInt();
                                     calo = calories / 500;
                                     print(calo);
                                     calories = double.parse(
@@ -1094,15 +1177,15 @@ class _InTaksScreenState extends State<InTaksScreen> {
                                     add_ex(selectExerciseType, calories, calo);
                                     NotificationService().showNotification(
                                         1,
-                                        "Excirses Time ",
-                                        'Exeirses time is finished ',
+                                        LocaleKeys.e_timee.tr,
+                                        LocaleKeys.e_fin.tr,
                                         FinishedTime);
                                     initState();
                                   }
                                 }
                             },
                             icon: Icon(Icons.add, size: 30),
-                            label: Text("Calculate"),
+                            label: Text(LocaleKeys.calculate.tr),
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xFFE5A9379),
                             ));

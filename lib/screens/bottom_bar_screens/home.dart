@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:test_saja/models/calBurn-model.dart';
 import 'package:test_saja/translations/locale_keys.g.dart';
 
 import '../../controller/home_controller.dart';
@@ -113,10 +114,13 @@ class Home extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.bold)),
                 StreamBuilder(
-                    stream: controller.IndecatorRef!.snapshots(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
+                    stream: controller.getIndicator,
+                    builder:
+                        (context, AsyncSnapshot<List<CalBurned>> snapshot) {
+                      print(
+                          "snapshot.data?.length => ${snapshot.data?.length}");
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
                           child: SpinKitCircle(
                             color: Colors.amber,
                           ),
@@ -128,16 +132,18 @@ class Home extends StatelessWidget {
                             radius: Get.width * 0.15,
                             lineWidth: 10.0,
                             // Retrieve the data from firebase , checking if Calories per is zero or no
-                            percent: controller.CalPer.length == 0
+                            percent: snapshot.data!.length == 0
                                 ? 0
                                 : double.parse(
-                                    controller.CalPer.last.toString()),
+                                    snapshot.data![0].per.toString()),
                             animation: true,
                             animationDuration: 2000,
                             center: Text(
-                              controller.CalVal.length == 0
+                              snapshot.data!.length == 0
                                   ? "0"
-                                  : controller.CalVal.last.toStringAsFixed(2),
+                                  : snapshot
+                                      .data![snapshot.data!.length - 1].cal!
+                                      .toStringAsFixed(2),
                               style: TextStyle(fontSize: 20),
                             ),
                             progressColor: Color(0xFFEA9363),
