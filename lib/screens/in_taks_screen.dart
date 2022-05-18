@@ -987,7 +987,7 @@ class _InTaksScreenState extends State<InTaksScreen> {
                     )
                   ],
                 ),
-              ),
+              ), ////
               isLoading2
                   ? Center(child: CircularProgressIndicator())
                   : TextFormField(
